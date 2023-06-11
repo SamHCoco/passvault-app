@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text } from 'react-native';
 import Screen from '../components/Screen';
-import Tile from '../components/Tile';
+import AppTile from '../components/AppTile';
 
 
 function VaultScreen(props) {
@@ -21,7 +21,7 @@ function VaultScreen(props) {
     return (
            <Screen>
                 {data.map((item) => (
-                    <Tile key={item.id} data={item} />
+                    <AppTile key={item.id} data={item} />
                 ))}
            </Screen>
         
