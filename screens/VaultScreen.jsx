@@ -42,18 +42,11 @@ function VaultScreen(props) {
 
     return (
            <Screen>
-                <Text>Web Credential List:</Text>
-                <FlatList
-                    data={webCredentials}
-                    keyExtractor={item => item.id.toString()}
-                    renderItem={({ item }) => (
-                    <View>
-                        <Text>{`Username: ${item.username}`}</Text>
-                        <Text>{`Password: ${item.password}`}</Text>
-                        <Text>{`URL: ${item.url}`}</Text>
-                    </View>
-                    )}
-                />
+                <Text>Web Credentials:</Text>
+                { webCredentials.map(credential => (
+                  <AppTile key={credential.id} data={credential} />
+                  ))
+                }
            </Screen>
         
     );
