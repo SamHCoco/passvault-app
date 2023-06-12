@@ -1,35 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { Text, FlatList } from 'react-native';
+import { Text, FlatList, View } from 'react-native';
 import Screen from '../components/Screen';
 import AppTile from '../components/AppTile';
 
-import { getWebCredentials } from '../service/sqlservice';
+import * as SQLite from 'expo-sqlite';
 
-import { openDatabase } from 'expo-sqlite';
-
-const db = openDatabase({
-    name: "passvault_db"
-  });
+const db = SQLite.openDatabase("passvault.db");
 
 
 function VaultScreen(props) {
     const [webCredentials, setWebCredentials] = useState([]);
 
     useEffect(() => {
-        getWebCredentialsList();
-      }, []);
-
-      const getWebCredentialsList = () => {
-        getWebCredentials(
-          credentials => {
-            setWebCredentials(credentials);
-            console.log("Credentials successfully called: " + webCredentials);
+      db.transaction(tx => {
+        tx.executeSql(
+          'SELECT * FROM credentials',
+          [],
+          (_, { rows }) => {
+            const credentialsList = rows._array;
+            setWebCredentials(credentialsList);
           },
           error => {
-            console.error('Failed to retrieve web credentials:', error);
+            console.log('Error retrieving credentials:', error);
           }
         );
-      };
+      });
+    }, []);
 
     const data = [
         {

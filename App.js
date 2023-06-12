@@ -6,6 +6,6 @@ import EditWebCredentialScreen from './screens/EditWebCredentialScreen';
 
 export default function App() {
   return (
-    <EditWebCredentialScreen />
+    <VaultScreen />
   );
 }
