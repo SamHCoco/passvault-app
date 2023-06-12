@@ -3,74 +3,77 @@ import Screen from '../components/Screen';
 import AppTextInput from '../components/AppTextInput';
 import { Alert, Button } from 'react-native';
 import { Formik, useFormikContext } from 'formik';
+import * as SQLite from 'expo-sqlite';
+import * as FileSystem from 'expo-file-system';
 
-import { getWebCredentials, saveWebCredential } from '../service/sqlservice';
+const db = SQLite.openDatabase("passvault.db");
 
 function EditWebCredentialScreen(props) {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [url, setUrl] = useState('');
-    const [webCredentials, setWebCredentials] = useState([]);
+  const [url, setUrl] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-    useEffect(() => {
-        getWebCredentialsList();
-      }, []);
+  const saveCredential = () => {
+    console.log("save credential invoked");
+    console.log(FileSystem.documentDirectory);
+    db.transaction(tx => {
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS credentials (id INTEGER PRIMARY KEY AUTOINCREMENT, url TEXT NOT NULL, username TEXT NOT NULL, password TEXT NOT NULL)',
+        [],
+        () => {
+          console.log('Table created successfully.');
 
-    const handleSaveWebCredential = () => {
-        // console.log("Save button clicked");
-        saveWebCredential(username, password, url)
-          .then(() => {
-            setUsername('');
-            setPassword('');
-            setUrl('');
-            getWebCredentialsList();
-            console.log('Successfully saved credentials: ', username)
-          })
-          .catch(error => {
-            console.error('Failed to save web credential:', error);
-          });
-      };
+          tx.executeSql(
+            'INSERT INTO credentials (url, username, password) VALUES (?, ?, ?)',
+            [url, username, password],
+            (_, { insertId }) => {
+              console.log('Credential saved successfully with ID:', insertId);
+            },
+            error => {
+              console.log('Error saving credential:', error);
+            }
+          );
+        },
+        error => {
+          console.log('Error creating table:', error);
+        }
+      );
+    });
+  };
 
-      const getWebCredentialsList = () => {
-        getWebCredentials()
-          .then(credentials => {
-            setWebCredentials(credentials);
-          })
-          .catch(error => {
-            console.error('Failed to retrieve web credentials:', error);
-          });
-      };
+  return (
+    <Screen>
+      <AppTextInput
+        placeholder="URL"
+        autoCapitalize="none"
+        autoCorrect={false}
+        onChangeText={text => setUrl(text)}
+        value={url}
+      />
 
-    return (
-        <Screen>
-            <AppTextInput 
-                placeholder="URL"
-                autoCapitalize="none"
-                autoCorrect={false}
-            />
+      <AppTextInput
+        placeholder="Username"
+        autoCapitalize="none"
+        autoCorrect={false}
+        keyboardType="email-address"
+        textContentType="emailAddress"
+        onChangeText={text => setUsername(text)}
+        value={username}
+      />
 
-            <AppTextInput 
-                placeholder="Username"
-                autoCapitalize="none"
-                autoCorrect={false}
-                keyboardType="email-address"
-                textContentType="emailAddress"
-            />
-            
-            <AppTextInput placeholder="Password"
-                autoCapitalize="none"
-                autoCorrect={false}
-                textContentType="password"
-                secureTextEntry
-            />
-            
-            <Button  
-                title="Save"
-                // color="grey"
-                onPress={() => handleSaveWebCredential}
-            />
-        </Screen>
-    );
+      <AppTextInput
+        placeholder="Password"
+        autoCapitalize="none"
+        autoCorrect={false}
+        textContentType="password"
+        secureTextEntry
+        onChangeText={text => setPassword(text)}
+        value={password}
+      />
+
+      <Button title="Save" color="grey" onPress={saveCredential} />
+    </Screen>
+  );
 }
 
 export default EditWebCredentialScreen;
