@@ -1,11 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 function Tile({ data }) {
   return (
     <View style={styles.container}>
-      <Text>ID: {data.id}</Text>
+      <MaterialCommunityIcons name="user" size={20} color="dodgerblue" />
       <Text>Username: {data.username}</Text>
+      <MaterialCommunityIcons name="lock" size={20} color="dodgerblue" />
       <Text>Password: {data.password}</Text>
     </View>
   );

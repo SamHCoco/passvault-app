@@ -27,7 +27,7 @@ function VaultScreen(props) {
       });
     }, []);
 
-    const data = [
+    const Devdata = [
         {
             id: 1,
             username: 'john.smith@email.co.uk',
@@ -37,16 +37,33 @@ function VaultScreen(props) {
             id: 2,
             username: 'ella.star@email.co.uk',
             password: 'password2'
+        },
+        {
+          id: 3,
+          username: 'scarlet.wandsworth@email.co.uk',
+          password: 'password3'
+        },
+        {
+          id: 4,
+          username: 'brandon.wilkes@email.co.uk',
+          password: 'password4'
         }
     ];
+
+    const renderItem = ({ data }) => (
+      <AppTile data={data} />
+    );
 
     return (
            <Screen>
                 <Text>Web Credentials:</Text>
-                { webCredentials.map(credential => (
-                  <AppTile key={credential.id} data={credential} />
-                  ))
-                }
+                <FlatList 
+                  data={Devdata}
+                  renderItem={ ({ item }) => (
+                      <AppTile data={item} />
+                  )}
+                  keyExtractor={(item) => item.id}
+                />
            </Screen>
         
     );
