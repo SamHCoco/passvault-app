@@ -3,6 +3,7 @@ import { Text, FlatList, View } from 'react-native';
 import Screen from '../components/Screen';
 import AppCredentialProvider from '../components/AppCredentialProvider';
 import AppCredentialMetric from '../components/AppCredentialMetric';
+import AppSearchBar from '../components/AppSearchBar';
 
 import * as SQLite from 'expo-sqlite';
 
@@ -46,6 +47,8 @@ function VaultScreen(props) {
 
     return (
            <Screen>
+                <AppSearchBar />
+
                 <View style={ {flexDirection: "row"}}>
                 <AppCredentialMetric
                   image={require('../assets/icon.png')}
@@ -57,8 +60,14 @@ function VaultScreen(props) {
                   text="Card"
                   subText="3"
                 />
+                <AppCredentialMetric
+                  image={require('../assets/icon.png')}
+                  text="Custom"
+                  subText="1"
+                />
                 </View>
-                <Text>Credential Providers</Text>
+              
+
                 <FlatList 
                   data={credentialProviders}
                   renderItem={ ({ item }) => (
