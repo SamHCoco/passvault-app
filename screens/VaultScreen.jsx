@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Text, FlatList, View } from 'react-native';
 import Screen from '../components/Screen';
-import AppTile from '../components/AppTile';
+import AppCredentialProvider from '../components/AppCredentialProvider';
+import AppCredentialMetric from '../components/AppCredentialMetric';
 
 import * as SQLite from 'expo-sqlite';
 
@@ -27,40 +28,41 @@ function VaultScreen(props) {
       });
     }, []);
 
-    const Devdata = [
-        {
-            id: 1,
-            username: 'john.smith@email.co.uk',
-            password: 'password1'
-        },
-        {
-            id: 2,
-            username: 'ella.star@email.co.uk',
-            password: 'password2'
-        },
-        {
-          id: 3,
-          username: 'scarlet.wandsworth@email.co.uk',
-          password: 'password3'
-        },
-        {
-          id: 4,
-          username: 'brandon.wilkes@email.co.uk',
-          password: 'password4'
-        }
+
+    const credentialProviders = [
+      {
+        id: 1,
+        name : "Facebook",
+        image: require("../assets/icon.png"),
+      },
+      {
+        id: 2,
+        name : "YouTube",
+        image: require("../assets/icon.png"),
+      }
     ];
 
-    const renderItem = ({ data }) => (
-      <AppTile data={data} />
-    );
+
 
     return (
            <Screen>
-                <Text>Web Credentials:</Text>
+                <View style={ {flexDirection: "row"}}>
+                <AppCredentialMetric
+                  image={require('../assets/icon.png')}
+                  text="Web"
+                  subText="5"
+                />
+                <AppCredentialMetric
+                  image={require('../assets/icon.png')}
+                  text="Card"
+                  subText="3"
+                />
+                </View>
+                <Text>Credential Providers</Text>
                 <FlatList 
-                  data={Devdata}
+                  data={credentialProviders}
                   renderItem={ ({ item }) => (
-                      <AppTile data={item} />
+                      <AppCredentialProvider provider={item} />
                   )}
                   keyExtractor={(item) => item.id}
                 />
