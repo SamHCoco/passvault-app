@@ -5,10 +5,12 @@ const AppCredentialMetric = ({ image, text, subText }) => {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <Text style={styles.label}>{text}</Text>
         <Image source={image} style={styles.image} />
       </View>
-      <Text style={styles.subLabel}>{subText}</Text>
+      <View style={styles.labels}>
+        <Text style={styles.label}>{text}</Text>
+        <Text style={styles.subLabel}>{subText}</Text>
+      </View>
     </View>
   );
 };
@@ -19,6 +21,10 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderRadius: 10,
     padding: 3,
+    flexDirection: "row"
+  },
+  labels: {
+    flexDirection: "column"
   },
   row: {
     flexDirection: 'row',
