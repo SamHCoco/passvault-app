@@ -11,45 +11,61 @@ const db = SQLite.openDatabase("passvault.db");
 
 
 function VaultScreen(props) {
-    const [webCredentials, setWebCredentials] = useState([]);
+    const [web, setWeb] = useState([]);
+    const [card, setCard] = useState([]);
+    const [credentialProviders, setCredentialProviders] = useState([]);
 
     useEffect(() => {
-      db.transaction(tx => {
+      db.transaction((tx) => {
         tx.executeSql(
-          'SELECT * FROM credentials',
+          'SELECT id, name FROM web',
           [],
           (_, { rows }) => {
-            const credentialsList = rows._array;
-            setWebCredentials(credentialsList);
+            const webRecords = rows._array;
+            setWeb(webRecords);
+            console.log("Returned Web Records: " + webRecords)
+            updateCredentialProviders();
           },
-          error => {
-            console.log('Error retrieving credentials:', error);
+          (error) => {
+            console.log('Error retrieving web records:', error);
+          }
+        );
+  
+        tx.executeSql(
+          'SELECT id, name FROM card',
+          [],
+          (_, { rows }) => {
+            const cardRecords = rows._array;
+            setCard(cardRecords);
+            updateCredentialProviders();
+          },
+          (error) => {
+            console.log('Error retrieving card records:', error);
           }
         );
       });
     }, []);
 
-
-    const credentialProviders = [
-      {
-        id: 1,
-        name : "Facebook",
-        image: require("../assets/icon.png"),
-      },
-      {
-        id: 2,
-        name : "YouTube",
-        image: require("../assets/icon.png"),
-      }
-    ];
-
-
+    const updateCredentialProviders = () => {
+      const providers = [
+        ...web.map((record) => ({
+          id: record.id,
+          name: record.name,
+          image: require('../assets/icon.png'),
+        })),
+        ...card.map((record) => ({
+          id: record.id,
+          name: record.name,
+          image: require('../assets/icon.png'),
+        })),
+      ];
+      setCredentialProviders(providers);
+    };
 
     return (
            <Screen>
-                <AppSearchBar />
-
-                <View style={ {flexDirection: "row"}}>
+              
+                <View style={ {flexDirection: "row", alignItems: "center", backgroundColor: "white"}}>
                 <AppCredentialMetric
                   image={require('../assets/icon.png')}
                   text="Web"
@@ -62,18 +78,19 @@ function VaultScreen(props) {
                 />
                 <AppCredentialMetric
                   image={require('../assets/icon.png')}
-                  text="Custom"
+                  text="Cust."
                   subText="1"
                 />
                 </View>
               
+                <AppSearchBar />
 
                 <FlatList 
                   data={credentialProviders}
                   renderItem={ ({ item }) => (
                       <AppCredentialProvider provider={item} />
                   )}
-                  keyExtractor={(item) => item.id}
+                  // keyExtractor={(item) => item.id}
                 />
            </Screen>
         
