@@ -109,20 +109,22 @@ function VaultScreen(props) {
         }}
       >
         <AppCredentialMetric
-          image={require('../assets/icon.png')}
+          iconName={"web"}
+          iconColor={"black"}
+          iconLibrary={"material"}
+          iconSize={45}
           text="Web"
           subText={webCredentialCount}
         />
         <AppCredentialMetric
-          image={require('../assets/icon.png')}
+          iconName={"card"}
+          iconColor={"black"}
+          iconLibrary={"ion"}
+          iconSize={45}
           text="Card"
           subText={cardCredentialCount}
         />
-        <AppCredentialMetric
-          image={require('../assets/icon.png')}
-          text="Cust."
-          subText="1"
-        />
+    
       </View>
 
       <AppSearchBar />
