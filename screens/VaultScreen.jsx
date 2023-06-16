@@ -101,6 +101,7 @@ function VaultScreen(props) {
 
   return (
     <Screen>
+      <AppSearchBar />
       <View
         style={{
           flexDirection: 'row',
@@ -126,8 +127,6 @@ function VaultScreen(props) {
         />
     
       </View>
-
-      <AppSearchBar />
 
       <FlatList
         data={credentialProviders}
