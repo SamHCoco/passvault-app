@@ -1,20 +1,28 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { View, TextInput, StyleSheet } from 'react-native';
+
+
 import * as SQLite from 'expo-sqlite';
 
 import VaultScreen from './screens/VaultScreen';
 import BackupScreen from './screens/BackupScreen';
 import SettingsScreen from './screens/SettingsScreen';
 
+import AppIcon from './components/AppIcon';
+
 const Tab = createBottomTabNavigator();
 
 const db = SQLite.openDatabase({ name: 'passvault.db', location: 'default' });
 
 export default function App() {
+  const [webCredentialCount, setWebCredentialCount] = useState(0);
+  const [cardCredentialCount, setCardCredentialCount] = useState(0);
+
+
   useEffect(() => {
     const createTables = () => {
       db.transaction((tx) => {
@@ -64,7 +72,7 @@ export default function App() {
       });
     };
 
-    createTables();
+    createTables(); 
   }, []);
 
   return (
@@ -83,7 +91,7 @@ export default function App() {
               }
 
               return (
-                <Ionicons
+                <AppIcon
                   name={iconName}
                   size={size}
                   color={color}

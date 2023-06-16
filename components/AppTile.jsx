@@ -7,9 +7,9 @@ function Tile({ data }) {
   return (
     <View style={styles.container}>
       <MaterialCommunityIcons name="email" size={20} color="black" />
-      <Text>Username: {data.username}</Text>
+      <Text>{data.username}</Text>
       <MaterialCommunityIcons name="lock" size={20} color="dodgerblue" />
-      <Text>Password: {data.password}</Text>
+      <Text>{data.password}</Text>
     </View>
   );
 };

@@ -1,12 +1,14 @@
 import React from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
-const AppCredentialMetric = ({ image, text, subText }) => {
+import AppIcon from './AppIcon';
+
+const AppCredentialMetric = ({ iconName, iconSize, iconColor, iconLibrary, text, subText }) => {
   return (
     <TouchableOpacity onPress={() => console.log(text + ' pressed.')}>
       <View style={styles.container}>
         <View style={styles.row}>
-          <Image source={image} style={styles.image} />
+          <AppIcon name={iconName} size={iconSize} color={iconColor} library={iconLibrary} iconStyle={styles.icon} />
         </View>
         <View style={styles.labels}>
           <Text style={styles.label}>{text}</Text>
@@ -19,8 +21,8 @@ const AppCredentialMetric = ({ image, text, subText }) => {
 
 const styles = StyleSheet.create({
     container: {
-        borderWidth: 2,
-        borderColor: 'black',
+        borderWidth: 1,
+        borderColor: 'grey',
         borderRadius: 50, // Modified value for perfect circle
         padding: 3,
         flexDirection: 'row',
@@ -42,7 +44,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         marginRight: 10,
       },
-      image: {
+      icon: {
         width: 50,
         height: 50,
       },

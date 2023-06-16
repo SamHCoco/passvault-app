@@ -3,7 +3,9 @@ import Screen from '../components/Screen';
 
 function SettingsScreen(props) {
     return (
-        <Screen></Screen>
+        <Screen>
+            
+        </Screen>
     );
 }
 
