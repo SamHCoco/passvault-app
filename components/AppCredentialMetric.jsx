@@ -22,7 +22,7 @@ const AppCredentialMetric = ({ iconName, iconSize, iconColor, iconLibrary, text,
 const styles = StyleSheet.create({
     container: {
         borderWidth: 0,
-        borderColor: 'white',
+        borderColor: 'black',
         borderRadius: 50, // Modified value for perfect circle
         padding: 3,
         flexDirection: 'row',

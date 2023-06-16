@@ -4,6 +4,7 @@ import Screen from '../components/Screen';
 import AppCredentialProvider from '../components/AppCredentialProvider';
 import AppCredentialMetric from '../components/AppCredentialMetric';
 import AppSearchBar from '../components/AppSearchBar';
+import AppRoundTouchable from '../components/AppRoundTouchable';
 
 import * as SQLite from 'expo-sqlite';
 
@@ -109,29 +110,36 @@ function VaultScreen(props) {
           backgroundColor: 'white',
         }}
       >
-        <AppCredentialMetric
-          iconName={"web"}
-          iconColor={"black"}
-          iconLibrary={"material"}
-          iconSize={45}
-          text="Web"
-          subText={webCredentialCount}
-        />
-        <AppCredentialMetric
-          iconName={"card"}
-          iconColor={"black"}
-          iconLibrary={"ion"}
-          iconSize={45}
-          text="Card"
-          subText={cardCredentialCount}
-        />
+        <View style={{ borderColor: "black", 
+                       borderWidth: 1, 
+                       flexDirection: 'row',
+                       borderRadius: 25,
+                       marginLeft: 12 }}>
+            <AppCredentialMetric
+              iconName={"web"}
+              iconColor={"black"}
+              iconLibrary={"material"}
+              iconSize={45}
+              text="Web"
+              subText={webCredentialCount}
+            />
+            <AppCredentialMetric
+              iconName={"card"}
+              iconColor={"black"}
+              iconLibrary={"ion"}
+              iconSize={45}
+              text="Card"
+              subText={cardCredentialCount}
+            />
+        </View>
+
+        <AppRoundTouchable iconName={"plus"} iconColor={"black"} size={45} iconLibrary={"material"} />
     
       </View>
-
       <FlatList
-        data={credentialProviders}
-        renderItem={({ item }) => <AppCredentialProvider provider={item} />}
-        keyExtractor={(item) => item.type + item.id.toString()}
+            data={credentialProviders}
+            renderItem={({ item }) => <AppCredentialProvider provider={item} />}
+            keyExtractor={(item) => item.type + item.id.toString()}
       />
     </Screen>
   );
