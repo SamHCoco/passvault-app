@@ -114,7 +114,8 @@ function VaultScreen(props) {
                        borderWidth: 1, 
                        flexDirection: 'row',
                        borderRadius: 25,
-                       marginLeft: 12 }}>
+                       width: 255,
+                       marginLeft: 4 }}>
             <AppCredentialMetric
               iconName={"web"}
               iconColor={"black"}
@@ -133,7 +134,7 @@ function VaultScreen(props) {
             />
         </View>
 
-        <AppRoundTouchable iconName={"plus"} iconColor={"black"} size={45} iconLibrary={"material"} />
+        <AppRoundTouchable iconName={"plus"} iconColor={"black"} iconSize={75} iconLibrary={"material"} />
     
       </View>
       <FlatList
