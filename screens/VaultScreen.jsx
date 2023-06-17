@@ -29,6 +29,9 @@ function VaultScreen(props) {
   ];
 
   const updateCredentialProviders = () => {
+
+    console.log("WEB STATE VALUE" + web); // todo - remove
+
     const providers = [
       ...web.map((record) => ({
         id: record.id,
@@ -44,6 +47,7 @@ function VaultScreen(props) {
       })),
     ];
     setCredentialProviders(providers);
+    console.log("CREDENTIAL PROVIDERS UPDATED: " + providers); // todo - remove
   };
 
   const renderWebCredentialItem = ({ item }) => {
@@ -122,8 +126,8 @@ function VaultScreen(props) {
   };
 
   useEffect(() => {
-    fetchRecords();
     countCredentials();
+    fetchRecords();
   }, []);
 
 

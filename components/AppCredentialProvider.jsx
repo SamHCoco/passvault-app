@@ -17,7 +17,7 @@ const AppCredentialProvider = ({ provider }) => {
     db.transaction((tx) => {
         if (type === 'web') {
             tx.executeSql(
-                'SELECT id, username, password FROM web_credential WHERE id = ?',
+                'SELECT id, username, password FROM web_credential WHERE web_id = ?',
                 [id],
                 (_, { rows }) => {
                   const webCredentialRecords = rows._array;
