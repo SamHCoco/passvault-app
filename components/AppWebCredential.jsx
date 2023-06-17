@@ -10,7 +10,7 @@ function AppWebCredential(props) {
     setPasswordVisible(!passwordVisible);
   };
 
-  const iconSize = 25; // Set the desired icon size
+  const iconSize = 19; // Set the desired icon size
 
   return (
     <View style={styles.container}>
@@ -56,29 +56,34 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     borderWidth: 1,
     borderColor: 'black',
+    marginHorizontal: 2
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 10,
+    justifyContent: 'flex-end',
+    marginVertical: 5,
   },
   text: {
     marginRight: 10,
     color: 'black',
   },
   touchable: {
-    width: 35,
-    height: 35,
-    borderRadius: 85,
+    width: 25,
+    height: 25,
+    borderRadius: 75,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: 'gray',
   },
+  icon: {
+    alignSelf: 'center',
+  },
   alignRight: {
     flex: 1,
-    alignItems: 'flex-end',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
   },
 });
 
