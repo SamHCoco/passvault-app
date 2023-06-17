@@ -138,7 +138,7 @@ function VaultScreen(props) {
     
       </View>
       <AppSearchBar />
-      <AppWebCredential  />
+      <AppWebCredential username="samuel.coco@email.co.uk" password="password1"  />
       {/* <FlatList
             data={credentialProviders}
             renderItem={({ item }) => <AppCredentialProvider provider={item} />}
@@ -147,13 +147,5 @@ function VaultScreen(props) {
     </Screen>
   );
 }
-
-const web_credential = StyleSheet.create({
-    container: {
-      width: 50,
-      height: 25,
-      borderRadius: 10
-    }
-})
 
 export default VaultScreen;

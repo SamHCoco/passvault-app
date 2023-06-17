@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, Clipboard } from 'react-native';
+// import { Clipboard } from '@react-native-community/clipboard';
 import AppRoundTouchable from './AppRoundTouchable';
 import AppIcon from './AppIcon';
 
-function AppWebCredential(props) {
+function AppWebCredential({ username, password }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const password = 'password1';
-
+  
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
+  };
+
+  const copyToClipboard = (text) => {
+    Clipboard.setString(text);
   };
 
   const iconSize = 19; // Set the desired icon size
@@ -16,8 +20,8 @@ function AppWebCredential(props) {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <AppIcon name="md-person" size={25} color="black" library="ion" iconStyle={{ marginHorizontal: 3}} />
-        <Text style={styles.text}>samuel.coco@email.co.uk</Text>
+        <AppIcon name="md-person" size={25} color="black" library="ion" iconStyle={{ marginHorizontal: 3 }} />
+        <Text style={styles.text}>{username}</Text>
         <View style={styles.alignRight}>
           <AppRoundTouchable
             iconName="copy-outline"
@@ -25,11 +29,12 @@ function AppWebCredential(props) {
             iconSize={iconSize}
             iconColor="black"
             touchableStyle={styles.touchable}
+            onPress={() => copyToClipboard(username)}
           />
         </View>
       </View>
       <View style={styles.row}>
-      <AppIcon name="lock-closed" size={25} color="black" library="ion" iconStyle={{ marginHorizontal: 3}} />
+        <AppIcon name="lock-closed" size={25} color="black" library="ion" iconStyle={{ marginHorizontal: 3 }} />
         <Text style={styles.text}>{passwordVisible ? password : '•••••••••••••'}</Text>
         <View style={styles.alignRight}>
           <AppRoundTouchable
@@ -47,6 +52,7 @@ function AppWebCredential(props) {
             iconColor="black"
             touchableStyle={styles.touchable}
             iconStyle={styles.icon}
+            onPress={() => copyToClipboard(password)}
           />
         </View>
       </View>
@@ -60,7 +66,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'black',
     marginHorizontal: 2,
-    borderRadius: 7
+    borderRadius: 7,
   },
   row: {
     flexDirection: 'row',
@@ -71,7 +77,7 @@ const styles = StyleSheet.create({
   text: {
     marginRight: 10,
     color: 'black',
-    fontSize: 20
+    fontSize: 20,
   },
   touchable: {
     width: 25,
@@ -81,7 +87,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: 'gray',
-    marginHorizontal: 3
+    marginHorizontal: 3,
   },
   icon: {
     alignSelf: 'center',
