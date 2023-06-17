@@ -1,5 +1,8 @@
 import React, { useState, useEffect} from 'react';
-import { Text, FlatList, View, StyleSheet } from 'react-native';
+import { Text, FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { SwipeListView } from 'react-native-swipe-list-view';
+
+
 import Screen from '../components/Screen';
 import AppCredentialMetric from '../components/AppCredentialMetric';
 import AppSearchBar from '../components/AppSearchBar';
@@ -17,6 +20,12 @@ function VaultScreen(props) {
   
   const [webCredentialCount, setWebCredentialCount] = useState(0);
   const [cardCredentialCount, setCardCredentialCount] = useState(0);
+
+  const webCredData = [
+    { id: 1, username: 'john_doe', password: 'password123' },
+    { id: 2, username: 'jane_smith', password: 'secret456' },
+    // Add more data entries as needed
+  ];
 
   const fetchRecords = () => {
     db.transaction((tx) => {
@@ -100,6 +109,22 @@ function VaultScreen(props) {
     setCredentialProviders(providers);
   };
 
+  const renderWebCredentialItem = ({ item }) => {
+    const { username, password } = item;
+    return <AppWebCredential username={username} password={password} />;
+  };
+
+  const renderHiddenItem = (data, rowMap) => (
+    <View style={styles.rowBack}>
+      <TouchableOpacity style={styles.editButton} onPress={() => console.log('Edit pressed')}>
+        <Text>Edit</Text>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.deleteButton} onPress={() => console.log('Delete pressed')}>
+        <Text>Delete</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
   return (
     <Screen>
     
@@ -144,8 +169,24 @@ function VaultScreen(props) {
             renderItem={({ item }) => <AppCredentialProvider provider={item} />}
             keyExtractor={(item) => item.type + item.id.toString()}
       /> */}
+      <SwipeListView
+        data={webCredData}
+        renderItem={renderWebCredentialItem}
+        renderHiddenItem={renderHiddenItem}
+        rightOpenValue={-80}
+        keyExtractor={(item) => item.id.toString()}
+      />
     </Screen>
   );
 }
+
+const styles = StyleSheet.create({
+  rowBack: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+  }
+})
 
 export default VaultScreen;
