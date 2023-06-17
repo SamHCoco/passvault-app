@@ -14,30 +14,17 @@ function EditWebCredentialScreen(props) {
   const [password, setPassword] = useState('');
 
   const saveCredential = () => {
-    console.log("save credential invoked");
-    console.log(FileSystem.documentDirectory);
     db.transaction(tx => {
       tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS credentials (id INTEGER PRIMARY KEY AUTOINCREMENT, url TEXT NOT NULL, username TEXT NOT NULL, password TEXT NOT NULL)',
-        [],
-        () => {
-          console.log('Table created successfully.');
-
-          tx.executeSql(
-            'INSERT INTO credentials (url, username, password) VALUES (?, ?, ?)',
-            [url, username, password],
-            (_, { insertId }) => {
-              console.log('Credential saved successfully with ID:', insertId);
-            },
-            error => {
-              console.log('Error saving credential:', error);
-            }
-          );
+        'INSERT INTO credentials (url, username, password) VALUES (?, ?, ?)',
+        [url, username, password],
+        (_, { insertId }) => {
+          console.log('Credential saved successfully with ID:', insertId);
         },
         error => {
-          console.log('Error creating table:', error);
+          console.log('Error saving credential:', error);
         }
-      );
+      );  
     });
   };
 

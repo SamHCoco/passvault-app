@@ -7,6 +7,8 @@ import AppSearchBar from '../components/AppSearchBar';
 import AppRoundTouchable from '../components/AppRoundTouchable';
 import AppWebCredential from '../components/AppWebCredential';
 import AppCredentialProvider from '../components/AppCredentialProvider';
+import { useNavigation } from '@react-navigation/native'; 
+
 import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase('passvault.db');
@@ -16,10 +18,10 @@ function VaultScreen(props) {
   const [card, setCard] = useState([]);
   const [credentialProviders, setCredentialProviders] = useState([]);
 
-  const [webCredentials, setWebCredentials] = useState([]);
-
   const [webCredentialCount, setWebCredentialCount] = useState(0);
   const [cardCredentialCount, setCardCredentialCount] = useState(0);
+
+  const navigation = useNavigation();
 
   const webCredData = [
     { id: 1, username: 'john_doe', password: 'password123' },
@@ -77,7 +79,7 @@ function VaultScreen(props) {
             image: require('../assets/icon.png'),
             type: 'web',
           }));
-          setWebCredentials(providers);
+
           setCredentialProviders(providers);
           console.log('Returned Web Records:', webRecords);
         },
@@ -172,7 +174,11 @@ function VaultScreen(props) {
           />
         </View>
 
-        <AppRoundTouchable iconName={'plus'} iconColor={'black'} iconSize={75} iconLibrary={'material'} />
+        <AppRoundTouchable iconName={'plus'} 
+                           iconColor={'black'} 
+                           iconSize={75} 
+                           iconLibrary={'material'}
+                           onPress={() => navigation.navigate('EditWebCredentialScreen')} />
       </View>
       <AppSearchBar />
       <FlatList
