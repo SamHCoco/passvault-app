@@ -67,9 +67,9 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   touchable: {
-    width: 75,
-    height: 75,
-    borderRadius: 125,
+    width: 45,
+    height: 45,
+    borderRadius: 95,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
