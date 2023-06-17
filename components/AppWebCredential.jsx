@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import AppRoundTouchable from './AppRoundTouchable';
+import AppIcon from './AppIcon';
 
 function AppWebCredential(props) {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -15,6 +16,7 @@ function AppWebCredential(props) {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
+        <AppIcon name="md-person" size={25} color="black" library="ion" iconStyle={{ marginHorizontal: 3}} />
         <Text style={styles.text}>samuel.coco@email.co.uk</Text>
         <View style={styles.alignRight}>
           <AppRoundTouchable
@@ -27,6 +29,7 @@ function AppWebCredential(props) {
         </View>
       </View>
       <View style={styles.row}>
+      <AppIcon name="lock-closed" size={25} color="black" library="ion" iconStyle={{ marginHorizontal: 3}} />
         <Text style={styles.text}>{passwordVisible ? password : '•••••••••••••'}</Text>
         <View style={styles.alignRight}>
           <AppRoundTouchable
@@ -56,7 +59,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     borderWidth: 1,
     borderColor: 'black',
-    marginHorizontal: 2
+    marginHorizontal: 2,
+    borderRadius: 7
   },
   row: {
     flexDirection: 'row',
@@ -67,6 +71,7 @@ const styles = StyleSheet.create({
   text: {
     marginRight: 10,
     color: 'black',
+    fontSize: 20
   },
   touchable: {
     width: 25,
@@ -76,6 +81,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: 'gray',
+    marginHorizontal: 3
   },
   icon: {
     alignSelf: 'center',
