@@ -8,6 +8,7 @@ import AppCredentialMetric from '../components/AppCredentialMetric';
 import AppSearchBar from '../components/AppSearchBar';
 import AppRoundTouchable from '../components/AppRoundTouchable';
 import AppWebCredential from '../components/AppWebCredential';
+import AppCredentialProvider from '../components/AppCredentialProvider';
 
 import * as SQLite from 'expo-sqlite';
 
@@ -26,6 +27,40 @@ function VaultScreen(props) {
     { id: 2, username: 'jane_smith', password: 'secret456' },
     // Add more data entries as needed
   ];
+
+  const updateCredentialProviders = () => {
+    const providers = [
+      ...web.map((record) => ({
+        id: record.id,
+        name: record.name,
+        image: require('../assets/icon.png'),
+        type: "web"
+      })),
+      ...card.map((record) => ({
+        id: record.id,
+        name: record.name,
+        image: require('../assets/icon.png'),
+        type: "card"
+      })),
+    ];
+    setCredentialProviders(providers);
+  };
+
+  const renderWebCredentialItem = ({ item }) => {
+    const { username, password } = item;
+    return <AppWebCredential username={username} password={password} />;
+  };
+
+  const renderHiddenItem = (data, rowMap) => {
+    return <View style={styles.rowBack}>
+              <TouchableOpacity style={styles.editButton} onPress={() => console.log('Edit pressed')}>
+                <Text>Edit</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.deleteButton} onPress={() => console.log('Delete pressed')}>
+                <Text>Delete</Text>
+              </TouchableOpacity>
+            </View>;
+  };
 
   const fetchRecords = () => {
     db.transaction((tx) => {
@@ -91,45 +126,9 @@ function VaultScreen(props) {
     countCredentials();
   }, []);
 
-  const updateCredentialProviders = () => {
-    const providers = [
-      ...web.map((record) => ({
-        id: record.id,
-        name: record.name,
-        image: require('../assets/icon.png'),
-        type: "web"
-      })),
-      ...card.map((record) => ({
-        id: record.id,
-        name: record.name,
-        image: require('../assets/icon.png'),
-        type: "card"
-      })),
-    ];
-    setCredentialProviders(providers);
-  };
-
-  const renderWebCredentialItem = ({ item }) => {
-    const { username, password } = item;
-    return <AppWebCredential username={username} password={password} />;
-  };
-
-  const renderHiddenItem = (data, rowMap) => {
-    return <View style={styles.rowBack}>
-              <TouchableOpacity style={styles.editButton} onPress={() => console.log('Edit pressed')}>
-                <Text>Edit</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.deleteButton} onPress={() => console.log('Delete pressed')}>
-                <Text>Delete</Text>
-              </TouchableOpacity>
-            </View>;
-  };
-  
-  
 
   return (
     <Screen>
-    
       <View
         style={{
           flexDirection: 'row',
@@ -165,19 +164,18 @@ function VaultScreen(props) {
     
       </View>
       <AppSearchBar />
-      <AppWebCredential username="samuel.coco@email.co.uk" password="password1"  />
-      {/* <FlatList
+      <FlatList
             data={credentialProviders}
             renderItem={({ item }) => <AppCredentialProvider provider={item} />}
             keyExtractor={(item) => item.type + item.id.toString()}
-      /> */}
-      <SwipeListView
+      />
+      {/* <SwipeListView
         data={webCredData}
         renderItem={renderWebCredentialItem}
         renderHiddenItem={renderHiddenItem}
         rightOpenValue={-80}
         keyExtractor={(item) => item.id.toString()}
-      />
+      /> */}
     </Screen>
   );
 }

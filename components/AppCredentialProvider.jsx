@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState} from 'react';
 
 import { View, Image, Text, StyleSheet } from 'react-native';
 
 const AppCredentialProvider = ({ provider }) => {
+    const [id, setId] = useState(provider.id);
+    const [type, setType] = useState(provider.type);
+
     return (
         <View style={styles.container}>
         <Image source={provider.image} style={styles.image} />
