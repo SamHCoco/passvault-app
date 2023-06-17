@@ -14,7 +14,9 @@ const AppCredentialProvider = ({ provider }) => {
   const [showList, setShowList] = useState(false);
 
   const fetchData = () => {
-    db.transaction((tx) => {
+    const show = !showList;
+    if (show) {
+      db.transaction((tx) => {
         if (type === 'web') {
             tx.executeSql(
                 'SELECT id, username, password FROM web_credential WHERE web_id = ?',
@@ -30,7 +32,8 @@ const AppCredentialProvider = ({ provider }) => {
               );
         }
     });
-    setShowList(true);
+    }
+    setShowList(show);
   };
 
   const closeList = () => {
