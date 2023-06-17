@@ -2,13 +2,13 @@ import React from 'react';
 import { TouchableOpacity, View, StyleSheet } from 'react-native';
 import AppIcon from './AppIcon';
 
-const AppRoundTouchable = ({ iconName, iconSize, iconColor, iconLibrary, onPress, touchableStyle }) => {
+const AppRoundTouchable = ({ iconName, iconSize, iconColor, iconLibrary, onPress, touchableStyle, iconStyle }) => {
   const containerStyle = touchableStyle ? touchableStyle : styles.container;
 
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={containerStyle}>
-        <AppIcon name={iconName} size={iconSize} color={iconColor} library={iconLibrary} />
+        <AppIcon name={iconName} size={iconSize} color={iconColor} library={iconLibrary} iconStyle={iconStyle} />
       </View>
     </TouchableOpacity>
   );

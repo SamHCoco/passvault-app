@@ -10,6 +10,8 @@ function AppWebCredential(props) {
     setPasswordVisible(!passwordVisible);
   };
 
+  const iconSize = 25; // Set the desired icon size
+
   return (
     <View style={styles.container}>
       <View style={styles.row}>
@@ -18,7 +20,7 @@ function AppWebCredential(props) {
           <AppRoundTouchable
             iconName="copy-outline"
             iconLibrary="ion"
-            iconSize={25}
+            iconSize={iconSize}
             iconColor="black"
             touchableStyle={styles.touchable}
           />
@@ -30,10 +32,18 @@ function AppWebCredential(props) {
           <AppRoundTouchable
             iconName="eye-outline"
             iconLibrary="ion"
-            iconSize={25}
+            iconSize={iconSize}
             iconColor="black"
             onPress={togglePasswordVisibility}
             touchableStyle={styles.touchable}
+          />
+          <AppRoundTouchable
+            iconName="copy-outline"
+            iconLibrary="ion"
+            iconSize={iconSize}
+            iconColor="black"
+            touchableStyle={styles.touchable}
+            iconStyle={styles.icon}
           />
         </View>
       </View>
@@ -57,15 +67,18 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   touchable: {
-    width: 80,
-    height: 25,
-    borderRadius: 10,
-    borderWidth: 2,
-    paddingHorizontal: 25,
+    width: 75,
+    height: 75,
+    borderRadius: 125,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'gray',
   },
   alignRight: {
     flex: 1,
     alignItems: 'flex-end',
+    flexDirection: 'row'
   },
 });
 
