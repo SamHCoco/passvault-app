@@ -2,10 +2,12 @@ import React from 'react';
 import { TouchableOpacity, View, StyleSheet } from 'react-native';
 import AppIcon from './AppIcon';
 
-const AppRoundTouchable = ({ iconName, iconSize, iconColor, iconLibrary }) => {
+const AppRoundTouchable = ({ iconName, iconSize, iconColor, iconLibrary, onPress, touchableStyle }) => {
+  const containerStyle = touchableStyle ? touchableStyle : styles.container;
+
   return (
-    <TouchableOpacity>
-      <View style={styles.container}>
+    <TouchableOpacity onPress={onPress}>
+      <View style={containerStyle}>
         <AppIcon name={iconName} size={iconSize} color={iconColor} library={iconLibrary} />
       </View>
     </TouchableOpacity>
@@ -21,7 +23,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 1,
     borderColor: 'gray',
-    marginLeft: 25
+    marginLeft: 25,
   },
 });
 

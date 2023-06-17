@@ -1,10 +1,10 @@
 import React, { useState, useEffect} from 'react';
-import { Text, FlatList, View } from 'react-native';
+import { Text, FlatList, View, StyleSheet } from 'react-native';
 import Screen from '../components/Screen';
-import AppCredentialProvider from '../components/AppCredentialProvider';
 import AppCredentialMetric from '../components/AppCredentialMetric';
 import AppSearchBar from '../components/AppSearchBar';
 import AppRoundTouchable from '../components/AppRoundTouchable';
+import AppWebCredential from '../components/AppWebCredential';
 
 import * as SQLite from 'expo-sqlite';
 
@@ -102,7 +102,7 @@ function VaultScreen(props) {
 
   return (
     <Screen>
-      <AppSearchBar />
+    
       <View
         style={{
           flexDirection: 'row',
@@ -137,13 +137,23 @@ function VaultScreen(props) {
         <AppRoundTouchable iconName={"plus"} iconColor={"black"} iconSize={75} iconLibrary={"material"} />
     
       </View>
-      <FlatList
+      <AppSearchBar />
+      <AppWebCredential  />
+      {/* <FlatList
             data={credentialProviders}
             renderItem={({ item }) => <AppCredentialProvider provider={item} />}
             keyExtractor={(item) => item.type + item.id.toString()}
-      />
+      /> */}
     </Screen>
   );
 }
+
+const web_credential = StyleSheet.create({
+    container: {
+      width: 50,
+      height: 25,
+      borderRadius: 10
+    }
+})
 
 export default VaultScreen;
