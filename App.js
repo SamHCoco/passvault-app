@@ -5,7 +5,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { View, TextInput, StyleSheet } from 'react-native';
 
-
 import * as SQLite from 'expo-sqlite';
 
 import VaultScreen from './screens/VaultScreen';

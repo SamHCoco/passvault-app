@@ -21,8 +21,7 @@ const AppCredentialProvider = ({ provider }) => {
                 [id],
                 (_, { rows }) => {
                   const webCredentialRecords = rows._array;
-                  setCredentials(webCredentialRecords);
-                  setShowList(true);
+                  setCredentials(webCredentialRecords);             
                   console.log('FOUND WEB_CREDENTIALS: ', webCredentialRecords);
                 },
                 (error) => {
@@ -31,6 +30,7 @@ const AppCredentialProvider = ({ provider }) => {
               );
         }
     });
+    setShowList(true);
   };
 
   const closeList = () => {
@@ -40,6 +40,19 @@ const AppCredentialProvider = ({ provider }) => {
   const renderItem = ({ item }) => {
     const { username, password } = item;
     return <AppWebCredential username={username} password={password} />;
+  };
+
+  const renderHiddenItem = (data, rowMap) => {
+    return (
+      <View style={styles.rowBack}>
+        <TouchableOpacity style={styles.editButton} onPress={() => console.log('Edit pressed')}>
+          <Text>Edit</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.deleteButton} onPress={() => console.log('Delete pressed')}>
+          <Text>Delete</Text>
+        </TouchableOpacity>
+      </View>
+    );
   };
 
   return (
@@ -54,7 +67,8 @@ const AppCredentialProvider = ({ provider }) => {
         <SwipeListView
           data={credentials}
           renderItem={renderItem}
-          onRowDidOpen={closeList}
+          renderHiddenItem={renderHiddenItem}
+          rightOpenValue={-100}
           keyExtractor={(item) => item.id.toString()}
         />
       )}
@@ -82,6 +96,29 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: 'black',
   },
+  rowBack: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    backgroundColor: 'gray',
+  },
+  editButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 50,
+    height: '100%',
+    backgroundColor: 'dodgerblue',
+    alignSelf: 'flex-end'
+  },
+  deleteButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 50,
+    height: '100%',
+    backgroundColor: 'red',
+    alignSelf: 'flex-end'
+  }
 });
 
 export default AppCredentialProvider;

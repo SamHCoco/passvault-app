@@ -1,15 +1,12 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
-
-
 import Screen from '../components/Screen';
 import AppCredentialMetric from '../components/AppCredentialMetric';
 import AppSearchBar from '../components/AppSearchBar';
 import AppRoundTouchable from '../components/AppRoundTouchable';
 import AppWebCredential from '../components/AppWebCredential';
 import AppCredentialProvider from '../components/AppCredentialProvider';
-
 import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase('passvault.db');
@@ -18,7 +15,9 @@ function VaultScreen(props) {
   const [web, setWeb] = useState([]);
   const [card, setCard] = useState([]);
   const [credentialProviders, setCredentialProviders] = useState([]);
-  
+
+  const [webCredentials, setWebCredentials] = useState([]);
+
   const [webCredentialCount, setWebCredentialCount] = useState(0);
   const [cardCredentialCount, setCardCredentialCount] = useState(0);
 
@@ -29,25 +28,21 @@ function VaultScreen(props) {
   ];
 
   const updateCredentialProviders = () => {
-
-    console.log("WEB STATE VALUE" + web); // todo - remove
-
     const providers = [
       ...web.map((record) => ({
         id: record.id,
         name: record.name,
         image: require('../assets/icon.png'),
-        type: "web"
+        type: 'web',
       })),
       ...card.map((record) => ({
         id: record.id,
         name: record.name,
         image: require('../assets/icon.png'),
-        type: "card"
-      })),
+        type: 'card',
+      }))
     ];
     setCredentialProviders(providers);
-    console.log("CREDENTIAL PROVIDERS UPDATED: " + providers); // todo - remove
   };
 
   const renderWebCredentialItem = ({ item }) => {
@@ -56,14 +51,16 @@ function VaultScreen(props) {
   };
 
   const renderHiddenItem = (data, rowMap) => {
-    return <View style={styles.rowBack}>
-              <TouchableOpacity style={styles.editButton} onPress={() => console.log('Edit pressed')}>
-                <Text>Edit</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.deleteButton} onPress={() => console.log('Delete pressed')}>
-                <Text>Delete</Text>
-              </TouchableOpacity>
-            </View>;
+    return (
+      <View style={styles.rowBack}>
+        <TouchableOpacity style={styles.editButton} onPress={() => console.log('Edit pressed')}>
+          <Text>Edit</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.deleteButton} onPress={() => console.log('Delete pressed')}>
+          <Text>Delete</Text>
+        </TouchableOpacity>
+      </View>
+    );
   };
 
   const fetchRecords = () => {
@@ -74,8 +71,15 @@ function VaultScreen(props) {
         (_, { rows }) => {
           const webRecords = rows._array;
           setWeb(webRecords);
+          const providers = webRecords.map((record) => ({
+            id: record.id,
+            name: record.name,
+            image: require('../assets/icon.png'),
+            type: 'web',
+          }));
+          setWebCredentials(providers);
+          setCredentialProviders(providers);
           console.log('Returned Web Records:', webRecords);
-          updateCredentialProviders();
         },
         (error) => {
           console.log('Error retrieving web records:', error);
@@ -107,10 +111,10 @@ function VaultScreen(props) {
           setWebCredentialCount(count);
         },
         (_, error) => {
-          console.log('Error retrieving web credential count:', error);
+          console.log('Error retrieving web credential count: ', error);
         }
       );
-  
+
       tx.executeSql(
         'SELECT COUNT(*) AS cardCount FROM card_credential',
         [],
@@ -126,10 +130,10 @@ function VaultScreen(props) {
   };
 
   useEffect(() => {
+    fetchRecords();
     countCredentials();
     fetchRecords();
   }, []);
-
 
   return (
     <Screen>
@@ -140,38 +144,41 @@ function VaultScreen(props) {
           backgroundColor: 'white',
         }}
       >
-        <View style={{ borderColor: "black", 
-                       borderWidth: 1, 
-                       flexDirection: 'row',
-                       borderRadius: 25,
-                       width: 255,
-                       marginLeft: 4 }}>
-            <AppCredentialMetric
-              iconName={"web"}
-              iconColor={"black"}
-              iconLibrary={"material"}
-              iconSize={45}
-              text="Web"
-              subText={webCredentialCount}
-            />
-            <AppCredentialMetric
-              iconName={"card"}
-              iconColor={"black"}
-              iconLibrary={"ion"}
-              iconSize={45}
-              text="Card"
-              subText={cardCredentialCount}
-            />
+        <View
+          style={{
+            borderColor: 'black',
+            borderWidth: 1,
+            flexDirection: 'row',
+            borderRadius: 25,
+            width: 255,
+            marginLeft: 4,
+          }}
+        >
+          <AppCredentialMetric
+            iconName={'web'}
+            iconColor={'black'}
+            iconLibrary={'material'}
+            iconSize={45}
+            text="Web"
+            subText={webCredentialCount}
+          />
+          <AppCredentialMetric
+            iconName={'card'}
+            iconColor={'black'}
+            iconLibrary={'ion'}
+            iconSize={45}
+            text="Card"
+            subText={cardCredentialCount}
+          />
         </View>
 
-        <AppRoundTouchable iconName={"plus"} iconColor={"black"} iconSize={75} iconLibrary={"material"} />
-    
+        <AppRoundTouchable iconName={'plus'} iconColor={'black'} iconSize={75} iconLibrary={'material'} />
       </View>
       <AppSearchBar />
       <FlatList
-            data={credentialProviders}
-            renderItem={({ item }) => <AppCredentialProvider provider={item} />}
-            keyExtractor={(item) => item.type + item.id.toString()}
+        data={credentialProviders}
+        renderItem={({ item }) => <AppCredentialProvider provider={item} />}
+        keyExtractor={(item) => item.type + item.id.toString()}
       />
       {/* <SwipeListView
         data={webCredData}
@@ -191,8 +198,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     marginRight: 2,
-    paddingHorizontal: 5
-  }
-})
+    paddingHorizontal: 5,
+  },
+});
 
 export default VaultScreen;
