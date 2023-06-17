@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     marginHorizontal: 2,
     borderRadius: 7,
+    backgroundColor: "azure"
   },
   row: {
     flexDirection: 'row',

@@ -114,16 +114,18 @@ function VaultScreen(props) {
     return <AppWebCredential username={username} password={password} />;
   };
 
-  const renderHiddenItem = (data, rowMap) => (
-    <View style={styles.rowBack}>
-      <TouchableOpacity style={styles.editButton} onPress={() => console.log('Edit pressed')}>
-        <Text>Edit</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.deleteButton} onPress={() => console.log('Delete pressed')}>
-        <Text>Delete</Text>
-      </TouchableOpacity>
-    </View>
-  );
+  const renderHiddenItem = (data, rowMap) => {
+    return <View style={styles.rowBack}>
+              <TouchableOpacity style={styles.editButton} onPress={() => console.log('Edit pressed')}>
+                <Text>Edit</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.deleteButton} onPress={() => console.log('Delete pressed')}>
+                <Text>Delete</Text>
+              </TouchableOpacity>
+            </View>;
+  };
+  
+  
 
   return (
     <Screen>
@@ -186,6 +188,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
+    marginRight: 2,
+    paddingHorizontal: 5
   }
 })
 
