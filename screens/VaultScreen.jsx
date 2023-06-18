@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { SwipeListView } from 'react-native-swipe-list-view';
+// import { SwipeListView } from 'react-native-swipe-list-view';
 import Screen from '../components/Screen';
 import AppCredentialMetric from '../components/AppCredentialMetric';
 import AppSearchBar from '../components/AppSearchBar';
