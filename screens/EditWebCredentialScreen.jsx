@@ -1,148 +1,168 @@
-import React from 'react';
-import { Button, Text } from 'react-native';
+import React, { useState } from 'react';
+import { Button, Text, View } from 'react-native';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import * as SQLite from 'expo-sqlite';
-import * as FileSystem from 'expo-file-system';
 
 import Screen from '../components/Screen';
 import AppTextInput from '../components/AppTextInput';
 import AppRoundTouchable from '../components/AppRoundTouchable';
 
-const db = SQLite.openDatabase('passvault.db');
+import saveWebCredential from '../service/saveWebCredential';
 
-const validationSchema = Yup.object().shape({
-  url: Yup.string().url('Invalid URL').required('URL is required'),
-  username: Yup.string().required('Username is required'),
-  password: Yup.string().required('Password is required'),
-});
+const validationSchema = {
+  web: Yup.object().shape({
+    url: Yup.string().url('Invalid URL').required('URL is required'),
+    username: Yup.string().required('Username is required'),
+    password: Yup.string().required('Password is required'),
+  }),
+  card: Yup.object().shape({
+    cardNumber: Yup.string().matches(/^\d{16}$/, 'Invalid card number').required('Card number is required'),
+    expirationDate: Yup.string().matches(/^(0[1-9]|1[0-2])-(\d{2})$/, 'Invalid expiration date').required('Expiration date is required'),
+    securityCode: Yup.string().max(4, 'Security code must be at most 4 characters'),
+  }),
+};
 
 function EditWebCredentialScreen(props) {
-  const saveCredential = async (values) => {
-    const { url, username, password } = values;
-  
-    // Extract domain from URL and lowercase it
-    const domain = url.toLowerCase().replace(/^(?:https?:\/\/)?(?:www\.)?([^/.]+).*$/, '$1');
+  const [selectedOption, setSelectedOption] = useState('Web');
 
-    // Search for a match in the web(name) table
-    const existingWeb = await new Promise((resolve, reject) => {
-      db.transaction(tx => {
-        tx.executeSql(
-          'SELECT id FROM web WHERE LOWER(name) = ? LIMIT 1',
-          [domain],
-          (_, { rows }) => {
-            resolve(rows.item(0));
-          },
-          (_, error) => {
-            reject(error);
-          }
-        );
-      });
-    });
-  
-    // Insert into web_credential table
-    const insertWebCredential = async (webId) => {
-      return new Promise((resolve, reject) => {
-        db.transaction(tx => {
-          tx.executeSql(
-            'INSERT INTO web_credential (web_id, username, password) VALUES (?, ?, ?)',
-            [webId, username, password],
-            (_, { insertId }) => {
-              resolve(insertId);
-              console.log("New Web Credentials added with web_id ", webId);
-            },
-            (_, error) => {
-              reject(error);
-            }
-          );
-        });
-      });
-    };
-  
-    // Handle the found or new web record
-    if (existingWeb) {
-      // Use the existing web_id
-      const webId = existingWeb.id;
-      const insertId = await insertWebCredential(webId);
-      console.log('Credential saved successfully with ID:', insertId);
-    } else {
-      // Insert a new record into web table
-      const insertWeb = await new Promise((resolve, reject) => {
-        db.transaction(tx => {
-          tx.executeSql(
-            'INSERT INTO web (name) VALUES (?)',
-            [domain],
-            (_, { insertId }) => {
-              resolve(insertId);
-            },
-            (_, error) => {
-              reject(error);
-            }
-          );
-        });
-      });
-  
-      // Use the new web_id
-      const webId = insertWeb;
-      const insertId = await insertWebCredential(webId);
-      console.log('Credential saved successfully with ID:', insertId);
+  const saveCardCredential = async (values) => {
+    // Save card credentials here
+    console.log('Saving card credentials:', values);
+  };
+
+  const handleSubmit = async (values) => {
+    if (selectedOption === 'Web') {
+      await saveWebCredential(values);
+    } else if (selectedOption === 'Card') {
+      await saveCardCredential(values);
     }
   };
-  
+
+  const renderForm = () => {
+    if (selectedOption === 'Web') {
+      return (
+        <>
+          <Field
+            component={AppTextInput}
+            name="url"
+            placeholder="URL"
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          <ErrorMessage name="url" component={Text} style={styles.errorText} />
+
+          <Field
+            component={AppTextInput}
+            name="username"
+            placeholder="Username"
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          <ErrorMessage name="username" component={Text} style={styles.errorText} />
+
+          <Field
+            component={AppTextInput}
+            name="password"
+            placeholder="Password"
+            autoCapitalize="none"
+            autoCorrect={false}
+            secureTextEntry
+          />
+          <ErrorMessage name="password" component={Text} style={styles.errorText} />
+        </>
+      );
+    } else if (selectedOption === 'Card') {
+      return (
+        <>
+          <Field
+            component={AppTextInput}
+            name="cardNumber"
+            placeholder="Card Number"
+            keyboardType="numeric"
+          />
+          <ErrorMessage name="cardNumber" component={Text} style={styles.errorText} />
+
+          <Field
+            component={AppTextInput}
+            name="expirationDate"
+            placeholder="Expiration Date (MM-YY)"
+            keyboardType="numeric"
+          />
+          <ErrorMessage name="expirationDate" component={Text} style={styles.errorText} />
+
+          <Field
+            component={AppTextInput}
+            name="securityCode"
+            placeholder="Security Code"
+            autoCapitalize="none"
+            autoCorrect={false}
+            secureTextEntry
+          />
+          <ErrorMessage name="securityCode" component={Text} style={styles.errorText} />
+        </>
+      );
+    }
+
+    return null;
+  };
 
   return (
     <Screen>
-      <Formik
-        initialValues={{ url: '', username: '', password: '' }}
-        validationSchema={validationSchema}
-        onSubmit={values => saveCredential(values)}
-      >
-        {({ handleChange, handleSubmit, errors, touched }) => (
-          <>
-            <Field
-              component={AppTextInput}
-              name="url"
-              placeholder="URL"
-              autoCapitalize="none"
-              autoCorrect={false}
-              onChangeText={handleChange('url')}
-            />
-            <ErrorMessage name="url" component={Text} style={styles.errorText} />
+      <View style={styles.container}>
+        <View style={styles.optionsContainer}>
+          <AppRoundTouchable
+            iconName="web"
+            iconColor='black'
+            iconLibrary='material'
+            iconSize={65}
+            isSelected={selectedOption === 'Web'}
+            onPress={() => setSelectedOption('Web')}
+          />
+          <AppRoundTouchable
+            name="card"
+            iconName='card'
+            iconColor='black'
+            iconLibrary='ion'
+            iconSize={65}
+            isSelected={selectedOption === 'Card'}
+            onPress={() => setSelectedOption('Card')}
+          />
+        </View>
 
-            <Field
-              component={AppTextInput}
-              name="username"
-              placeholder="Username"
-              autoCapitalize="none"
-              autoCorrect={false}
-              onChangeText={handleChange('username')}
-            />
-            <ErrorMessage name="username" component={Text} style={styles.errorText} />
+        <Formik
+          initialValues={{
+            url: '',
+            username: '',
+            password: '',
+            cardNumber: '',
+            expirationDate: '',
+            securityCode: '',
+          }}
+          validationSchema={selectedOption === 'Web' ? validationSchema.web : validationSchema.card}
+          onSubmit={handleSubmit}
+        >
+          {({ handleChange, handleSubmit, errors, touched }) => (
+            <>
+              {renderForm()}
 
-            <Field
-              component={AppTextInput}
-              name="password"
-              placeholder="Password"
-              autoCapitalize="none"
-              autoCorrect={false}
-              secureTextEntry
-              onChangeText={handleChange('password')}
-            />
-            <ErrorMessage name="password" component={Text} style={styles.errorText} />
-
-            <AppRoundTouchable 
-                text="Save"
-                onPress={handleSubmit}  
-            />
-          
-          </>
-        )}
-      </Formik>
+              <AppRoundTouchable text="Save" onPress={handleSubmit} />
+            </>
+          )}
+        </Formik>
+      </View>
     </Screen>
   );
 }
 
 const styles = {
+  container: {
+    alignItems: 'center',
+  },
+  optionsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: 20,
+  },
   errorText: {
     color: 'red',
     fontSize: 14,
