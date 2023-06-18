@@ -2,10 +2,12 @@ import React from 'react';
 import { Button, Text } from 'react-native';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
-import Screen from '../components/Screen';
-import AppTextInput from '../components/AppTextInput';
 import * as SQLite from 'expo-sqlite';
 import * as FileSystem from 'expo-file-system';
+
+import Screen from '../components/Screen';
+import AppTextInput from '../components/AppTextInput';
+import AppRoundTouchable from '../components/AppRoundTouchable';
 
 const db = SQLite.openDatabase('passvault.db');
 
@@ -128,7 +130,11 @@ function EditWebCredentialScreen(props) {
             />
             <ErrorMessage name="password" component={Text} style={styles.errorText} />
 
-            <Button title="Save" color="grey" onPress={handleSubmit} />
+            <AppRoundTouchable 
+                text="Save"
+                onPress={handleSubmit}  
+            />
+          
           </>
         )}
       </Formik>
