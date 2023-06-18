@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import Screen from '../components/Screen';
 import AppTextInput from '../components/AppTextInput';
 import AppRoundTouchable from '../components/AppRoundTouchable';
+import AppPasswordGenerator from '../components/AppPasswordGenerator';
 
 import saveWebCredential from '../service/saveWebCredential';
 import saveCardCredential from '../service/saveCardCredential';
@@ -90,6 +91,10 @@ function EditWebCredentialScreen(props) {
             secureTextEntry
           />
           <ErrorMessage name="password" component={Text} style={styles.errorText} />
+
+          <View>
+                <AppPasswordGenerator />
+          </View>
         </>
       );
     } else if (selectedOption === 'Card') {

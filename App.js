@@ -41,8 +41,8 @@ export default function App() {
 
             if (route.name === 'Vault') {
               iconName = focused ? 'home' : 'home-outline';
-            } else if (route.name === 'Backup') {
-              iconName = focused ? 'cloud-upload' : 'cloud-upload-outline';
+            // } else if (route.name === 'Backup') {
+            //   iconName = focused ? 'cloud-upload' : 'cloud-upload-outline';
             } else if (route.name === 'Settings') {
               iconName = focused ? 'cog' : 'cog-outline';
             }
@@ -62,8 +62,9 @@ export default function App() {
         }}
       >
         <Tab.Screen name="Vault" component={VaultScreen} />
-        <Tab.Screen name="Backup" component={BackupScreen} />
+        {/* <Tab.Screen name="Backup" component={BackupScreen} /> */}
         <Tab.Screen name="Settings" component={SettingsScreen} />
+        
       </Tab.Navigator>
       );
   }
