@@ -17,7 +17,8 @@ const validationSchema = {
   }),
   card: Yup.object().shape({
     cardNumber: Yup.string().matches(/^\d{16}$/, 'Invalid card number').required('Card number is required'),
-    expirationDate: Yup.string().matches(/^(0[1-9]|1[0-2])-(\d{2})$/, 'Invalid expiration date').required('Expiration date is required'),
+    expirationMonth: Yup.string().matches(/^(0[1-9]|1[0-2])$/, 'Invalid expiration month').required('Expiration month is required'),
+    expirationYear: Yup.string().matches(/^\d{2}$/, 'Invalid expiration year').required('Expiration year is required'),
     securityCode: Yup.string().max(4, 'Security code must be at most 4 characters'),
   }),
 };
@@ -34,7 +35,9 @@ function EditWebCredentialScreen(props) {
     if (selectedOption === 'Web') {
       await saveWebCredential(values);
     } else if (selectedOption === 'Card') {
-      await saveCardCredential(values);
+      const { cardNumber, securityCode, expirationMonth, expirationYear } = values;
+      const expirationDate = `${expirationMonth}-${expirationYear}`;
+      // await saveCardCredential({ cardNumber, expirationDate, securityCode });
     }
   };
 
@@ -82,13 +85,31 @@ function EditWebCredentialScreen(props) {
           />
           <ErrorMessage name="cardNumber" component={Text} style={styles.errorText} />
 
-          <Field
-            component={AppTextInput}
-            name="expirationDate"
-            placeholder="Expiration Date (MM-YY)"
-            keyboardType="numeric"
-          />
-          <ErrorMessage name="expirationDate" component={Text} style={styles.errorText} />
+          <View style={styles.expirationContainer}>
+          <View style={styles.expirationMonthContainer}>
+            <Text style={styles.expirationLabel}>Expiration Month:</Text>
+            <Field
+              component={AppTextInput}
+              name="expirationMonth"
+              placeholder="MM"
+              keyboardType="numeric"
+              maxLength={2}
+            />
+            <ErrorMessage name="expirationMonth" component={Text} style={styles.errorText} />
+          </View>
+
+          <View style={styles.expirationYearContainer}>
+            <Text style={styles.expirationLabel}>Expiration Year:</Text>
+            <Field
+              component={AppTextInput}
+              name="expirationYear"
+              placeholder="YY"
+              keyboardType="numeric"
+              maxLength={2}
+            />
+            <ErrorMessage name="expirationYear" component={Text} style={styles.errorText} />
+          </View>
+        </View>
 
           <Field
             component={AppTextInput}
@@ -135,7 +156,8 @@ function EditWebCredentialScreen(props) {
             username: '',
             password: '',
             cardNumber: '',
-            expirationDate: '',
+            expirationMonth: '',
+            expirationYear: '',
             securityCode: '',
           }}
           validationSchema={selectedOption === 'Web' ? validationSchema.web : validationSchema.card}
@@ -167,6 +189,22 @@ const styles = {
     color: 'red',
     fontSize: 14,
     marginBottom: 8,
+  },
+  expirationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  expirationLabel: {
+    marginRight: 10,
+  },
+  expirationFieldContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  expirationField: {
+    width: 40, // Adjust the width as needed
   },
 };
 
