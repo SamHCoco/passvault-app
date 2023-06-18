@@ -8,36 +8,54 @@ import AppTextInput from '../components/AppTextInput';
 import AppRoundTouchable from '../components/AppRoundTouchable';
 
 import saveWebCredential from '../service/saveWebCredential';
+import saveCardCredential from '../service/saveCardCredential';
 
-const validationSchema = {
-  web: Yup.object().shape({
-    url: Yup.string().url('Invalid URL').required('URL is required'),
-    username: Yup.string().required('Username is required'),
-    password: Yup.string().required('Password is required'),
+const validationSchema = Yup.object().shape({
+  url: Yup.string().when('selectedOption', {
+    is: 'Web',
+    then: Yup.string().url('Invalid URL').required('URL is required'),
   }),
-  card: Yup.object().shape({
-    cardNumber: Yup.string().matches(/^\d{16}$/, 'Invalid card number').required('Card number is required'),
-    expirationMonth: Yup.string().matches(/^(0[1-9]|1[0-2])$/, 'Invalid expiration month').required('Expiration month is required'),
-    expirationYear: Yup.string().matches(/^\d{2}$/, 'Invalid expiration year').required('Expiration year is required'),
-    securityCode: Yup.string().max(4, 'Security code must be at most 4 characters'),
+  username: Yup.string().when('selectedOption', {
+    is: 'Web',
+    then: Yup.string().required('Username is required'),
   }),
-};
+  password: Yup.string().when('selectedOption', {
+    is: 'Web',
+    then: Yup.string().required('Password is required'),
+  }),
+  bank: Yup.string().when('selectedOption', {
+    is: 'Card',
+    then: Yup.string().required('Bank is required'),
+  }),
+  cardNumber: Yup.string().when('selectedOption', {
+    is: 'Card',
+    then: Yup.string().matches(/^\d{16}$/, 'Invalid card number').required('Card number is required'),
+  }),
+  expirationMonth: Yup.string().when('selectedOption', {
+    is: 'Card',
+    then: Yup.string().matches(/^(0[1-9]|1[0-2])$/, 'Invalid expiration month').required('Expiration month is required'),
+  }),
+  expirationYear: Yup.string().when('selectedOption', {
+    is: 'Card',
+    then: Yup.string().matches(/^\d{2}$/, 'Invalid expiration year').required('Expiration year is required'),
+  }),
+  securityCode: Yup.string().when('selectedOption', {
+    is: 'Card',
+    then: Yup.string().max(4, 'Security code must be at most 4 characters'),
+  }),
+});
 
 function EditWebCredentialScreen(props) {
   const [selectedOption, setSelectedOption] = useState('Web');
-
-  const saveCardCredential = async (values) => {
-    // Save card credentials here
-    console.log('Saving card credentials:', values);
-  };
 
   const handleSubmit = async (values) => {
     if (selectedOption === 'Web') {
       await saveWebCredential(values);
     } else if (selectedOption === 'Card') {
       const { cardNumber, securityCode, expirationMonth, expirationYear } = values;
-      const expirationDate = `${expirationMonth}-${expirationYear}`;
-      // await saveCardCredential({ cardNumber, expirationDate, securityCode });
+      const expDate = `${expirationMonth}-${expirationYear}`;
+      console.log("CARD CREDENTIALS - onSubmit: ", cardNumber, expDate, securityCode);
+      await saveCardCredential({ cardNumber, expDate, securityCode });
     }
   };
 
@@ -77,49 +95,73 @@ function EditWebCredentialScreen(props) {
     } else if (selectedOption === 'Card') {
       return (
         <>
-          <Field
-            component={AppTextInput}
-            name="cardNumber"
-            placeholder="Card Number"
-            keyboardType="numeric"
-          />
-          <ErrorMessage name="cardNumber" component={Text} style={styles.errorText} />
+          <Screen>
+              <View style={styles.bankContainer}>
+                <Text style={styles.bankLabel}>Bank</Text>
+                <Field
+                  component={AppTextInput}
+                  name="bank"
+                  placeholder="Bank"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                />
+                <ErrorMessage name="bank" component={Text} style={styles.errorText} />
+              </View>
+              
+              <View style={styles.cardContainer}>
+                <Text style={styles.cardLabel}>Card Number</Text>
+                <Field
+                  component={AppTextInput}
+                  name="cardNumber"
+                  placeholder="Card Number"
+                  keyboardType="numeric"
+                  style={styles.cardInput}
+                  maxLength={16}
+                />
+                <ErrorMessage name="cardNumber" component={Text} style={styles.errorText} />
+              </View>
 
-          <View style={styles.expirationContainer}>
-          <View style={styles.expirationMonthContainer}>
-            <Text style={styles.expirationLabel}>Expiration Month:</Text>
-            <Field
-              component={AppTextInput}
-              name="expirationMonth"
-              placeholder="MM"
-              keyboardType="numeric"
-              maxLength={2}
-            />
-            <ErrorMessage name="expirationMonth" component={Text} style={styles.errorText} />
-          </View>
+              <View style={styles.expirationContainer}>
+              <View style={styles.expirationMonthContainer}>
+                <Text style={styles.expirationLabel}>Exp Month</Text>
+                <Field
+                  component={AppTextInput}
+                  name="expirationMonth"
+                  placeholder="MM"
+                  keyboardType="numeric"
+                  maxLength={2}
+                />
+                <ErrorMessage name="expirationMonth" component={Text} style={styles.errorText} />
+              </View>
 
-          <View style={styles.expirationYearContainer}>
-            <Text style={styles.expirationLabel}>Expiration Year:</Text>
-            <Field
-              component={AppTextInput}
-              name="expirationYear"
-              placeholder="YY"
-              keyboardType="numeric"
-              maxLength={2}
-            />
-            <ErrorMessage name="expirationYear" component={Text} style={styles.errorText} />
-          </View>
-        </View>
+              <View style={styles.expirationYearContainer}>
+                <Text style={styles.expirationLabel}>Exp Year</Text>
+                <Field
+                  component={AppTextInput}
+                  name="expirationYear"
+                  placeholder="YY"
+                  keyboardType="numeric"
+                  maxLength={2}
+                />
+                <ErrorMessage name="expirationYear" component={Text} style={styles.errorText} />
+              </View>
+            </View>
 
-          <Field
-            component={AppTextInput}
-            name="securityCode"
-            placeholder="Security Code"
-            autoCapitalize="none"
-            autoCorrect={false}
-            secureTextEntry
-          />
-          <ErrorMessage name="securityCode" component={Text} style={styles.errorText} />
+            <View style={styles.securityCodeContainer}>
+                <Text style={styles.securityCodeLabel}>Security Code</Text>
+                <Field
+                  component={AppTextInput}
+                  name="securityCode"
+                  placeholder="Security Code"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  secureTextEntry
+                  style={styles.securityCodeInput}
+                  maxLength={4}
+                />
+                <ErrorMessage name="securityCode" component={Text} style={styles.errorText} />
+              </View>
+          </Screen>
         </>
       );
     }
@@ -155,6 +197,7 @@ function EditWebCredentialScreen(props) {
             url: '',
             username: '',
             password: '',
+            bank: '',
             cardNumber: '',
             expirationMonth: '',
             expirationYear: '',
@@ -205,6 +248,37 @@ const styles = {
   },
   expirationField: {
     width: 40, // Adjust the width as needed
+  },
+  cardContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginBottom: 2,
+  },
+  cardLabel: {
+    marginRight: 5,
+  },
+  // cardInput: {
+  //   flex: 1,
+  // },
+  securityCodeContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  securityCodeLabel: {
+    marginRight: 10,
+  },
+  // securityCodeInput: {
+  //   flex: 1,
+  //   alignItems: 'center'
+  // },
+  bankContainer: {
+    flexDirection: 'column',
+    alignItems: 'center',
+    marginBottom: 4,
+  },
+  bankLabel: {
+    marginRight: 10,
   },
 };
 

@@ -2,12 +2,12 @@
 
 CREATE TABLE IF NOT EXISTS web (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL
+  name TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS card (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL
+  name TEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS web_credential (
@@ -15,7 +15,8 @@ CREATE TABLE IF NOT EXISTS web_credential (
   web_id INTEGER NOT NULL,
   username TEXT NOT NULL,
   password TEXT NOT NULL,
-  FOREIGN KEY (web_id) REFERENCES web(id)
+  FOREIGN KEY (web_id) REFERENCES web(id),
+  UNIQUE (web_id, username)
 );
 
 CREATE TABLE IF NOT EXISTS card_credential (
@@ -24,8 +25,33 @@ CREATE TABLE IF NOT EXISTS card_credential (
   card_number TEXT NOT NULL,
   exp_date TEXT NOT NULL,
   security_code INTEGER,
-  FOREIGN KEY (card_id) REFERENCES card(id)
+  FOREIGN KEY (card_id) REFERENCES card(id),
+  UNIQUE (card_id, card_number)
 );
+
+INSERT INTO card (name) VALUES
+  ('Card 1'),
+  ('Card 2'),
+  ('Card 3'),
+  ('Card 4'),
+  ('Card 5');
+
+INSERT INTO card_credential (card_id, card_number, exp_date, security_code) VALUES
+  (1, '1111222233334444', '12/25', 123),
+  (1, '1111222233335555', '01/26', 456),
+  (2, '2222333344446666', '03/27', 789),
+  (2, '2222333344447777', '06/28', 321),
+  (3, '3333444455558888', '09/29', 654),
+  (3, '3333444455559999', '12/30', 987),
+  (4, '4444555566660000', '02/31', 234),
+  (4, '4444555566661111', '05/32', 567),
+  (5, '5555666677772222', '08/33', 890),
+  (5, '5555666677773333', '11/34', 432),
+  (1, '1111222233334444', '02/26', 765),
+  (2, '2222333344445555', '04/27', 098),
+  (3, '3333444455556666', '06/28', 321),
+  (4, '4444555566667777', '08/29', 654),
+  (5, '5555666677778888', '10/30', 987);
 
 INSERT INTO web(id, name)
 VALUES
@@ -53,18 +79,3 @@ VALUES
     (7, 'user10@example.com', 'password321'),
     (8, 'testuser11@yahoo.com', 'welcome123'),
     (9, 'user12@example.com', 'letmein123');
-
-
-
-INSERT INTO card(id, name)
-VALUES 
-    (1, 'Visa'),
-    (2, 'MasterCard');
-
-INSERT INTO card_credential(id, card_id, card_number, exp_date, security_code)
-VALUES 
-    (1, 1, '4916078932158762', '2023-08-01', 123),
-    (2, 2, '3782456012345670', '2024-05-01', 456),
-    (3, 1, '5246183250764219', '2023-12-01', 789),
-    (4, 2, '6011508098745632', '2024-09-01', 234),
-    (5, 1, '4123678456327850', '2023-10-01', 567);
