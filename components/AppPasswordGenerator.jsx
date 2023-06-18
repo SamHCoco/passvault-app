@@ -65,8 +65,8 @@ function AppPasswordGenerator(props) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: 'flex-start',
+    // justifyContent: 'center',
     borderWidth: 1,
     width: 380,
     height: 170,
@@ -76,7 +76,8 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: 4
+    marginHorizontal: 4,
+    marginLeft: 27
   },
   label: {
     fontSize: 16,
