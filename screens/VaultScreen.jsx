@@ -81,7 +81,6 @@ function VaultScreen(props) {
           }));
 
           setCredentialProviders(providers);
-          console.log('Returned Web Records:', webRecords);
         },
         (error) => {
           console.log('Error retrieving web records:', error);
