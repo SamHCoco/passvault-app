@@ -4,15 +4,15 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { View, TextInput, StyleSheet } from 'react-native';
-import * as SQLite from 'expo-sqlite';
+
 import VaultScreen from './screens/VaultScreen';
 import BackupScreen from './screens/BackupScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import EditWebCredentialScreen from './screens/EditWebCredentialScreen';
 import AppIcon from './components/AppIcon';
+import createTables from './service/createTable';
 
 const Tab = createBottomTabNavigator();
-const db = SQLite.openDatabase({ name: 'passvault.db', location: 'default' });
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -20,56 +20,7 @@ export default function App() {
   const [cardCredentialCount, setCardCredentialCount] = useState(0);
 
   useEffect(() => {
-    const createTables = () => {
-      db.transaction((tx) => {
-        tx.executeSql(
-          'CREATE TABLE IF NOT EXISTS web (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE)',
-          [],
-          (_, result) => {
-            console.log('Web table created successfully');
-          },
-          (_, error) => {
-            console.log('Error creating web table:', error);
-          }
-        );
-        
-        tx.executeSql(
-          'CREATE TABLE IF NOT EXISTS card (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE)',
-          [],
-          (_, result) => {
-            console.log('Card table created successfully');
-          },
-          (_, error) => {
-            console.log('Error creating card table:', error);
-          }
-        );
-
-        tx.executeSql(
-          'CREATE TABLE IF NOT EXISTS web_credential (id INTEGER PRIMARY KEY AUTOINCREMENT, web_id INTEGER NOT NULL, username TEXT NOT NULL, password TEXT NOT NULL, FOREIGN KEY (web_id) REFERENCES web(id), UNIQUE (web_id, username))',
-          [],
-          (_, result) => {
-            console.log('Web Credential table created successfully');
-          },
-          (_, error) => {
-            console.log('Error creating web_credential table:', error);
-          }
-        );
-        
-        tx.executeSql(
-          'CREATE TABLE IF NOT EXISTS card_credential (id INTEGER PRIMARY KEY AUTOINCREMENT, card_id INTEGER NOT NULL, card_number TEXT NOT NULL, exp_date TEXT NOT NULL, security_code INTEGER, FOREIGN KEY (card_id) REFERENCES card(id), UNIQUE (card_id, card_number))',
-          [],
-          (_, result) => {
-            console.log('Card Credential table created successfully');
-          },
-          (_, error) => {
-            console.log('Error creating card_credential table:', error);
-          }
-        );
-        
-      });
-    };
-
-    createTables(); 
+    createTables; 
   }, []);
 
   return (
@@ -78,7 +29,6 @@ export default function App() {
         <Stack.Screen name="Tabs" component={TabScreen} options={{ headerShown: false }}/>
         <Stack.Screen name="EditWebCredentialScreen" component={EditWebCredentialScreen} />
       </Stack.Navigator>
-      
     </NavigationContainer>
   );
 

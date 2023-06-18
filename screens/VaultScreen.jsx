@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { Text, FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native'; 
 // import { SwipeListView } from 'react-native-swipe-list-view';
+
 import Screen from '../components/Screen';
 import AppCredentialMetric from '../components/AppCredentialMetric';
 import AppSearchBar from '../components/AppSearchBar';
 import AppRoundTouchable from '../components/AppRoundTouchable';
 import AppWebCredential from '../components/AppWebCredential';
 import AppCredentialProvider from '../components/AppCredentialProvider';
-import { useNavigation } from '@react-navigation/native'; 
-
+import search from '../service/search';
 import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase('passvault.db');
@@ -22,12 +23,6 @@ function VaultScreen(props) {
   const [cardCredentialCount, setCardCredentialCount] = useState(0);
 
   const navigation = useNavigation();
-
-  const webCredData = [
-    { id: 1, username: 'john_doe', password: 'password123' },
-    { id: 2, username: 'jane_smith', password: 'secret456' },
-    // Add more data entries as needed
-  ];
 
   const updateCredentialProviders = () => {
     const providers = [
@@ -51,6 +46,21 @@ function VaultScreen(props) {
     const { username, password } = item;
     return <AppWebCredential username={username} password={password} />;
   };
+
+  /**
+   * Search bar handler
+   */
+  const handleSearch = (searchText) => {
+    console.log("handleSearch invoked");
+    search(searchText)
+        .then((searchResults) => {
+          console.log("FOUND SEARCH RESULTS: ", searchResults);
+          setCredentialProviders(searchResults);
+        })
+        .catch((error) => {
+          console.log('Error searching:', error);
+        });
+  }
 
   const renderHiddenItem = (data, rowMap) => {
     return (
@@ -133,7 +143,6 @@ function VaultScreen(props) {
   useEffect(() => {
     fetchRecords();
     countCredentials();
-    fetchRecords();
   }, []);
 
   return (
@@ -179,7 +188,7 @@ function VaultScreen(props) {
                            iconLibrary={'material'}
                            onPress={() => navigation.navigate('EditWebCredentialScreen')} />
       </View>
-      <AppSearchBar />
+      <AppSearchBar onSearch={(searchText) => handleSearch(searchText)} />
       <FlatList
         data={credentialProviders}
         renderItem={({ item }) => <AppCredentialProvider provider={item} />}
