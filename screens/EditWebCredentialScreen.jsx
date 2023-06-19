@@ -35,6 +35,10 @@ function EditWebCredentialScreen(props) {
       return (
         <>
           <View style={styles.webFormContainer}>
+          <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
+                <AppIcon name="web" color="black" size={45} library="material" />
+          </View>
+
             <Field
               component={AppTextInput}
               name="url"
@@ -44,7 +48,7 @@ function EditWebCredentialScreen(props) {
             />
             <ErrorMessage name="url" component={Text} style={styles.errorText} />
 
-            <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center', borderWidth: 1}}>
+            <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
                 <AppIcon name="md-person-circle" color="black" size={45} library="ion" />
             </View>
 
@@ -57,6 +61,9 @@ function EditWebCredentialScreen(props) {
             />
             <ErrorMessage name="username" component={Text} style={styles.errorText} />
 
+            <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
+                <AppIcon name="md-lock-closed" color="black" size={45} library="ion" />
+            </View>
             <Field
               component={AppTextInput}
               name="password"
