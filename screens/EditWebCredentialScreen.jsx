@@ -21,6 +21,7 @@ function EditWebCredentialScreen(props) {
   const [selectedOption, setSelectedOption] = useState('Web');
 
   // password generator states
+  const [generatedPassword, setGeneratedPassword] = useState('');
   const [sliderValue, setSliderValue] = useState(10);
   const [passwordLength, setPasswordLength] = useState(10);
   const [isNumbers, setIsNumbers] = useState(true);
@@ -85,7 +86,8 @@ function EditWebCredentialScreen(props) {
               placeholder="Password"
               autoCapitalize="none"
               autoCorrect={false}
-              secureTextEntry
+              // secureTextEntry
+              value={generatedPassword}
             />
             <ErrorMessage name="password" component={Text} style={styles.errorText} />
 
@@ -94,7 +96,8 @@ function EditWebCredentialScreen(props) {
                 <AppRoundTouchable text="Save" onPress={handleSubmit} />
                 <AppRoundTouchable text="Generate" onPress={(values) => {
                       const password = generateRandomPassword(passwordGeneratorConfig);
-                      console.log("GENERATED PASSWORD: ", password);
+                      setGeneratedPassword(password); // Set the generated password in state
+                      console.log("GENERATED PASSWORD: ", password); // todo - remove
                 }} />
             </View>
               <AppSlider value={sliderValue} label="Characters" onValueChange={(value) => {
