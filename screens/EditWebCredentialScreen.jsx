@@ -15,9 +15,24 @@ import saveCardCredential from '../service/saveCardCredential';
 import AppSlider from '../components/AppSlider';
 import AppIcon from '../components/AppIcon';
 
+import generateRandomPassword from '../service/generatePassword';
+
 function EditWebCredentialScreen(props) {
   const [selectedOption, setSelectedOption] = useState('Web');
+
+  // password generator states
   const [sliderValue, setSliderValue] = useState(10);
+  const [passwordLength, setPasswordLength] = useState(10);
+  const [isNumbers, setIsNumbers] = useState(true);
+  const [isSpecialChars, setIsSpecialChars] = useState(true);
+  const [isLowercase, setIsLowercase] = useState(true);
+  const [isUppercase, setIsUppercase] = useState(true);
+  const [passwordGeneratorConfig, setPasswordGeneratorConfig] = useState({
+      length: 10,
+      includeLowerCase: true,
+      includeNumbers: true,
+      includeSpecialChars: true,
+      includeUpperCase: true});
 
   const handleSubmit = async (values) => {
     if (selectedOption === 'Web') {
@@ -77,13 +92,39 @@ function EditWebCredentialScreen(props) {
             <View style={{borderWidth: 0}}>
             <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
                 <AppRoundTouchable text="Save" onPress={handleSubmit} />
-                <AppRoundTouchable text="Generate" />
+                <AppRoundTouchable text="Generate" onPress={(values) => {
+                      const password = generateRandomPassword(passwordGeneratorConfig);
+                      console.log("GENERATED PASSWORD: ", password);
+                }} />
             </View>
-              <AppSlider value={sliderValue} label="Characters" onValueChange={(value) => setSliderValue(value)} />
-              <AppToggleButton label="Special characters" onToggle={(value) => console.log("Set value enabled")} />
-              <AppToggleButton label="Numbers" onToggle={(value) => console.log("Set value enabled")} />
-              <AppToggleButton label="Uppercase" onToggle={(value) => console.log("Set value enabled")} />
-              <AppToggleButton label="Lowercase" onToggle={(value) => console.log("Set value enabled")} />
+              <AppSlider value={sliderValue} label="Characters" onValueChange={(value) => {
+                  setSliderValue(value);
+                  passwordGeneratorConfig['length'] = value;
+              }} />
+              <AppToggleButton label="Special characters"
+                               initialValue={true} 
+                               onToggle={(value) => setPasswordGeneratorConfig(prevState => ({
+                                        ...prevState,
+                                        includeSpecialChars: value
+                  }))} />
+              <AppToggleButton label="Numbers"
+                               initialValue={true} 
+                               onToggle={(value) => setPasswordGeneratorConfig(prevState => ({
+                                        ...prevState,
+                                        includeNumbers: value
+                  }))} />
+              <AppToggleButton label="Uppercase"
+                               initialValue={true}
+                               onToggle={(value) => setPasswordGeneratorConfig(prevState => ({
+                                        ...prevState,
+                                        includeUpperCase: value
+                  }))} />
+              <AppToggleButton label="Lowercase" 
+                               initialValue={true}
+                               onToggle={(value) => setPasswordGeneratorConfig(prevState => ({
+                                        ...prevState,
+                                        includeLowerCase: value
+                  }))} />
             </View>
           </View>
         </>
