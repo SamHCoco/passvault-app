@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, ScrollView, Text, View } from 'react-native';
+import { Button, Text, View } from 'react-native';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
@@ -67,7 +67,6 @@ function EditWebCredentialScreen(props) {
     if (selectedOption === 'Web') {
       return (
         <>
-          <ScrollView>
           <Field
             component={AppTextInput}
             name="url"
@@ -102,8 +101,8 @@ function EditWebCredentialScreen(props) {
           <AppToggleButton label="Numbers" onToggle={(value) => console.log("Set value enabled")} />
           <AppToggleButton label="Uppercase" onToggle={(value) => console.log("Set value enabled")} />
           <AppToggleButton label="Lowercase" onToggle={(value) => console.log("Set value enabled")} />
+          <AppRoundTouchable label="Generate" />
           </View>
-          </ScrollView>
         </>
       );
     } else if (selectedOption === 'Card') {
