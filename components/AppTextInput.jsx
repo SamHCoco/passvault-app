@@ -12,11 +12,12 @@ function AppTextInput({...props}) {
 const styles = StyleSheet.create({
     container: {
         backgroundColour: "grey",
-        borderRadius: 25,
+        borderRadius: 5,
         flexDirection: "row",
         width: '100%',
         padding: 15,
-        marginVertical: 10
+        marginVertical: 10,
+        borderBottomWidth: 1
     },
     text: {
         fontSize: 18,

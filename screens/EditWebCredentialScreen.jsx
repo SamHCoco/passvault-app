@@ -218,8 +218,8 @@ function EditWebCredentialScreen(props) {
 
 const styles = {
   webFormContainer: {
-    borderWidth: 1,
-    borderRadius: 12,
+    // borderWidth: 1,
+    // borderRadius: 12,
     width: 365
   },
   bankFormContainer: {
