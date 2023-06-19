@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Text, View } from 'react-native';
+import { Button, ScrollView, Text, View } from 'react-native';
 import { Formik, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
@@ -7,9 +7,11 @@ import Screen from '../components/Screen';
 import AppTextInput from '../components/AppTextInput';
 import AppRoundTouchable from '../components/AppRoundTouchable';
 import AppPasswordGenerator from '../components/AppPasswordGenerator';
+import AppToggleButton from '../components/AppToggleButton';
 
 import saveWebCredential from '../service/saveWebCredential';
 import saveCardCredential from '../service/saveCardCredential';
+import AppSlider from '../components/AppSlider';
 
 const validationSchema = Yup.object().shape({
   url: Yup.string().when('selectedOption', {
@@ -48,6 +50,7 @@ const validationSchema = Yup.object().shape({
 
 function EditWebCredentialScreen(props) {
   const [selectedOption, setSelectedOption] = useState('Web');
+  const [sliderValue, setSliderValue] = useState(10);
 
   const handleSubmit = async (values) => {
     if (selectedOption === 'Web') {
@@ -64,6 +67,7 @@ function EditWebCredentialScreen(props) {
     if (selectedOption === 'Web') {
       return (
         <>
+          <ScrollView>
           <Field
             component={AppTextInput}
             name="url"
@@ -93,8 +97,13 @@ function EditWebCredentialScreen(props) {
           <ErrorMessage name="password" component={Text} style={styles.errorText} />
 
           <View>
-                <AppPasswordGenerator />
+            <AppSlider value={sliderValue} label="Characters" onValueChange={(value) => setSliderValue(value)}  />
+          <AppToggleButton label="Special characters" onToggle={(value) => console.log("Set value enabled")} />
+          <AppToggleButton label="Numbers" onToggle={(value) => console.log("Set value enabled")} />
+          <AppToggleButton label="Uppercase" onToggle={(value) => console.log("Set value enabled")} />
+          <AppToggleButton label="Lowercase" onToggle={(value) => console.log("Set value enabled")} />
           </View>
+          </ScrollView>
         </>
       );
     } else if (selectedOption === 'Card') {
