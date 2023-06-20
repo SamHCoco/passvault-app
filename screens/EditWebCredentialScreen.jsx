@@ -20,25 +20,27 @@ import { validationSchema } from '../service/validationSchemas';
 function EditWebCredentialScreen({ route }) {
   const [item, setItem] = useState(route.params.item);
   const [selectedOption, setSelectedOption] = useState('Web');
-  const [initialValues, setInitialValues] = useState({
-    url: '',
-    username: '',
-    password: '',
-    bank: '',
-    cardNumber: '',
-    expirationMonth: '',
-    expirationYear: '',
-    securityCode: '',
-  });
+  const [initialValues, setInitialValues] = useState();
+
+  const [id, setId] = useState();
+  const [url, setUrl] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
-    console.log("immediate useEFFECT ITEM: ", item);
+    console.log("immediate useEFFECT ITEM: ", item); // todo - remove
 
     if (item && item.username) {
       const { type } = item;
       if (type === 'web') {
         console.log("OPTION SET TO WEB"); // todo - remove
         setSelectedOption('Web');
+        
+        setId(item.id);
+        setUrl(item.url);
+        setUsername(item.username);
+        setPassword(item.password);
+        
         setInitialValues({
           url: item.url || '',
           username: item.username || '',
@@ -100,13 +102,14 @@ function EditWebCredentialScreen({ route }) {
           </View>
 
             <Field
-              component={AppTextInput}
-              name="url"
-              placeholder="URL"
-              autoCapitalize="none"
-              autoCorrect={false}
-              onChangeText={handleChange('url')}
-            />
+                component={AppTextInput}
+                name="url"
+                placeholder="URL"
+                autoCapitalize="none"
+                autoCorrect={false}
+                value={url}
+                onChangeText={setUrl}
+              />
             <ErrorMessage name="url" component={Text} style={styles.errorText} />
 
             <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
@@ -114,19 +117,20 @@ function EditWebCredentialScreen({ route }) {
             </View>
 
             <Field
-              component={AppTextInput}
-              name="username"
-              placeholder="Username"
-              autoCapitalize="none"
-              autoCorrect={false}
-              onChangeText={() => handleChange('username')}
+                component={AppTextInput}
+                name="username"
+                placeholder="Username"
+                autoCapitalize="none"
+                autoCorrect={false}
+                value={username}
+                onChangeText={setUsername}
             />
             <ErrorMessage name="username" component={Text} style={styles.errorText} />
 
             <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
                 <AppIcon name="md-lock-closed" color="black" size={45} library="ion" />
             </View>
-            {item ? (
+            
             <Field
               component={AppTextInput}
               name="password"
@@ -134,20 +138,9 @@ function EditWebCredentialScreen({ route }) {
               autoCapitalize="none"
               autoCorrect={false}
               // secureTextEntry
-              value={item.password}
-              // onChangeText={() => handleChange('password')}
+              value={password}
+              onChangeText={setPassword}
             />
-          ) : (
-            <Field
-              component={AppTextInput}
-              name="password"
-              placeholder="Password"
-              autoCapitalize="none"
-              autoCorrect={false}
-              // secureTextEntry
-              onChangeText={() => handleChange('password')}
-            />
-          )}
             <ErrorMessage name="password" component={Text} style={styles.errorText} />
 
             <View style={{borderWidth: 0}}>
@@ -155,7 +148,7 @@ function EditWebCredentialScreen({ route }) {
                 <AppRoundTouchable text="Save" onPress={() => handleFormSubmit(values)} />
                 <AppRoundTouchable text="Generate" onPress={(values) => {
                       const password = generateRandomPassword(passwordGeneratorConfig);
-                      console.log("GENERATED PASSWORD: ", password); // todo - remove
+                      setPassword(password);
                 }} />
             </View>
               <AppSlider value={sliderValue} label="Characters" onValueChange={(value) => {
