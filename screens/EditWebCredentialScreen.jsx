@@ -5,15 +5,14 @@ import { Formik, Field, ErrorMessage } from 'formik';
 import Screen from '../components/Screen';
 import AppTextInput from '../components/AppTextInput';
 import AppRoundTouchable from '../components/AppRoundTouchable';
-import AppPasswordGenerator from '../components/AppPasswordGenerator';
 import AppToggleButton from '../components/AppToggleButton';
-
-import { validationSchema } from '../service/validationSchemas';
 
 import saveWebCredential from '../service/saveWebCredential';
 import saveCardCredential from '../service/saveCardCredential';
 import AppSlider from '../components/AppSlider';
 import AppIcon from '../components/AppIcon';
+
+import * as Yup from 'yup';
 
 import generateRandomPassword from '../service/generatePassword';
 
@@ -35,7 +34,42 @@ function EditWebCredentialScreen(props) {
       includeSpecialChars: true,
       includeUpperCase: true});
 
-  const handleSubmit = async (values) => {
+      const validationSchema = Yup.object().shape({
+        url: Yup.string().when('selectedOption', {
+          is: 'Web',
+          then: Yup.string().url('Invalid URL').required('URL is required'),
+        }),
+        username: Yup.string().when('selectedOption', {
+          is: 'Web',
+          then: Yup.string().required('Username is required'),
+        }),
+        password: Yup.string().when('selectedOption', {
+          is: 'Web',
+          then: Yup.string().required('Password is required'),
+        }),
+        bank: Yup.string().when('selectedOption', {
+          is: 'Card',
+          then: Yup.string().required('Bank is required'),
+        }),
+        cardNumber: Yup.string().when('selectedOption', {
+          is: 'Card',
+          then: Yup.string().matches(/^\d{16}$/, 'Invalid card number').required('Card number is required'),
+        }),
+        expirationMonth: Yup.string().when('selectedOption', {
+          is: 'Card',
+          then: Yup.string().matches(/^(0[1-9]|1[0-2])$/, 'Invalid expiration month').required('Expiration month is required'),
+        }),
+        expirationYear: Yup.string().when('selectedOption', {
+          is: 'Card',
+          then: Yup.string().matches(/^\d{2}$/, 'Invalid expiration year').required('Expiration year is required'),
+        }),
+        securityCode: Yup.string().when('selectedOption', {
+          is: 'Card',
+          then: Yup.string().max(4, 'Security code must be at most 4 characters'),
+        }),
+      })
+
+  const handleFormSubmit = async (values) => {
     if (selectedOption === 'Web') {
       await saveWebCredential(values);
     } else if (selectedOption === 'Card') {
@@ -46,7 +80,7 @@ function EditWebCredentialScreen(props) {
     }
   };
 
-  const renderForm = () => {
+  const renderForm = ({ handleChange, handleSubmit, errors, touched, values }) => {
     if (selectedOption === 'Web') {
       return (
         <>
@@ -61,6 +95,7 @@ function EditWebCredentialScreen(props) {
               placeholder="URL"
               autoCapitalize="none"
               autoCorrect={false}
+              onChangeText={handleChange('url')}
             />
             <ErrorMessage name="url" component={Text} style={styles.errorText} />
 
@@ -74,6 +109,7 @@ function EditWebCredentialScreen(props) {
               placeholder="Username"
               autoCapitalize="none"
               autoCorrect={false}
+              onChangeText={handleChange('username')}
             />
             <ErrorMessage name="username" component={Text} style={styles.errorText} />
 
@@ -88,12 +124,13 @@ function EditWebCredentialScreen(props) {
               autoCorrect={false}
               // secureTextEntry
               value={generatedPassword}
+              onChangeText={handleChange('password')}
             />
             <ErrorMessage name="password" component={Text} style={styles.errorText} />
 
             <View style={{borderWidth: 0}}>
             <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                <AppRoundTouchable text="Save" onPress={handleSubmit} />
+                <AppRoundTouchable text="Save" onPress={() => handleFormSubmit(values)} />
                 <AppRoundTouchable text="Generate" onPress={(values) => {
                       const password = generateRandomPassword(passwordGeneratorConfig);
                       setGeneratedPassword(password); // Set the generated password in state
@@ -143,6 +180,7 @@ function EditWebCredentialScreen(props) {
                 placeholder="Bank"
                 autoCapitalize="none"
                 autoCorrect={false}
+                onChangeText={handleChange('bank')}
               />
               <ErrorMessage name="bank" component={Text} style={styles.errorText} />
             </View>
@@ -156,6 +194,7 @@ function EditWebCredentialScreen(props) {
                 keyboardType="numeric"
                 style={styles.cardInput}
                 maxLength={16}
+                onChangeText={handleChange('cardNumber')}
               />
               <ErrorMessage name="cardNumber" component={Text} style={styles.errorText} />
             </View>
@@ -169,6 +208,7 @@ function EditWebCredentialScreen(props) {
                   placeholder="MM"
                   keyboardType="numeric"
                   maxLength={2}
+                  onChangeText={handleChange('expirationMonth')}
                 />
                 <ErrorMessage name="expirationMonth" component={Text} style={styles.errorText} />
               </View>
@@ -181,6 +221,7 @@ function EditWebCredentialScreen(props) {
                   placeholder="YY"
                   keyboardType="numeric"
                   maxLength={2}
+                  onChangeText={handleChange('expirationYear')}
                 />
                 <ErrorMessage name="expirationYear" component={Text} style={styles.errorText} />
               </View>
@@ -197,10 +238,11 @@ function EditWebCredentialScreen(props) {
                 secureTextEntry
                 style={styles.securityCodeInput}
                 maxLength={4}
+                onChangeText={handleChange('securityCode')}
               />
               <ErrorMessage name="securityCode" component={Text} style={styles.errorText} />
 
-              <AppRoundTouchable text="Save" onPress={handleSubmit} />
+              <AppRoundTouchable text="Save" onPress={handleFormSubmit} />
             </View>
         </>
       );
@@ -245,11 +287,11 @@ function EditWebCredentialScreen(props) {
               securityCode: '',
             }}
             validationSchema={validationSchema}
-            onSubmit={handleSubmit}
+            onSubmit={handleFormSubmit}
           >
-            {({ handleChange, handleSubmit, errors, touched }) => (
+            {({ handleChange, handleFormSubmit, errors, touched, values }) => (
               <>
-                {renderForm()}
+                {renderForm({ handleChange, handleFormSubmit, errors, touched, values })}
 
               </>
             )}
