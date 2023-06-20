@@ -15,9 +15,59 @@ import AppIcon from '../components/AppIcon';
 import * as Yup from 'yup';
 
 import generateRandomPassword from '../service/generatePassword';
+import { validationSchema } from '../service/validationSchemas';
 
-function EditWebCredentialScreen({ credentials }) {
+function EditWebCredentialScreen(props) {
+  
   const [selectedOption, setSelectedOption] = useState('Web');
+  const [initialValues, setInitialValues] = useState({
+    url: '',
+    username: '',
+    password: '',
+    bank: '',
+    cardNumber: '',
+    expirationMonth: '',
+    expirationYear: '',
+    securityCode: '',
+  });
+
+  useEffect(() => {
+    console.log("WebCredentialEdit PROPS: ", props); // todo - remove
+
+    const item = props.route.params.item;
+    console.log("EXCTRACTED ITEM: ", item);
+
+    console.log("ITEM FROM VAULT SCREEN LIST - UPDATED: ", props); // todo -remove
+    if (item && item.username) {
+      const { type } = item;
+      if (type === 'web') {
+        console.log("OPTION SET TO WEB"); // todo - remove
+        setSelectedOption('Web');
+        setInitialValues({
+          url: item.url || '',
+          username: item.username || '',
+          password: item.password || '',
+          bank: '',
+          cardNumber: '',
+          expirationMonth: '',
+          expirationYear: '',
+          securityCode: '',
+        });
+      } else if (type === 'card') {
+        setSelectedOption('Card');
+        setInitialValues({
+          url: '',
+          username: '',
+          password: '',
+          bank: item.bank || '',
+          cardNumber: item.cardNumber || '',
+          expirationMonth: item.expirationMonth || '',
+          expirationYear: item.expirationYear || '',
+          securityCode: item.securityCode || '',
+        });
+      }
+    }
+  }, []);
 
   // password generator states
   const [sliderValue, setSliderValue] = useState(10);
@@ -32,41 +82,6 @@ function EditWebCredentialScreen({ credentials }) {
       includeNumbers: true,
       includeSpecialChars: true,
       includeUpperCase: true});
-
-      const validationSchema = Yup.object().shape({
-        url: Yup.string().when('selectedOption', {
-          is: 'Web',
-          then: Yup.string().url('Invalid URL').required('URL is required'),
-        }),
-        username: Yup.string().when('selectedOption', {
-          is: 'Web',
-          then: Yup.string().required('Username is required'),
-        }),
-        password: Yup.string().when('selectedOption', {
-          is: 'Web',
-          then: Yup.string().required('Password is required'),
-        }),
-        bank: Yup.string().when('selectedOption', {
-          is: 'Card',
-          then: Yup.string().required('Bank is required'),
-        }),
-        cardNumber: Yup.string().when('selectedOption', {
-          is: 'Card',
-          then: Yup.string().matches(/^\d{16}$/, 'Invalid card number').required('Card number is required'),
-        }),
-        expirationMonth: Yup.string().when('selectedOption', {
-          is: 'Card',
-          then: Yup.string().matches(/^(0[1-9]|1[0-2])$/, 'Invalid expiration month').required('Expiration month is required'),
-        }),
-        expirationYear: Yup.string().when('selectedOption', {
-          is: 'Card',
-          then: Yup.string().matches(/^\d{2}$/, 'Invalid expiration year').required('Expiration year is required'),
-        }),
-        securityCode: Yup.string().when('selectedOption', {
-          is: 'Card',
-          then: Yup.string().max(4, 'Security code must be at most 4 characters'),
-        }),
-      })
 
   const handleFormSubmit = async (values) => {
     if (selectedOption === 'Web') {
@@ -108,7 +123,7 @@ function EditWebCredentialScreen({ credentials }) {
               placeholder="Username"
               autoCapitalize="none"
               autoCorrect={false}
-              onChangeText={handleChange('username')}
+              onChangeText={() => handleChange('username')}
             />
             <ErrorMessage name="username" component={Text} style={styles.errorText} />
 
@@ -122,7 +137,7 @@ function EditWebCredentialScreen({ credentials }) {
               autoCapitalize="none"
               autoCorrect={false}
               // secureTextEntry
-              onChangeText={handleChange('password')}
+              onChangeText={() => handleChange('password')}
             />
             <ErrorMessage name="password" component={Text} style={styles.errorText} />
 
@@ -273,16 +288,7 @@ function EditWebCredentialScreen({ credentials }) {
           </View>
 
           <Formik
-            initialValues={{
-              url: '',
-              username: '',
-              password: '',
-              bank: '',
-              cardNumber: '',
-              expirationMonth: '',
-              expirationYear: '',
-              securityCode: '',
-            }}
+            initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={handleFormSubmit}
           >
