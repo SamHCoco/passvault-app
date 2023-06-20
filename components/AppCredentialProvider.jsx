@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { SwipeListView }  from 'react-native-swipe-list-view';
+import { useNavigation } from '@react-navigation/native';
+
 import AppWebCredential from './AppWebCredential';
 
 import * as SQLite from 'expo-sqlite';
@@ -8,6 +10,8 @@ import * as SQLite from 'expo-sqlite';
 const db = SQLite.openDatabase('passvault.db');
 
 const AppCredentialProvider = ({ provider }) => {
+  const navigation = useNavigation();
+
   const [id, setId] = useState(provider.id);
   const [type, setType] = useState(provider.type);
   const [credentials, setCredentials] = useState([]);
@@ -48,7 +52,7 @@ const AppCredentialProvider = ({ provider }) => {
   const renderHiddenItem = (data, rowMap) => {
     return (
       <View style={styles.rowBack}>
-        <TouchableOpacity style={styles.editButton} onPress={() => console.log('Edit pressed')}>
+        <TouchableOpacity style={styles.editButton} onPress={handleEditPress}>
           <Text>Edit</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.deleteButton} onPress={() => console.log('Delete pressed')}>
@@ -56,6 +60,10 @@ const AppCredentialProvider = ({ provider }) => {
         </TouchableOpacity>
       </View>
     );
+  };
+
+  const handleEditPress = () => {
+    navigation.navigate('EditWebCredentialScreen', { credentials });
   };
 
   return (

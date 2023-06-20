@@ -20,7 +20,7 @@ export default function App() {
   const [cardCredentialCount, setCardCredentialCount] = useState(0);
 
   useEffect(() => {
-    createTables; 
+    createTables(); 
   }, []);
 
   return (

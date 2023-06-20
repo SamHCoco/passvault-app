@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Text, View, ScrollView } from 'react-native';
 import { Formik, Field, ErrorMessage } from 'formik';
 
@@ -16,11 +16,10 @@ import * as Yup from 'yup';
 
 import generateRandomPassword from '../service/generatePassword';
 
-function EditWebCredentialScreen(props) {
+function EditWebCredentialScreen({ credentials }) {
   const [selectedOption, setSelectedOption] = useState('Web');
 
   // password generator states
-  const [generatedPassword, setGeneratedPassword] = useState('');
   const [sliderValue, setSliderValue] = useState(10);
   const [passwordLength, setPasswordLength] = useState(10);
   const [isNumbers, setIsNumbers] = useState(true);
@@ -123,7 +122,6 @@ function EditWebCredentialScreen(props) {
               autoCapitalize="none"
               autoCorrect={false}
               // secureTextEntry
-              value={generatedPassword}
               onChangeText={handleChange('password')}
             />
             <ErrorMessage name="password" component={Text} style={styles.errorText} />
@@ -133,7 +131,6 @@ function EditWebCredentialScreen(props) {
                 <AppRoundTouchable text="Save" onPress={() => handleFormSubmit(values)} />
                 <AppRoundTouchable text="Generate" onPress={(values) => {
                       const password = generateRandomPassword(passwordGeneratorConfig);
-                      setGeneratedPassword(password); // Set the generated password in state
                       console.log("GENERATED PASSWORD: ", password); // todo - remove
                 }} />
             </View>

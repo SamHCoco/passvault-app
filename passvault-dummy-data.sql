@@ -30,11 +30,11 @@ CREATE TABLE IF NOT EXISTS card_credential (
 );
 
 INSERT INTO card (name) VALUES
-  ('Card 1'),
-  ('Card 2'),
-  ('Card 3'),
-  ('Card 4'),
-  ('Card 5');
+  ('NatWest'),
+  ('Lloyds Bank'),
+  ('Goldman'),
+  ('Starling'),
+  ('Revult');
 
 INSERT INTO card_credential (card_id, card_number, exp_date, security_code) VALUES
   (1, '1111222233334444', '12/25', 123),

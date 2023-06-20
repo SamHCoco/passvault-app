@@ -12,6 +12,8 @@ import AppCredentialProvider from '../components/AppCredentialProvider';
 import search from '../service/search';
 import * as SQLite from 'expo-sqlite';
 
+import createTables from '../service/createTable'; // todo - remove
+
 const db = SQLite.openDatabase('passvault.db');
 
 function VaultScreen(props) {
@@ -141,6 +143,7 @@ function VaultScreen(props) {
   };
 
   useEffect(() => {
+    createTables();
     fetchRecords();
     countCredentials();
   }, []);
