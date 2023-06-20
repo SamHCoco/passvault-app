@@ -17,8 +17,8 @@ import * as Yup from 'yup';
 import generateRandomPassword from '../service/generatePassword';
 import { validationSchema } from '../service/validationSchemas';
 
-function EditWebCredentialScreen(props) {
-  
+function EditWebCredentialScreen({ route }) {
+  const [item, setItem] = useState(route.params.item);
   const [selectedOption, setSelectedOption] = useState('Web');
   const [initialValues, setInitialValues] = useState({
     url: '',
@@ -32,12 +32,8 @@ function EditWebCredentialScreen(props) {
   });
 
   useEffect(() => {
-    console.log("WebCredentialEdit PROPS: ", props); // todo - remove
+    console.log("immediate useEFFECT ITEM: ", item);
 
-    const item = props.route.params.item;
-    console.log("EXCTRACTED ITEM: ", item);
-
-    console.log("ITEM FROM VAULT SCREEN LIST - UPDATED: ", props); // todo -remove
     if (item && item.username) {
       const { type } = item;
       if (type === 'web') {
@@ -130,6 +126,18 @@ function EditWebCredentialScreen(props) {
             <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
                 <AppIcon name="md-lock-closed" color="black" size={45} library="ion" />
             </View>
+            {item ? (
+            <Field
+              component={AppTextInput}
+              name="password"
+              placeholder="Password"
+              autoCapitalize="none"
+              autoCorrect={false}
+              // secureTextEntry
+              value={item.password}
+              // onChangeText={() => handleChange('password')}
+            />
+          ) : (
             <Field
               component={AppTextInput}
               name="password"
@@ -139,6 +147,7 @@ function EditWebCredentialScreen(props) {
               // secureTextEntry
               onChangeText={() => handleChange('password')}
             />
+          )}
             <ErrorMessage name="password" component={Text} style={styles.errorText} />
 
             <View style={{borderWidth: 0}}>

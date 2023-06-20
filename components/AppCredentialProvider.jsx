@@ -52,7 +52,7 @@ const AppCredentialProvider = ({ provider }) => {
   const renderHiddenItem = (data, rowMap) => {
     return (
       <View style={styles.rowBack}>
-        <TouchableOpacity style={styles.editButton} onPress={() => handleEditPress(data.item)}>
+        <TouchableOpacity style={styles.editButton} onPress={() => handleEditPress(data)}>
           <Text>Edit</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.deleteButton} onPress={() => console.log('Delete pressed')}>
@@ -62,10 +62,13 @@ const AppCredentialProvider = ({ provider }) => {
     );
   };
 
-  const handleEditPress = (item) => {
+  const handleEditPress = (data) => {
+    const {item } = data;
     item.username ? item.type = 'web' : item.type = 'card';
     console.log("ITEM IN AppCredentialProvider: ", item); // todo - remove
-    navigation.navigate('EditWebCredentialScreen', {item});
+    navigation.navigate('EditWebCredentialScreen', {
+        item: item
+     });
   };
 
   return (
