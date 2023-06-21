@@ -22,10 +22,18 @@ function EditWebCredentialScreen({ route }) {
   const [selectedOption, setSelectedOption] = useState('Web');
   const [initialValues, setInitialValues] = useState();
 
+  // web credential states
   const [id, setId] = useState();
   const [url, setUrl] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+
+  // card credential states
+  const [bank, setBank] = useState('');
+  const [cardNumber, setCardNumber] = useState('');
+  const [expirationMonth, setExpirationMonth] = useState('');
+  const [expirationYear, setExpirationYear] = useState('');
+  const [securityCode, setSecurityCode] = useState('');
 
   useEffect(() => {
     console.log("EditWebRouteProp: ", route); // todo - remove
@@ -34,9 +42,9 @@ function EditWebCredentialScreen({ route }) {
       setItem(route.params.item);
       effectItem = route.params.item;
     }
-    console.log("immediate useEFFECT ITEM: ", item); // todo - remove
+    console.log("immediate useEFFECT effectItem: ", effectItem); // todo - remove
 
-    if (effectItem && effectItem.username) {
+    if (effectItem) {
       const { type } = effectItem;
       if (type === 'web') {
         console.log("OPTION SET TO WEB"); // todo - remove
@@ -91,10 +99,14 @@ function EditWebCredentialScreen({ route }) {
     if (selectedOption === 'Web') {
       await saveWebCredential(values);
     } else if (selectedOption === 'Card') {
-      const { cardNumber, securityCode, expirationMonth, expirationYear } = values;
-      const expDate = `${expirationMonth}-${expirationYear}`;
-      console.log("CARD CREDENTIALS - onSubmit: ", cardNumber, expDate, securityCode);
-      await saveCardCredential({ cardNumber, expDate, securityCode });
+      console.log("CARD VALUES ON SUBMIT: ", values); // todo - remove
+      await saveCardCredential({
+        bank,
+        cardNumber,
+        expirationMonth,
+        expirationYear,
+        securityCode,
+      });
     }
   };
 
@@ -200,7 +212,8 @@ function EditWebCredentialScreen({ route }) {
                 placeholder="Bank"
                 autoCapitalize="none"
                 autoCorrect={false}
-                onChangeText={handleChange('bank')}
+                value={bank}
+                onChangeText={setBank}
               />
               <ErrorMessage name="bank" component={Text} style={styles.errorText} />
             </View>
@@ -214,7 +227,8 @@ function EditWebCredentialScreen({ route }) {
                 keyboardType="numeric"
                 style={styles.cardInput}
                 maxLength={16}
-                onChangeText={handleChange('cardNumber')}
+                value={cardNumber}
+                onChangeText={setCardNumber}
               />
               <ErrorMessage name="cardNumber" component={Text} style={styles.errorText} />
             </View>
@@ -228,7 +242,8 @@ function EditWebCredentialScreen({ route }) {
                   placeholder="MM"
                   keyboardType="numeric"
                   maxLength={2}
-                  onChangeText={handleChange('expirationMonth')}
+                  value={expirationMonth}
+                  onChangeText={setExpirationMonth}
                 />
                 <ErrorMessage name="expirationMonth" component={Text} style={styles.errorText} />
               </View>
@@ -241,7 +256,8 @@ function EditWebCredentialScreen({ route }) {
                   placeholder="YY"
                   keyboardType="numeric"
                   maxLength={2}
-                  onChangeText={handleChange('expirationYear')}
+                  value={expirationYear}
+                  onChangeText={setExpirationYear}
                 />
                 <ErrorMessage name="expirationYear" component={Text} style={styles.errorText} />
               </View>
@@ -255,10 +271,11 @@ function EditWebCredentialScreen({ route }) {
                 placeholder="Security Code"
                 autoCapitalize="none"
                 autoCorrect={false}
-                secureTextEntry
+                // secureTextEntry
                 style={styles.securityCodeInput}
                 maxLength={4}
-                onChangeText={handleChange('securityCode')}
+                value={securityCode}
+                onChangeText={setSecurityCode}
               />
               <ErrorMessage name="securityCode" component={Text} style={styles.errorText} />
 

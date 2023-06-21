@@ -2,11 +2,18 @@ import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase('passvault.db');
 
-const saveCardCredential = async (values) => {
-  const { bank, cardNumber, expDate, securityCode } = values;
-
-  console.log("CARD CREDENTIAL VALUES :", bank); // todo - remove
-
+const saveCardCredential = async ({
+  bank,
+  cardNumber,
+  expirationMonth,
+  expirationYear,
+  securityCode,
+}) => {
+  // const { bank, cardNumber, expDate, securityCode } = values;
+  // const { bank, cardNumber, securityCode, expirationMonth, expirationYear } = values;
+  const expDate = `${expirationMonth}-${expirationYear}`;
+  console.log("CARD CREDENTIALS - onSubmit: ", bank, cardNumber, expirationMonth, expirationYear, expDate, securityCode); // todo - remove
+  
   // Search for a match in the card(name) table
   const existingCard = await new Promise((resolve, reject) => {
     db.transaction(tx => {
