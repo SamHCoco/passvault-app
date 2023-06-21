@@ -18,7 +18,7 @@ import generateRandomPassword from '../service/generatePassword';
 import { validationSchema } from '../service/validationSchemas';
 
 function EditWebCredentialScreen({ route }) {
-  const [item, setItem] = useState(route.params.item);
+  const [item, setItem] = useState();
   const [selectedOption, setSelectedOption] = useState('Web');
   const [initialValues, setInitialValues] = useState();
 
@@ -28,23 +28,29 @@ function EditWebCredentialScreen({ route }) {
   const [password, setPassword] = useState('');
 
   useEffect(() => {
+    console.log("EditWebRouteProp: ", route); // todo - remove
+    var effectItem;
+    if (route && route.params) {
+      setItem(route.params.item);
+      effectItem = route.params.item;
+    }
     console.log("immediate useEFFECT ITEM: ", item); // todo - remove
 
-    if (item && item.username) {
-      const { type } = item;
+    if (effectItem && effectItem.username) {
+      const { type } = effectItem;
       if (type === 'web') {
         console.log("OPTION SET TO WEB"); // todo - remove
         setSelectedOption('Web');
         
-        setId(item.id);
-        setUrl(item.url);
-        setUsername(item.username);
-        setPassword(item.password);
+        setId(effectItem.id);
+        setUrl(effectItem.url);
+        setUsername(effectItem.username);
+        setPassword(effectItem.password);
         
         setInitialValues({
-          url: item.url || '',
-          username: item.username || '',
-          password: item.password || '',
+          url: effectItem.url || '',
+          username: effectItem.username || '',
+          password: effectItem.password || '',
           bank: '',
           cardNumber: '',
           expirationMonth: '',
@@ -57,11 +63,11 @@ function EditWebCredentialScreen({ route }) {
           url: '',
           username: '',
           password: '',
-          bank: item.bank || '',
-          cardNumber: item.cardNumber || '',
-          expirationMonth: item.expirationMonth || '',
-          expirationYear: item.expirationYear || '',
-          securityCode: item.securityCode || '',
+          bank: effectItem.bank || '',
+          cardNumber: effectItem.cardNumber || '',
+          expirationMonth: effectItem.expirationMonth || '',
+          expirationYear: effectItem.expirationYear || '',
+          securityCode: effectItem.securityCode || '',
         });
       }
     }
@@ -145,7 +151,7 @@ function EditWebCredentialScreen({ route }) {
 
             <View style={{borderWidth: 0}}>
             <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                <AppRoundTouchable text="Save" onPress={() => handleFormSubmit(values)} />
+                <AppRoundTouchable text={item ? "Edit" : "Save"} onPress={() => handleFormSubmit(values)} />
                 <AppRoundTouchable text="Generate" onPress={(values) => {
                       const password = generateRandomPassword(passwordGeneratorConfig);
                       setPassword(password);

@@ -29,11 +29,11 @@ const saveWebCredential = async (values) => {
     return new Promise((resolve, reject) => {
       db.transaction(tx => {
         tx.executeSql(
-          'INSERT INTO web_credential (web_id, username, password) VALUES (?, ?, ?)',
+          'INSERT INTO web_credential (web_url_id, username, password) VALUES (?, ?, ?)',
           [webId, username, password],
           (_, { insertId }) => {
             resolve(insertId);
-            console.log("New Web Credentials added with web_id ", webId);
+            console.log("New Web Credentials added with web_url_id ", webId);
           },
           (_, error) => {
             reject(error);
@@ -47,7 +47,23 @@ const saveWebCredential = async (values) => {
   if (existingWeb) {
     // Use the existing web_id
     const webId = existingWeb.id;
-    const insertId = await insertWebCredential(webId);
+
+    const insertWebUrl = await new Promise((resolve, reject) => {
+      db.transaction(tx => {
+        tx.executeSql(
+          'INSERT INTO web_url (url, web_id) VALUES (?, ?)',
+          [url, webId],
+          (_, { insertId }) => {
+            resolve(insertId);
+          },
+          (_, error) => {
+            reject(error);
+          }
+        );
+      });
+    });
+
+    const insertId = await insertWebCredential(insertWebUrl);
     console.log('Credential saved successfully with ID:', insertId);
   } else {
     // Insert a new record into web table
@@ -66,9 +82,24 @@ const saveWebCredential = async (values) => {
       });
     });
 
-    // Use the new web_id
     const webId = insertWeb;
-    const insertId = await insertWebCredential(webId);
+
+    const insertWebUrl = await new Promise((resolve, reject) => {
+      db.transaction(tx => {
+        tx.executeSql(
+          'INSERT INTO web_url (url, web_id) VALUES (?, ?)',
+          [url, webId],
+          (_, { insertId }) => {
+            resolve(insertId);
+          },
+          (_, error) => {
+            reject(error);
+          }
+        );
+      });
+    });
+
+    const insertId = await insertWebCredential(insertWebUrl);
     console.log('Credential saved successfully with ID:', insertId);
   }
 };

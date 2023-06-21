@@ -1,6 +1,6 @@
 import * as SQLite from 'expo-sqlite';
 
-const db = SQLite.openDatabase({ name: 'passvault.db', location: 'default' });
+const db = SQLite.openDatabase('passvault.db');
 
 export const createTables = () => {
   db.transaction((tx) => {
@@ -16,6 +16,28 @@ export const createTables = () => {
     );
 
     tx.executeSql(
+      'CREATE TABLE IF NOT EXISTS web_credential (id INTEGER PRIMARY KEY AUTOINCREMENT, web_id INTEGER NOT NULL, web_url_id INTEGER NOT NULL, username TEXT NOT NULL, password TEXT NOT NULL, FOREIGN KEY (web_id) REFERENCES web(id), FOREIGN KEY (web_url_id) REFERENCES web_url(id), UNIQUE (web_url_id, username))',
+      [],
+      (_, result) => {
+        console.log('Web Credential table created successfully');
+      },
+      (_, error) => {
+        console.log('Error creating web_credential table:', error);
+      }
+    );
+
+    tx.executeSql(
+      'CREATE TABLE IF NOT EXISTS web_url (id INTEGER PRIMARY KEY AUTOINCREMENT, url TEXT NOT NULL, web_id INTEGER, FOREIGN KEY (web_id) REFERENCES web(id))',
+      [],
+      (_, result) => {
+        console.log('Web URL table created successfully');
+      },
+      (_, error) => {
+        console.log('Error creating web_url table:', error);
+      }
+    );
+
+    tx.executeSql(
       'CREATE TABLE IF NOT EXISTS card (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE)',
       [],
       (_, result) => {
@@ -23,17 +45,6 @@ export const createTables = () => {
       },
       (_, error) => {
         console.log('Error creating card table:', error);
-      }
-    );
-
-    tx.executeSql(
-      'CREATE TABLE IF NOT EXISTS web_credential (id INTEGER PRIMARY KEY AUTOINCREMENT, web_id INTEGER NOT NULL, username TEXT NOT NULL, password TEXT NOT NULL, FOREIGN KEY (web_id) REFERENCES web(id), UNIQUE (web_id, username))',
-      [],
-      (_, result) => {
-        console.log('Web Credential table created successfully');
-      },
-      (_, error) => {
-        console.log('Error creating web_credential table:', error);
       }
     );
 

@@ -1,8 +1,13 @@
---/data/user/0/host.exp.exponent/files/ExperienceData/%40anonymous%2Fpassvault-app-25ae6e89-190e-4e7f-bda6-f123b7409272/SQLite
-
 CREATE TABLE IF NOT EXISTS web (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   name TEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS web_url (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  url TEXT NOT NULL,
+  web_id INTEGER NOT NULL,
+  FOREIGN KEY (web_id) REFERENCES web(id)
 );
 
 CREATE TABLE IF NOT EXISTS card (
@@ -12,11 +17,11 @@ CREATE TABLE IF NOT EXISTS card (
 
 CREATE TABLE IF NOT EXISTS web_credential (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  web_id INTEGER NOT NULL,
+  web_url_id INTEGER NOT NULL,
   username TEXT NOT NULL,
   password TEXT NOT NULL,
-  FOREIGN KEY (web_id) REFERENCES web(id),
-  UNIQUE (web_id, username)
+  FOREIGN KEY (web_url_id) REFERENCES web_url(id),
+  UNIQUE (web_url_id, username)
 );
 
 CREATE TABLE IF NOT EXISTS card_credential (
@@ -55,27 +60,39 @@ INSERT INTO card_credential (card_id, card_number, exp_date, security_code) VALU
 
 INSERT INTO web(id, name)
 VALUES
-    (1, 'Facebook'),
-    (2, 'YouTube'),
-    (3, 'AirBnB'),
-    (4, 'Amazon'),
-    (5, 'Outlook'),
-    (6, 'Gmail'),
-    (7, 'Yahoo'),
-    (8, 'CeX'),
-    (9, 'Figma');
+    (1, 'facebook'),
+    (2, 'youTube'),
+    (3, 'airbnb'),
+    (4, 'amazon'),
+    (5, 'outlook'),
+    (6, 'gmail'),
+    (7, 'yahoo'),
+    (8, 'cex'),
+    (9, 'figma');
 
-INSERT INTO web_credential(web_id, username, password)
+INSERT INTO web_url(url, web_id)
+VALUES
+    ("http://facebook.com", 1),
+    ("http://youtube.co.uk", 2),
+    ("http://airbnb.com", 3),
+    ("http://amazon.ca", 4),
+    ("http://outlook.com", 5),
+    ("http://gmail.co.uk", 6),
+    ("http://yahoo.com", 7),
+    ("http://cex.co.uk", 8),
+    ("http://figma.com", 9);
+
+INSERT INTO web_credential(web_id, web_url_id, username, password)
 VALUES 
-    (1, 'example1@example.com', 'pass123'),
-    (1, 'random_user12@gmail.com', 'secretpass'),
-    (2, 'user3@example.com', 'password123'),
-    (3, 'myusername87@hotmail.com', 'p@ssw0rd'),
-    (4, 'testuser321@yahoo.com', 'letmein2023'),
-    (4, 'user6@example.com', 'qwerty123'),
-    (4, 'john_doe@gmail.com', 'abc123'),
-    (5, 'user8@example.com', 'hello123'),
-    (6, 'jane_doe@hotmail.com', 'testpass'),
-    (7, 'user10@example.com', 'password321'),
-    (8, 'testuser11@yahoo.com', 'welcome123'),
-    (9, 'user12@example.com', 'letmein123');
+    (1, 1, 'example1@example.com', 'pass123'),
+    (1, 1, 'random_user12@gmail.com', 'secretpass'),
+    (2, 2, 'user3@example.com', 'password123'),
+    (3, 3, 'myusername87@hotmail.com', 'p@ssw0rd'),
+    (4, 4, 'testuser321@yahoo.com', 'letmein2023'),
+    (4, 4, 'user6@example.com', 'qwerty123'),
+    (4, 4, 'john_doe@gmail.com', 'abc123'),
+    (5, 5, 'user8@example.com', 'hello123'),
+    (6, 6, 'jane_doe@hotmail.com', 'testpass'),
+    (7, 7, 'user10@example.com', 'password321'),
+    (8, 8, 'testuser11@yahoo.com', 'welcome123'),
+    (9, 9, 'user12@example.com', 'letmein123');

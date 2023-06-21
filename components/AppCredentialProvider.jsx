@@ -22,18 +22,18 @@ const AppCredentialProvider = ({ provider }) => {
     if (show) {
       db.transaction((tx) => {
         if (type === 'web') {
-            tx.executeSql(
-                'SELECT id, username, password FROM web_credential WHERE web_id = ?',
-                [id],
-                (_, { rows }) => {
-                  const webCredentialRecords = rows._array;
-                  setCredentials(webCredentialRecords);             
-                  console.log('FOUND WEB_CREDENTIALS: ', webCredentialRecords);
-                },
-                (error) => {
-                  console.log('Error retrieving web credential records:', error);
-                }
-              );
+          tx.executeSql(
+            'SELECT wc.id, wc.username, wc.password, wc.web_url_id, wu.url FROM web_credential AS wc INNER JOIN web_url AS wu ON wc.web_url_id = wu.id WHERE wc.web_id = ?',
+            [id],
+            (_, { rows }) => {
+              const webCredentialRecords = rows._array;
+              setCredentials(webCredentialRecords);
+              console.log('FOUND WEB_CREDENTIALS:', webCredentialRecords);
+            },
+            (error) => {
+              console.log('Error retrieving web credential records:', error);
+            }
+          );
         }
     });
     }
@@ -65,7 +65,6 @@ const AppCredentialProvider = ({ provider }) => {
   const handleEditPress = (data) => {
     const {item } = data;
     item.username ? item.type = 'web' : item.type = 'card';
-    console.log("ITEM IN AppCredentialProvider: ", item); // todo - remove
     navigation.navigate('EditWebCredentialScreen', {
         item: item
      });
