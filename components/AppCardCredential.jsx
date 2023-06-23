@@ -4,24 +4,26 @@ import { View, StyleSheet, Text } from 'react-native';
 import AppIcon from './AppIcon';
 
 function AppCardCredential({ bank, cardNumber, expDate, securityCode }) {
+  const textColor = 'white';
+
   return (
     <View style={styles.container}>
       {/* First Row */}
       <View style={styles.row}>
-        <Text style={styles.bankText}>{bank}</Text>
+        <Text style={styles.bankText}>NatWest</Text>
         <AppIcon name="contactless-payment" library="material" style={styles.appIcon} />
       </View>
 
       {/* Second Row */}
       <View style={styles.row}>
-        <Text style={styles.cardNumberText}>{cardNumber}</Text>
+        <Text style={styles.cardNumberText}>4434-1223-6543-3456</Text>
       </View>
 
       {/* Third Row */}
       <View style={styles.row}>
         <Text style={styles.expText}>exp.</Text>
-        <Text style={styles.expDateText}>{expDate}</Text>
-        <Text style={styles.securityCodeText}>{securityCode}</Text>
+        <Text style={styles.expDateText}>01-25</Text>
+        <Text style={styles.securityCodeText}>5434</Text>
       </View>
     </View>
   );
@@ -32,6 +34,9 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     paddingHorizontal: 16,
     paddingTop: 16,
+    backgroundColor: 'grey',
+    marginHorizontal: 2,
+    borderRadius: 10,
   },
   row: {
     flexDirection: 'row',
@@ -41,32 +46,38 @@ const styles = StyleSheet.create({
   bankText: {
     alignSelf: 'flex-start',
     textAlign: 'left',
-    fontSize: 16,
+    fontSize: 19,
     fontWeight: 'bold',
+    color: 'white'
   },
   appIcon: {
     alignSelf: 'flex-end',
     textAlign: 'right',
+    color: 'white'
   },
   cardNumberText: {
     alignSelf: 'flex-start',
     textAlign: 'left',
-    fontSize: 16,
+    fontSize: 21,
+    color: 'white'
   },
   expText: {
     alignSelf: 'flex-start',
     textAlign: 'left',
     fontSize: 16,
+    color: 'white'
   },
   expDateText: {
     alignSelf: 'flex-start',
     textAlign: 'left',
-    fontSize: 16,
+    fontSize: 21,
+    color: 'white'
   },
   securityCodeText: {
     alignSelf: 'flex-start',
     textAlign: 'left',
-    fontSize: 16,
+    fontSize: 21,
+    color: 'white'
   },
 });
 

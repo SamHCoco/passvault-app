@@ -4,6 +4,7 @@ import { SwipeListView }  from 'react-native-swipe-list-view';
 import { useNavigation } from '@react-navigation/native';
 
 import AppWebCredential from './AppWebCredential';
+import AppCardCredential from './AppCardCredential';
 
 import * as SQLite from 'expo-sqlite';
 
@@ -23,7 +24,7 @@ const AppCredentialProvider = ({ provider }) => {
       db.transaction((tx) => {
         if (type === 'web') {
           tx.executeSql(
-            'SELECT wc.id, wc.username, wc.password, wc.web_url_id, wu.url FROM web_credential AS wc INNER JOIN web_url AS wu ON wc.web_url_id = wu.id WHERE wc.web_id = ?',
+            'SELECT wc.id, wc.username, wc.password, wc.web_url_id, wu.url, "web" AS type FROM web_credential AS wc INNER JOIN web_url AS wu ON wc.web_url_id = wu.id WHERE wc.web_id = ?',
             [id],
             (_, { rows }) => {
               const webCredentialRecords = rows._array;
@@ -34,8 +35,21 @@ const AppCredentialProvider = ({ provider }) => {
               console.log('Error retrieving web credential records:', error);
             }
           );
+        } else if (type === 'card') {
+          tx.executeSql(
+            'SELECT id, card_number, exp_date, security_code, card_id, "card" AS type FROM card_credential',
+            [],
+            (_, { rows }) => {
+              const cardCredentialRecords = rows._array;
+              setCredentials(cardCredentialRecords);
+              console.log('FOUND CARD_CREDENTIALS:', cardCredentialRecords);
+            },
+            (error) => {
+              console.log('Error retrieving card credential records:', error);
+            }
+          );
         }
-    });
+      });
     }
     setShowList(show);
   };
@@ -45,8 +59,21 @@ const AppCredentialProvider = ({ provider }) => {
   };
 
   const renderItem = ({ item }) => {
-    const { username, password } = item;
-    return <AppWebCredential username={username} password={password} />;
+    console.log("RENDER ITEM - AppCredentialProvider: ", item);
+      const { username, password, bank, cardNumber, expDate, securityCode } = item;
+      if (item.type === 'web') {
+        return <AppWebCredential username={username} password={password} />;
+      } else if (item.type === 'card') {
+        return (
+          <AppCardCredential
+            bank={bank}
+            cardNumber={cardNumber}
+            expDate={expDate}
+            securityCode={securityCode}
+          />
+        );
+      }
+      return <Text>Error</Text> ; // Default case, can be handled as per your requirements
   };
 
   const renderHiddenItem = (data, rowMap) => {
@@ -117,6 +144,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
     backgroundColor: 'gray',
+    marginHorizontal: 10
   },
   editButton: {
     justifyContent: 'center',

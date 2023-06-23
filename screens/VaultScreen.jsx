@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
-import { useNavigation } from '@react-navigation/native'; 
-// import { SwipeListView } from 'react-native-swipe-list-view';
-
+import { useNavigation } from '@react-navigation/native';
 import Screen from '../components/Screen';
 import AppCredentialMetric from '../components/AppCredentialMetric';
 import AppSearchBar from '../components/AppSearchBar';
@@ -18,7 +16,6 @@ function VaultScreen(props) {
   const [web, setWeb] = useState([]);
   const [card, setCard] = useState([]);
   const [credentialProviders, setCredentialProviders] = useState([]);
-
   const [webCredentialCount, setWebCredentialCount] = useState(0);
   const [cardCredentialCount, setCardCredentialCount] = useState(0);
 
@@ -37,7 +34,7 @@ function VaultScreen(props) {
         name: record.name,
         image: require('../assets/icon.png'),
         type: 'card',
-      }))
+      })),
     ];
     setCredentialProviders(providers);
   };
@@ -51,16 +48,16 @@ function VaultScreen(props) {
    * Search bar handler
    */
   const handleSearch = (searchText) => {
-    console.log("handleSearch invoked");
+    console.log('handleSearch invoked');
     search(searchText)
-        .then((searchResults) => {
-          console.log("FOUND SEARCH RESULTS: ", searchResults);
-          setCredentialProviders(searchResults);
-        })
-        .catch((error) => {
-          console.log('Error searching:', error);
-        });
-  }
+      .then((searchResults) => {
+        console.log('FOUND SEARCH RESULTS: ', searchResults);
+        setCredentialProviders(searchResults);
+      })
+      .catch((error) => {
+        console.log('Error searching:', error);
+      });
+  };
 
   const renderHiddenItem = (data, rowMap) => {
     return (
@@ -98,7 +95,7 @@ function VaultScreen(props) {
           console.log('Error creating web_credential table:', error);
         }
       );
-  
+
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS web_url (id INTEGER PRIMARY KEY AUTOINCREMENT, url TEXT NOT NULL, web_id INTEGER, FOREIGN KEY (web_id) REFERENCES web(id))',
         [],
@@ -109,7 +106,7 @@ function VaultScreen(props) {
           console.log('Error creating web_url table:', error);
         }
       );
-  
+
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS card (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE)',
         [],
@@ -120,7 +117,7 @@ function VaultScreen(props) {
           console.log('Error creating card table:', error);
         }
       );
-  
+
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS card_credential (id INTEGER PRIMARY KEY AUTOINCREMENT, card_id INTEGER NOT NULL, card_number TEXT NOT NULL, exp_date TEXT NOT NULL, security_code INTEGER, FOREIGN KEY (card_id) REFERENCES card(id), UNIQUE (card_id, card_number))',
         [],
@@ -201,9 +198,40 @@ function VaultScreen(props) {
 
   useEffect(() => {
     // createTables();
-    fetchRecords();
+    fetchRecordsFromTable(web);
     countCredentials();
   }, []);
+
+  const handleAppCredentialMetricPress = (type) => {
+    if (type === 'web') {
+      fetchRecordsFromTable('web');
+    } else if (type === 'card') {
+      fetchRecordsFromTable('card');
+    }
+  };
+
+  const fetchRecordsFromTable = (tableName) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `SELECT * FROM ${tableName}`,
+        [],
+        (_, { rows }) => {
+          const records = rows._array;
+          setCredentialProviders(
+            records.map((record) => ({
+              id: record.id,
+              name: record.name,
+              image: require('../assets/icon.png'),
+              type: tableName,
+            }))
+          );
+        },
+        (error) => {
+          console.log(`Error retrieving ${tableName} records:`, error);
+        }
+      );
+    });
+  };
 
   return (
     <Screen>
@@ -231,6 +259,8 @@ function VaultScreen(props) {
             iconSize={45}
             text="Web"
             subText={webCredentialCount}
+            onPress={() => handleAppCredentialMetricPress('web')
+            }
           />
           <AppCredentialMetric
             iconName={'card'}
@@ -239,19 +269,22 @@ function VaultScreen(props) {
             iconSize={45}
             text="Card"
             subText={cardCredentialCount}
+            onPress={() => handleAppCredentialMetricPress('card')}
           />
         </View>
 
-        <AppRoundTouchable iconName={'plus'} 
-                           iconColor={'black'} 
-                           iconSize={75} 
-                           iconLibrary={'material'}
-                           onPress={() => navigation.navigate('EditWebCredentialScreen')} />
+        <AppRoundTouchable
+          iconName={'plus'}
+          iconColor={'black'}
+          iconSize={75}
+          iconLibrary={'material'}
+          onPress={() => navigation.navigate('EditWebCredentialScreen')}
+        />
       </View>
       <AppSearchBar onSearch={(searchText) => handleSearch(searchText)} />
       <FlatList
         data={credentialProviders}
-        renderItem={({ item }) => <AppCredentialProvider provider={item} />}
+        renderItem={({ item }) => renderItemFlatList({ item })}
         keyExtractor={(item) => item.type + item.id.toString()}
       />
       {/* <SwipeListView
@@ -263,6 +296,10 @@ function VaultScreen(props) {
       /> */}
     </Screen>
   );
+}
+
+const renderItemFlatList = ({ item }) => {
+  return <AppCredentialProvider provider={item} />;
 }
 
 const styles = StyleSheet.create({

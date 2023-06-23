@@ -3,9 +3,9 @@ import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 import AppIcon from './AppIcon';
 
-const AppCredentialMetric = ({ iconName, iconSize, iconColor, iconLibrary, text, subText }) => {
+const AppCredentialMetric = ({ iconName, iconSize, iconColor, iconLibrary, text, subText, onPress }) => {
   return (
-    <TouchableOpacity onPress={() => console.log(text + ' pressed.')}>
+    <TouchableOpacity onPress={onPress}>
       <View style={styles.container}>
         <View style={styles.row}>
           <AppIcon name={iconName} size={iconSize} color={iconColor} library={iconLibrary} iconStyle={styles.icon} />
