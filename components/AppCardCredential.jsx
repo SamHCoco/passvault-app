@@ -10,20 +10,20 @@ function AppCardCredential({ bank, cardNumber, expDate, securityCode }) {
     <View style={styles.container}>
       {/* First Row */}
       <View style={styles.row}>
-        <Text style={styles.bankText}>NatWest</Text>
-        <AppIcon name="contactless-payment" library="material" style={styles.appIcon} />
+        <Text style={styles.bankText}>{bank}</Text>
+        <AppIcon name="contactless-payment" library="material" color='white' size={50} style={styles.appIcon} />
       </View>
 
       {/* Second Row */}
       <View style={styles.row}>
-        <Text style={styles.cardNumberText}>4434-1223-6543-3456</Text>
+        <Text style={styles.cardNumberText}>{cardNumber}</Text>
       </View>
 
       {/* Third Row */}
       <View style={styles.row}>
         <Text style={styles.expText}>exp.</Text>
-        <Text style={styles.expDateText}>01-25</Text>
-        <Text style={styles.securityCodeText}>5434</Text>
+        <Text style={styles.expDateText}>{expDate}</Text>
+        <Text style={styles.securityCodeText}>{securityCode}</Text>
       </View>
     </View>
   );
@@ -52,13 +52,12 @@ const styles = StyleSheet.create({
   },
   appIcon: {
     alignSelf: 'flex-end',
-    textAlign: 'right',
-    color: 'white'
+    textAlign: 'right'
   },
   cardNumberText: {
     alignSelf: 'flex-start',
     textAlign: 'left',
-    fontSize: 21,
+    fontSize: 25,
     color: 'white'
   },
   expText: {

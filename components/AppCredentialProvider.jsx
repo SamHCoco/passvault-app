@@ -37,8 +37,8 @@ const AppCredentialProvider = ({ provider }) => {
           );
         } else if (type === 'card') {
           tx.executeSql(
-            'SELECT id, card_number, exp_date, security_code, card_id, "card" AS type FROM card_credential',
-            [],
+            'SELECT cc.id, cc.card_number AS cardNumber, cc.exp_date AS expDate, cc.security_code AS securityCode, c.name AS bank, "card" AS type FROM card_credential AS cc INNER JOIN card AS c ON cc.card_id = ?',
+            [id],
             (_, { rows }) => {
               const cardCredentialRecords = rows._array;
               setCredentials(cardCredentialRecords);
