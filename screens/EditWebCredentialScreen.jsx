@@ -67,6 +67,13 @@ function EditWebCredentialScreen({ route }) {
         });
       } else if (type === 'card') {
         setSelectedOption('Card');
+
+        setBank(effectItem.bank);
+        setCardNumber(effectItem.cardNumber);
+        setExpirationMonth(effectItem.expDate.substring(0, 2));
+        setExpirationYear(effectItem.expDate.substring(3, 5));
+        setSecurityCode(effectItem.securityCode.toString());
+
         setInitialValues({
           url: '',
           username: '',
@@ -75,7 +82,7 @@ function EditWebCredentialScreen({ route }) {
           cardNumber: effectItem.cardNumber || '',
           expirationMonth: effectItem.expirationMonth || '',
           expirationYear: effectItem.expirationYear || '',
-          securityCode: effectItem.securityCode || '',
+          securityCode: effectItem.securityCode.toString() || '',
         });
       }
     }
@@ -279,7 +286,7 @@ function EditWebCredentialScreen({ route }) {
               />
               <ErrorMessage name="securityCode" component={Text} style={styles.errorText} />
 
-              <AppRoundTouchable text="Save" onPress={handleFormSubmit} />
+              <AppRoundTouchable text={item ? "Edit" : "Save"} onPress={handleFormSubmit} />
             </View>
         </>
       );

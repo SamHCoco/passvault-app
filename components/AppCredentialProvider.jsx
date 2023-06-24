@@ -18,13 +18,15 @@ const AppCredentialProvider = ({ provider }) => {
   const [credentials, setCredentials] = useState([]);
   const [showList, setShowList] = useState(false);
 
+  const [deletionCompleted, setDeletionCompleted] = useState(false);
+
   const fetchData = () => {
     const show = !showList;
     if (show) {
       db.transaction((tx) => {
         if (type === 'web') {
           tx.executeSql(
-            'SELECT wc.id, wc.username, wc.password, wc.web_url_id, wu.url, "web" AS type FROM web_credential AS wc INNER JOIN web_url AS wu ON wc.web_url_id = wu.id WHERE wc.web_id = ?',
+            'SELECT wc.id, wc.username, wc.password, wc.web_url_id, wu.url, wc.web_id AS webId, "web" AS type FROM web_credential AS wc INNER JOIN web_url AS wu ON wc.web_url_id = wu.id WHERE wc.web_id = ?',
             [id],
             (_, { rows }) => {
               const webCredentialRecords = rows._array;
@@ -37,7 +39,7 @@ const AppCredentialProvider = ({ provider }) => {
           );
         } else if (type === 'card') {
           tx.executeSql(
-            'SELECT cc.id, cc.card_number AS cardNumber, cc.exp_date AS expDate, cc.security_code AS securityCode, c.name AS bank, "card" AS type FROM card_credential AS cc INNER JOIN card AS c ON cc.card_id = ?',
+            'SELECT cc.id, cc.card_number AS cardNumber, cc.exp_date AS expDate, cc.card_id AS cardId, cc.security_code AS securityCode, c.name AS bank, "card" AS type FROM card_credential AS cc INNER JOIN card AS c ON cc.card_id = ?',
             [id],
             (_, { rows }) => {
               const cardCredentialRecords = rows._array;
@@ -82,7 +84,7 @@ const AppCredentialProvider = ({ provider }) => {
         <TouchableOpacity style={styles.editButton} onPress={() => handleEditPress(data)}>
           <Text>Edit</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.deleteButton} onPress={() => console.log('Delete pressed')}>
+        <TouchableOpacity style={styles.deleteButton} onPress={() => handleDeletePress(data)}>
           <Text>Delete</Text>
         </TouchableOpacity>
       </View>
@@ -96,6 +98,106 @@ const AppCredentialProvider = ({ provider }) => {
         item: item
      });
   };
+
+  const handleDeletePress = (data) => {
+    console.log("DELETE PRESSED"); // todo - remove
+    const { id, type, cardId, webId } = data.item;
+    console.log("AppCredentialProvider - ITEM: ", data.item); // todo - remove
+  
+    db.transaction((tx) => {
+      if (type === 'web') {
+        tx.executeSql(
+          'DELETE FROM web_credential WHERE id = ?',
+          [id],
+          (_, { rowsAffected }) => {
+            if (rowsAffected > 0) {
+              console.log('Web_Credential with ID ${id} DELETED SUCCESS.');
+
+              setDeletionCompleted(true); // Mark deletion as completed
+  
+              // Check if there are any other web credentials with the same web_id
+              tx.executeSql(
+                'SELECT COUNT(*) AS count FROM web_credential WHERE web_id = ?',
+                [webId],
+                (_, { rows }) => {
+                  const { count } = rows.item(0);
+                  if (count === 0) {
+                    // No other web credentials with the same web_id, delete the web credential
+                    tx.executeSql(
+                      'DELETE FROM web WHERE id = ?',
+                      [webId],
+                      (_, { rowsAffected }) => {
+                        if (rowsAffected > 0) {
+                          console.log('Web with ID ${webId} DELETE SUCCESS.');
+                          // Perform any additional actions on success
+                        }
+                      },
+                      (error) => {
+                        console.log('Error deleting web with ID ${webId}:', error);
+                      }
+                    );
+                  }
+                },
+                (error) => {
+                  console.log('Error checking web credentials:', error);
+                }
+              );
+            }
+          },
+          (error) => {
+            console.log('Error deleting web credential with ID ${id}:', error);
+          }
+        );
+      } else if (type === 'card') {
+        tx.executeSql(
+          'DELETE FROM card_credential WHERE id = ?',
+          [id],
+          (_, { rowsAffected }) => {
+            if (rowsAffected > 0) {
+              console.log('Card credential with ID ${id} DELETE SUCCESS.');
+              setDeletionCompleted(true); // Mark deletion as completed
+  
+              // Check if there are any other card credentials with the same card_id
+              tx.executeSql(
+                'SELECT COUNT(*) AS count FROM card_credential WHERE card_id = ?',
+                [cardId],
+                (_, { rows }) => {
+                  const { count } = rows.item(0);
+                  if (count === 0) {
+                    // No other card credentials with the same card_id, delete the card credential
+                    tx.executeSql(
+                      'DELETE FROM card WHERE id = ?',
+                      [cardId],
+                      (_, { rowsAffected }) => {
+                        if (rowsAffected > 0) {
+                          console.log('Card deleted successfully.');
+                          // Perform any additional actions on success
+                        }
+                      },
+                      (error) => {
+                        console.log('Error deleting card:', error);
+                      }
+                    );
+                  }
+                },
+                (error) => {
+                  console.log('Error checking card credentials:', error);
+                }
+              );
+            }
+          },
+          (error) => {
+            console.log('Error deleting card credential:', error);
+          }
+        );
+      }
+    });
+  };
+
+  if (deletionCompleted) {
+    fetchData(); // Fetch updated data after deletion
+    setDeletionCompleted(false); // Reset deletion completion status
+  }
 
   return (
     <View>

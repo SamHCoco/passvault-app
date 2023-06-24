@@ -39,10 +39,10 @@ function VaultScreen(props) {
     setCredentialProviders(providers);
   };
 
-  const renderWebCredentialItem = ({ item }) => {
-    const { username, password } = item;
-    return <AppWebCredential username={username} password={password} />;
-  };
+  // const renderWebCredentialItem = ({ item }) => {
+  //   const { username, password } = item;
+  //   return <AppWebCredential username={username} password={password} />;
+  // };
 
   /**
    * Search bar handler
