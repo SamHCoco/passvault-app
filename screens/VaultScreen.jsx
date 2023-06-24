@@ -285,7 +285,7 @@ function VaultScreen({ route }) {
           iconColor={'black'}
           iconSize={75}
           iconLibrary={'material'}
-          onPress={() => navigation.navigate('EditWebCredentialScreen')}
+          onPress={() => navigation.navigate('Credential')}
         />
       </View>
       <AppSearchBar onSearch={(searchText) => handleSearch(searchText)} />

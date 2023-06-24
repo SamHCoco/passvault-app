@@ -25,15 +25,15 @@ const saveWebCredential = async (values) => {
   });
 
   // Insert into web_credential table
-  const insertWebCredential = async (webId) => {
+  const insertWebCredential = async (webUrlId, webId) => {
     return new Promise((resolve, reject) => {
       db.transaction(tx => {
         tx.executeSql(
-          'INSERT INTO web_credential (web_url_id, username, password) VALUES (?, ?, ?)',
-          [webId, username, password],
+          'INSERT INTO web_credential (web_url_id, web_id, username, password) VALUES (?, ?, ?, ?)',
+          [webUrlId, webId, username, password],
           (_, { insertId }) => {
             resolve(insertId);
-            console.log("New Web Credentials added with web_url_id ", webId);
+            console.log("New Web Credentials added with web_url_id ", webUrlId);
           },
           (_, error) => {
             reject(error);
@@ -63,7 +63,7 @@ const saveWebCredential = async (values) => {
       });
     });
 
-    const insertId = await insertWebCredential(insertWebUrl);
+    const insertId = await insertWebCredential(insertWebUrl, webId);
     console.log('Credential saved successfully with ID:', insertId);
   } else {
     // Insert a new record into web table
@@ -99,7 +99,7 @@ const saveWebCredential = async (values) => {
       });
     });
 
-    const insertId = await insertWebCredential(insertWebUrl);
+    const insertId = await insertWebCredential(insertWebUrl, webId);
     console.log('Credential saved successfully with ID:', insertId);
   }
 };

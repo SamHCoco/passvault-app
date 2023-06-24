@@ -106,13 +106,14 @@ function EditWebCredentialScreen({ route }) {
 
   const handleFormSubmit = async (values) => {
     if (selectedOption === 'Web') {
-      await saveWebCredential(values);
-      // todo - add nav to VaultScreen(selectedOption = web)
-      navigation.navigate('VaultScreen', {
-        selectedOption: 'web'
-     });
+      await saveWebCredential({
+        url,
+        username,
+        password
+      });
+      setWebFormBlank();
+      navigation.navigate('Vault', {selectedOption: 'web'});
     } else if (selectedOption === 'Card') {
-      console.log("CARD VALUES ON SUBMIT: ", values); // todo - remove
       await saveCardCredential({
         bank,
         cardNumber,
@@ -120,11 +121,23 @@ function EditWebCredentialScreen({ route }) {
         expirationYear,
         securityCode,
       });
-      // todo - add nav to VaultScreen(selectedOption = card)
-      navigation.navigate('Vault', {
-        selectedOption: 'card'
-     });
+      setCardFormBlank();
+      navigation.navigate('Vault', { selectedOption: 'card'});
     }
+  };
+
+  const setWebFormBlank = () => {
+    setUrl('');
+    setUsername('');
+    setPassword('');
+  };
+
+  const setCardFormBlank = () => {
+    setBank('');
+    setCardNumber('');
+    setExpirationMonth('');
+    setExpirationYear('');
+    setSecurityCode('');
   };
 
   const renderForm = ({ handleChange, handleSubmit, errors, touched, values }) => {

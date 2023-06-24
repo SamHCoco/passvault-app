@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Image, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { SwipeListView }  from 'react-native-swipe-list-view';
 import { useNavigation } from '@react-navigation/native';
 
