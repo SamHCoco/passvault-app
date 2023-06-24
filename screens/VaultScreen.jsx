@@ -19,6 +19,7 @@ function VaultScreen({ route }) {
   const [credentialProviders, setCredentialProviders] = useState([]);
   const [webCredentialCount, setWebCredentialCount] = useState(0);
   const [cardCredentialCount, setCardCredentialCount] = useState(0);
+  const [deleteActionFlag, setDeleteActionFlag] = useState(false);
 
   const navigation = useNavigation();
 
@@ -40,11 +41,6 @@ function VaultScreen({ route }) {
     setCredentialProviders(providers);
   };
 
-  // const renderWebCredentialItem = ({ item }) => {
-  //   const { username, password } = item;
-  //   return <AppWebCredential username={username} password={password} />;
-  // };
-
   /**
    * Search bar handler
    */
@@ -58,115 +54,6 @@ function VaultScreen({ route }) {
       .catch((error) => {
         console.log('Error searching:', error);
       });
-  };
-
-  // const renderHiddenItem = (data, rowMap) => {
-  //   return (
-  //     <View style={styles.rowBack}>
-  //       <TouchableOpacity style={styles.editButton} onPress={() => console.log('Edit pressed')}>
-  //         <Text>Edit</Text>
-  //       </TouchableOpacity>
-  //       <TouchableOpacity style={styles.deleteButton} onPress={() => console.log('Delete pressed')}>
-  //         <Text>Delete</Text>
-  //       </TouchableOpacity>
-  //     </View>
-  //   );
-  // };
-
-  const createTables = () => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS web (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE)',
-        [],
-        (_, result) => {
-          console.log('Web table created successfully');
-        },
-        (_, error) => {
-          console.log('Error creating web table:', error);
-        }
-      );
-
-      tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS web_credential (id INTEGER PRIMARY KEY AUTOINCREMENT, web_id INTEGER NOT NULL, web_url_id INTEGER NOT NULL, username TEXT NOT NULL, password TEXT NOT NULL, FOREIGN KEY (web_id) REFERENCES web(id), FOREIGN KEY (web_url_id) REFERENCES web_url(id), UNIQUE (web_url_id, username))',
-        [],
-        (_, result) => {
-          console.log('Web Credential table created successfully');
-        },
-        (_, error) => {
-          console.log('Error creating web_credential table:', error);
-        }
-      );
-
-      tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS web_url (id INTEGER PRIMARY KEY AUTOINCREMENT, url TEXT NOT NULL, web_id INTEGER, FOREIGN KEY (web_id) REFERENCES web(id))',
-        [],
-        (_, result) => {
-          console.log('Web URL table created successfully');
-        },
-        (_, error) => {
-          console.log('Error creating web_url table:', error);
-        }
-      );
-
-      tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS card (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE)',
-        [],
-        (_, result) => {
-          console.log('Card table created successfully');
-        },
-        (_, error) => {
-          console.log('Error creating card table:', error);
-        }
-      );
-
-      tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS card_credential (id INTEGER PRIMARY KEY AUTOINCREMENT, card_id INTEGER NOT NULL, card_number TEXT NOT NULL, exp_date TEXT NOT NULL, security_code INTEGER, FOREIGN KEY (card_id) REFERENCES card(id), UNIQUE (card_id, card_number))',
-        [],
-        (_, result) => {
-          console.log('Card Credential table created successfully');
-        },
-        (_, error) => {
-          console.log('Error creating card_credential table:', error);
-        }
-      );
-    });
-  };
-
-  const fetchRecords = () => {
-    db.transaction((tx) => {
-      tx.executeSql(
-        'SELECT id, name FROM web ORDER BY name ASC',
-        [],
-        (_, { rows }) => {
-          const webRecords = rows._array;
-          setWeb(webRecords);
-          const providers = webRecords.map((record) => ({
-            id: record.id,
-            name: record.name,
-            image: require('../assets/icon.png'),
-            type: 'web',
-          }));
-
-          setCredentialProviders(providers);
-        },
-        (error) => {
-          console.log('Error retrieving web records:', error);
-        }
-      );
-
-      tx.executeSql(
-        'SELECT id, name FROM card',
-        [],
-        (_, { rows }) => {
-          const cardRecords = rows._array;
-          setCard(cardRecords);
-          updateCredentialProviders();
-        },
-        (error) => {
-          console.log('Error retrieving card records:', error);
-        }
-      );
-    });
   };
 
   const countCredentials = () => {
@@ -198,16 +85,15 @@ function VaultScreen({ route }) {
   };
 
   useEffect(() => {
-    // createTables();
     if (route && route.params) {
-      const {selectedOption} = route.params;
+      const { selectedOption } = route.params;
       console.log("VAULT SCREEN - useEFFECT ROUTE - selectedOption: ", selectedOption);
       fetchRecordsFromTable(selectedOption ? selectedOption : 'web');
     } else {
       fetchRecordsFromTable('web');
     }
     countCredentials();
-  }, []);
+  }, [deleteActionFlag]);
 
   const handleAppCredentialMetricPress = (type) => {
     if (type === 'web') {
@@ -218,12 +104,14 @@ function VaultScreen({ route }) {
   };
 
   const fetchRecordsFromTable = (tableName) => {
+    console.log("Fetch Records from Table trigger for table: ", tableName); // todo - remove
     db.transaction((tx) => {
       tx.executeSql(
         `SELECT * FROM ${tableName}`,
         [],
         (_, { rows }) => {
           const records = rows._array;
+          console.log("Fetched Credential - table ", tableName, records);
           setCredentialProviders(
             records.map((record) => ({
               id: record.id,
@@ -238,6 +126,16 @@ function VaultScreen({ route }) {
         }
       );
     });
+  };
+
+  const handleDeleteAction = () => {
+    // Toggle the flag to trigger a re-render of the VaultScreen component
+    console.log("Handle Delete Item triggered"); // todo - remove
+    setDeleteActionFlag(!deleteActionFlag);
+  };
+
+  const renderItemFlatList = ({ item }) => {
+    return <AppCredentialProvider provider={item} onDeleteAction={handleDeleteAction} />;
   };
 
   return (
@@ -266,8 +164,7 @@ function VaultScreen({ route }) {
             iconSize={45}
             text="Web"
             subText={webCredentialCount}
-            onPress={() => handleAppCredentialMetricPress('web')
-            }
+            onPress={() => handleAppCredentialMetricPress('web')}
           />
           <AppCredentialMetric
             iconName={'card'}
@@ -291,22 +188,11 @@ function VaultScreen({ route }) {
       <AppSearchBar onSearch={(searchText) => handleSearch(searchText)} />
       <FlatList
         data={credentialProviders}
-        renderItem={({ item }) => renderItemFlatList({ item })}
+        renderItem={renderItemFlatList}
         keyExtractor={(item) => item.type + item.id.toString()}
       />
-      {/* <SwipeListView
-        data={webCredData}
-        renderItem={renderWebCredentialItem}
-        renderHiddenItem={renderHiddenItem}
-        rightOpenValue={-80}
-        keyExtractor={(item) => item.id.toString()}
-      /> */}
     </Screen>
   );
-}
-
-const renderItemFlatList = ({ item }) => {
-  return <AppCredentialProvider provider={item} />;
 }
 
 const styles = StyleSheet.create({

@@ -61,7 +61,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Vault">
+      <Stack.Navigator>
         <Stack.Screen name="Tabs" component={TabScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Credential" component={EditWebCredentialScreen} />
         <Stack.Screen name="Vault" component={VaultScreen} />

@@ -3,13 +3,15 @@ import Constants from 'expo-constants';
 import { SafeAreaView, StyleSheet, View, ScrollView, Platform, StatusBar, Dimensions } from 'react-native';
 
 const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get('window').width;
 
 function Screen(props) {
   return (
     <SafeAreaView style={styles.screen}>
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
         <View style={styles.view}>{props.children}</View>
-      </ScrollView>
+      {/* <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        
+      </ScrollView> */}
     </SafeAreaView>
   );
 }

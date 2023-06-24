@@ -10,7 +10,7 @@ import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase('passvault.db');
 
-const AppCredentialProvider = ({ provider }) => {
+const AppCredentialProvider = ({ provider, onDeleteAction }) => {
   const navigation = useNavigation();
 
   const [id, setId] = useState(provider.id);
@@ -61,7 +61,6 @@ const AppCredentialProvider = ({ provider }) => {
   };
 
   const renderItem = ({ item }) => {
-    console.log("RENDER ITEM - AppCredentialProvider: ", item);
       const { username, password, bank, cardNumber, expDate, securityCode } = item;
       if (item.type === 'web') {
         return <AppWebCredential username={username} password={password} />;
@@ -137,6 +136,7 @@ const AppCredentialProvider = ({ provider }) => {
                       }
                     );
                   }
+                  onDeleteAction();
                 },
                 (error) => {
                   console.log('Error checking web credentials:', error);
