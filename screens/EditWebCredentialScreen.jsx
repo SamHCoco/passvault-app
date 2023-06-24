@@ -38,7 +38,6 @@ function EditWebCredentialScreen({ route }) {
   const [securityCode, setSecurityCode] = useState('');
 
   useEffect(() => {
-    console.log("EditWebRouteProp: ", route); // todo - remove
     var effectItem;
     if (route && route.params) {
       setItem(route.params.item);
