@@ -85,6 +85,7 @@ function VaultScreen({ route }) {
   };
 
   useEffect(() => {
+    console.log("VAULT SCREEN - ROUTE: ", route); // todo - remove
     if (route && route.params) {
       const { selectedOption } = route.params;
       console.log("VAULT SCREEN - useEFFECT ROUTE - selectedOption: ", selectedOption);
@@ -93,7 +94,7 @@ function VaultScreen({ route }) {
       fetchRecordsFromTable('web');
     }
     countCredentials();
-  }, [deleteActionFlag]);
+  }, [deleteActionFlag, route]);
 
   const handleAppCredentialMetricPress = (type) => {
     if (type === 'web') {

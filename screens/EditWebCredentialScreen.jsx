@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Text, View, ScrollView } from 'react-native';
+import { Text, View, ScrollView } from 'react-native';
 import { Formik, Field, ErrorMessage } from 'formik';
 
 import Screen from '../components/Screen';
@@ -39,6 +39,7 @@ function EditWebCredentialScreen({ route }) {
 
   useEffect(() => {
     var effectItem;
+    console.log("ROUTE AVAILABLE: ", route); // todo - temove
     if (route && route.params) {
       setItem(route.params.item);
       effectItem = route.params.item;
@@ -87,7 +88,7 @@ function EditWebCredentialScreen({ route }) {
         });
       }
     }
-  }, []);
+  }, [route]);
 
   // password generator states
   const [sliderValue, setSliderValue] = useState(10);
@@ -111,7 +112,7 @@ function EditWebCredentialScreen({ route }) {
         password
       });
       setWebFormBlank();
-      navigation.navigate('Vault', {selectedOption: 'web'});
+      navigation.navigate('Vault', { selectedOption: 'web' });
     } else if (selectedOption === 'Card') {
       await saveCardCredential({
         bank,
