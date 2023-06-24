@@ -12,7 +12,7 @@ import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase('passvault.db');
 
-function VaultScreen(props) {
+function VaultScreen({ selectedOption }) {
   const [web, setWeb] = useState([]);
   const [card, setCard] = useState([]);
   const [credentialProviders, setCredentialProviders] = useState([]);
@@ -59,18 +59,18 @@ function VaultScreen(props) {
       });
   };
 
-  const renderHiddenItem = (data, rowMap) => {
-    return (
-      <View style={styles.rowBack}>
-        <TouchableOpacity style={styles.editButton} onPress={() => console.log('Edit pressed')}>
-          <Text>Edit</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.deleteButton} onPress={() => console.log('Delete pressed')}>
-          <Text>Delete</Text>
-        </TouchableOpacity>
-      </View>
-    );
-  };
+  // const renderHiddenItem = (data, rowMap) => {
+  //   return (
+  //     <View style={styles.rowBack}>
+  //       <TouchableOpacity style={styles.editButton} onPress={() => console.log('Edit pressed')}>
+  //         <Text>Edit</Text>
+  //       </TouchableOpacity>
+  //       <TouchableOpacity style={styles.deleteButton} onPress={() => console.log('Delete pressed')}>
+  //         <Text>Delete</Text>
+  //       </TouchableOpacity>
+  //     </View>
+  //   );
+  // };
 
   const createTables = () => {
     db.transaction((tx) => {
@@ -198,7 +198,7 @@ function VaultScreen(props) {
 
   useEffect(() => {
     // createTables();
-    fetchRecordsFromTable(web);
+    fetchRecordsFromTable(selectedOption ? selectedOption : web);
     countCredentials();
   }, []);
 

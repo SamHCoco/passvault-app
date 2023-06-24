@@ -12,12 +12,14 @@ import saveCardCredential from '../service/saveCardCredential';
 import AppSlider from '../components/AppSlider';
 import AppIcon from '../components/AppIcon';
 
-import * as Yup from 'yup';
-
 import generateRandomPassword from '../service/generatePassword';
 import { validationSchema } from '../service/validationSchemas';
 
+import { useNavigation } from '@react-navigation/native';
+
 function EditWebCredentialScreen({ route }) {
+  const navigation = useNavigation();
+
   const [item, setItem] = useState();
   const [selectedOption, setSelectedOption] = useState('Web');
   const [initialValues, setInitialValues] = useState();
@@ -105,6 +107,10 @@ function EditWebCredentialScreen({ route }) {
   const handleFormSubmit = async (values) => {
     if (selectedOption === 'Web') {
       await saveWebCredential(values);
+      // todo - add nav to VaultScreen(selectedOption = web)
+      navigation.navigate('VaultScreen', {
+        selectedOption: 'web'
+     });
     } else if (selectedOption === 'Card') {
       console.log("CARD VALUES ON SUBMIT: ", values); // todo - remove
       await saveCardCredential({
@@ -114,6 +120,10 @@ function EditWebCredentialScreen({ route }) {
         expirationYear,
         securityCode,
       });
+      // todo - add nav to VaultScreen(selectedOption = card)
+      navigation.navigate('Vault', {
+        selectedOption: 'card'
+     });
     }
   };
 
