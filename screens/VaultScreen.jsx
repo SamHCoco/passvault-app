@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import Screen from '../components/Screen';
 import AppCredentialMetric from '../components/AppCredentialMetric';
@@ -12,7 +13,7 @@ import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase('passvault.db');
 
-function VaultScreen({ selectedOption }) {
+function VaultScreen({ route }) {
   const [web, setWeb] = useState([]);
   const [card, setCard] = useState([]);
   const [credentialProviders, setCredentialProviders] = useState([]);
@@ -198,7 +199,13 @@ function VaultScreen({ selectedOption }) {
 
   useEffect(() => {
     // createTables();
-    fetchRecordsFromTable(selectedOption ? selectedOption : web);
+    if (route && route.params) {
+      const {selectedOption} = route.params;
+      console.log("VAULT SCREEN - useEFFECT ROUTE - selectedOption: ", selectedOption);
+      fetchRecordsFromTable(selectedOption ? selectedOption : 'web');
+    } else {
+      fetchRecordsFromTable('web');
+    }
     countCredentials();
   }, []);
 

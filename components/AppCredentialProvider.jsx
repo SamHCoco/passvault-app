@@ -39,7 +39,7 @@ const AppCredentialProvider = ({ provider }) => {
           );
         } else if (type === 'card') {
           tx.executeSql(
-            'SELECT cc.id, cc.card_number AS cardNumber, cc.exp_date AS expDate, cc.card_id AS cardId, cc.security_code AS securityCode, c.name AS bank, "card" AS type FROM card_credential AS cc INNER JOIN card AS c ON cc.card_id = ?',
+            'SELECT cc.id, cc.card_number AS cardNumber, cc.exp_date AS expDate, cc.card_id AS cardId, cc.security_code AS securityCode, c.name AS bank, "card" AS type FROM card_credential AS cc INNER JOIN card AS c ON cc.card_id = c.id WHERE cc.card_id = ?',
             [id],
             (_, { rows }) => {
               const cardCredentialRecords = rows._array;
