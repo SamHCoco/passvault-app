@@ -24,6 +24,7 @@ function VaultScreen({ route }) {
   const [cardCredentialCount, setCardCredentialCount] = useState(0);
   const [deleteActionFlag, setDeleteActionFlag] = useState(false);
   const [selected, setSelected] = useState('web'); // New 'selected' state with default value 'web'
+  const [searchText, setSearchText] = useState('');
 
   const navigation = useNavigation();
 
@@ -32,14 +33,35 @@ function VaultScreen({ route }) {
    */
   const handleSearch = (searchText) => {
     console.log('handleSearch invoked: ', searchText);
-    search(searchText)
-      .then((searchResults) => {
-        console.log('FOUND SEARCH RESULTS: ', searchResults);
-        setCredentialProviders(searchResults);
-      })
-      .catch((error) => {
-        console.log('Error searching:', error);
-      });
+    const tableName = selected === 'web' ? 'web' : 'card';
+    const columnName = 'name';
+  
+    // Perform a SELECT LIKE query against the selected table and column
+    db.transaction((tx) => {
+      tx.executeSql(
+        `SELECT * FROM ${tableName} WHERE ${columnName} LIKE '%${searchText}%'`,
+        [],
+        (_, { rows }) => {
+          const records = rows._array;
+          console.log('FOUND SEARCH RESULTS: ', records);
+          setCredentialProviders(
+            records.map((record) => ({
+              id: record.id,
+              name: record.name,
+              image: require('../assets/icon.png'),
+              type: tableName,
+            }))
+          );
+        },
+        (error) => {
+          console.log(`Error searching ${tableName}:`, error);
+        }
+      );
+    });
+  };
+
+  const handleSearchTextChange = (text) => {
+    handleSearch(text);
   };
 
   const countCredentials = () => {
@@ -80,7 +102,7 @@ function VaultScreen({ route }) {
       fetchRecordsFromTable('web');
     }
     countCredentials();
-  }, [deleteActionFlag, route]);
+  }, [deleteActionFlag, searchText, route]);
 
   const handleAppCredentialMetricPress = (type) => {
     setSelected(type); // Update 'selected' state
@@ -169,7 +191,7 @@ function VaultScreen({ route }) {
           onPress={() => navigation.navigate('Credential')}
         />
       </View>
-      <AppSearchBar onSearch={(searchText) => handleSearch(searchText)} />
+      <AppSearchBar onSearch={(searchText) => handleSearchTextChange(searchText)} />
       <FlatList
         data={credentialProviders}
         renderItem={renderItemFlatList}

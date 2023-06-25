@@ -11,13 +11,6 @@ const AppSearchBar = ({ onSearch }) => {
     }
   };
 
-  // todo - fix
-  const handleKeyPress = (event) => {
-    if (event.nativeEvent.key === 'Enter') {
-      handleSearch();
-    }
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.searchBarContainer}>
@@ -26,8 +19,10 @@ const AppSearchBar = ({ onSearch }) => {
           placeholder="search"
           placeholderTextColor="#999"
           value={searchText}
-          onChangeText={setSearchText}
-          onKeyPress={handleKeyPress}
+          onChangeText={(text) => {
+            setSearchText(text);
+            onSearch(text);
+          }}
         />
         <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
           <AntDesign name="search1" size={18} color="black" />
