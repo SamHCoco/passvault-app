@@ -1,11 +1,10 @@
 import React from 'react';
 import Screen from '../components/Screen';
+import { View } from 'react-native';
 
 function SettingsScreen(props) {
     return (
-        <Screen>
-            
-        </Screen>
+        <View></View>
     );
 }
 

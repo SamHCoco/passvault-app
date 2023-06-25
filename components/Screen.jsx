@@ -7,12 +7,9 @@ const windowWidth = Dimensions.get('window').width;
 
 function Screen(props) {
   return (
-    <SafeAreaView style={styles.screen}>
-        <View style={styles.view}>{props.children}</View>
-      {/* <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        
-      </ScrollView> */}
-    </SafeAreaView>
+    <View style={styles.screen}>
+      <View style={styles.view}>{props.children}</View>
+    </View>
   );
 }
 

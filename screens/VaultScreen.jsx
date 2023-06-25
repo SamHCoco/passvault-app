@@ -147,59 +147,59 @@ function VaultScreen({ route }) {
   };
 
   return (
-    <Screen>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          backgroundColor: WHITE,
-        }}
-      >
-        <View
-          style={{
-            borderColor: 'lightgrey',
-            borderWidth: 1,
-            flexDirection: 'row',
-            borderRadius: 25,
-            width: 255,
-            marginLeft: 4,
-          }}
-        >
-          <AppCredentialMetric
-            iconName={'web'}
-            iconColor={selected === 'web' ? 'lightgreen' : LIGHT_GREY} // Check if selected is 'web' to set icon color
-            iconLibrary={'material'}
-            iconSize={45}
-            text="Web"
-            subText={webCredentialCount}
-            onPress={() => handleAppCredentialMetricPress('web')}
-          />
-          <AppCredentialMetric
-            iconName={'card'}
-            iconColor={selected === 'card' ? 'lightgreen' : 'dodgerblue'} // Check if selected is 'card' to set icon color
-            iconLibrary={'ion'}
-            iconSize={45}
-            text="Card"
-            subText={cardCredentialCount}
-            onPress={() => handleAppCredentialMetricPress('card')}
-          />
-        </View>
+    <View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                backgroundColor: WHITE,
+              }}
+            >
+              <View
+                style={{
+                  borderColor: 'lightgrey',
+                  borderWidth: 1,
+                  flexDirection: 'row',
+                  borderRadius: 25,
+                  width: 255,
+                  marginLeft: 4,
+                }}
+              >
+                <AppCredentialMetric
+                  iconName={'web'}
+                  iconColor={selected === 'web' ? 'lightgreen' : LIGHT_GREY} // Check if selected is 'web' to set icon color
+                  iconLibrary={'material'}
+                  iconSize={45}
+                  text="Web"
+                  subText={webCredentialCount}
+                  onPress={() => handleAppCredentialMetricPress('web')}
+                />
+                <AppCredentialMetric
+                  iconName={'card'}
+                  iconColor={selected === 'card' ? 'lightgreen' : 'dodgerblue'} // Check if selected is 'card' to set icon color
+                  iconLibrary={'ion'}
+                  iconSize={45}
+                  text="Card"
+                  subText={cardCredentialCount}
+                  onPress={() => handleAppCredentialMetricPress('card')}
+                />
+              </View>
 
-        <AppRoundTouchable
-          iconName={'plus'}
-          iconColor={'dodgerblue'}
-          iconSize={70}
-          iconLibrary={'material'}
-          onPress={() => navigation.navigate('Credential')}
-        />
-      </View>
-      <AppSearchBar onSearch={(searchText) => handleSearchTextChange(searchText)} />
-      <FlatList
-        data={credentialProviders}
-        renderItem={renderItemFlatList}
-        keyExtractor={(item) => item.type + item.id.toString()}
-      />
-    </Screen>
+              <AppRoundTouchable
+                iconName={'plus'}
+                iconColor={'dodgerblue'}
+                iconSize={70}
+                iconLibrary={'material'}
+                onPress={() => navigation.navigate('Credential')}
+              />
+            </View>
+            <AppSearchBar onSearch={(searchText) => handleSearchTextChange(searchText)} />
+            <FlatList
+              data={credentialProviders}
+              renderItem={renderItemFlatList}
+              keyExtractor={(item) => item.type + item.id.toString()}
+            />
+    </View>
   );
 }
 
