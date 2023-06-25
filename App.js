@@ -11,6 +11,7 @@ import BackupScreen from './screens/BackupScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import EditWebCredentialScreen from './screens/EditWebCredentialScreen';
 import createTables from './service/createTable';
+import AppIcon from './components/AppIcon';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -79,9 +80,11 @@ function TabScreen() {
             iconName = focused ? 'home' : 'home-outline';
           } else if (route.name === 'Settings') {
             iconName = focused ? 'cog' : 'cog-outline';
+          } else if (route.name === 'Backup') {
+            iconName = focused ? 'file-restore': 'file-restore-outline';
           }
 
-          return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
+          return <AppIcon name={iconName} size={size} color={color} />;
         },
       })}
       tabBarOptions={{
@@ -90,6 +93,7 @@ function TabScreen() {
       }}
     >
       <Tab.Screen name="Vault" component={VaultScreen} />
+      <Tab.Screen name="Backup" component={BackupScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>
   );
