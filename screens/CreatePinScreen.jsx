@@ -9,16 +9,23 @@ const CreatePinScreen = () => {
   const navigation = useNavigation();
   const [pin, setPin] = useState('');
   const [pinEntered, setPinEntered] = useState([]);
+  const [confirmPinMode, setConfirmPinMode] = useState(false); // Track if confirm pin mode is active
+  const [storedPin, setStoredPin] = useState('');
 
   const handlePinPress = (number) => {
     const newPin = pin + number;
     setPin(newPin);
-    console.log("CURRENT PIN state value: ", pin); // todo - remove
     setPinEntered([...pinEntered, number]);
 
     if (newPin.length === 4) {
-        console.log("STORED PIN: ", newPin);
-    //   storePin(newPin);
+      if (confirmPinMode) {
+        confirmPin(newPin);
+      } else {
+        setConfirmPinMode(true);
+        setPin('');
+        setPinEntered([]);
+        setStoredPin(newPin);
+      }
     }
   };
 
@@ -26,6 +33,17 @@ const CreatePinScreen = () => {
     const newPin = pin.slice(0, -1);
     setPin(newPin);
     setPinEntered(pinEntered.slice(0, -1));
+  };
+
+  const confirmPin = (enteredPin) => {
+    if (enteredPin === storedPin) {
+      storePin(enteredPin);
+    } else {
+      // Handle incorrect pin
+      setPin('');
+      setPinEntered([]);
+      setConfirmPinMode(false);
+    }
   };
 
   const storePin = async (newPin) => {
@@ -44,7 +62,7 @@ const CreatePinScreen = () => {
     >
       <View style={styles.overlay} />
       <View style={styles.content}>
-        <Text style={styles.title}>Create your Pin</Text>
+        <Text style={styles.title}>{confirmPinMode ? 'Confirm your Pin' : 'Create your Pin'}</Text>
         <View style={styles.circleContainer}>
           {[1, 2, 3, 4].map((index) => (
             <View
