@@ -225,11 +225,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: 'lightgrey',
     borderRadius: 15,
     padding: 10,
     marginVertical: 6,
     marginHorizontal: 4,
+    backgroundColor: 'white'
   },
   image: {
     width: 50,
@@ -237,8 +238,10 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   label: {
-    fontSize: 12,
+    fontSize: 26,
+    fontWeight: 'bold',
     color: 'black',
+    marginLeft: 15
   },
   rowBack: {
     flex: 1,

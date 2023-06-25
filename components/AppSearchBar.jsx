@@ -25,7 +25,7 @@ const AppSearchBar = ({ onSearch }) => {
           }}
         />
         <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-          <AntDesign name="search1" size={18} color="black" />
+          <AntDesign name="search1" size={18} color="dodgerblue" />
         </TouchableOpacity>
       </View>
     </View>

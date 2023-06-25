@@ -64,10 +64,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     borderWidth: 1,
-    borderColor: 'black',
+    borderColor: 'lightgrey',
     marginHorizontal: 2,
     borderRadius: 7,
-    backgroundColor: "azure"
+    backgroundColor: "white"
   },
   row: {
     flexDirection: 'row',
@@ -84,9 +84,9 @@ const styles = StyleSheet.create({
     width: 25,
     height: 25,
     borderRadius: 75,
+    borderWidth: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
     borderColor: 'gray',
     marginHorizontal: 3,
   },
