@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Vibration } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import * as Keychain from 'react-native-keychain';
 import * as SecureStore from 'expo-secure-store';
+
+import AppRoundTouchable from '../components/AppRoundTouchable';
 
 const PinAuthScreen = () => {
   const navigation = useNavigation();
   const [pin, setPin] = useState('');
+  const [pinEntered, setPinEntered] = useState([]);
 
   useEffect(() => {
     checkPinExists();
@@ -14,9 +16,7 @@ const PinAuthScreen = () => {
 
   const checkPinExists = async () => {
     try {
-      console.log("PIN AUTH SCREEN - Check Pin Exists Triggered"); // todo - remove
       const credentials = await SecureStore.getItemAsync('passvault-app-pin');
-      console.log("PIN AUTH SCREEN - credentials value: ", credentials); // todo - remove
       if (!credentials) {
         // Pin does not exist, navigate to PIN creation screen
         navigation.navigate('CreatePin');
@@ -29,26 +29,39 @@ const PinAuthScreen = () => {
   const handlePinPress = (number) => {
     const newPin = pin + number;
     setPin(newPin);
+    setPinEntered([...pinEntered, number]);
 
     if (newPin.length === 4) {
       authenticatePin(newPin);
     }
   };
 
+  const handleDeletePress = () => {
+    const newPin = pin.slice(0, -1);
+    setPin(newPin);
+    setPinEntered(pinEntered.slice(0, -1));
+  };
+
   const authenticatePin = async (enteredPin) => {
     try {
-      const credentials = await SecureStore.getItemAsync('passvault-app-pin');
-      if (credentials && credentials.password === enteredPin) {
+      const storedPin = await SecureStore.getItemAsync('passvault-app-pin');
+      if (storedPin && storedPin === enteredPin) {
         // Pin authentication successful
         navigation.navigate('Tabs');
       } else {
         // Incorrect pin
         setPin('');
+        setPinEntered([]);
+        vibrate();
         // Handle incorrect pin logic (e.g., show error message)
       }
     } catch (error) {
       // Handle error
     }
+  };
+
+  const vibrate = () => {
+    Vibration.vibrate([0, 500]); // Vibrate for 500ms
   };
 
   return (
@@ -59,8 +72,17 @@ const PinAuthScreen = () => {
       <View style={styles.overlay} />
       <View style={styles.content}>
         <Text style={styles.title}>Enter PIN</Text>
-        <View style={styles.pinContainer}>
-          <Text style={styles.pin}>{pin}</Text>
+        <View style={styles.circleContainer}>
+          {[1, 2, 3, 4].map((index) => (
+            <View
+              key={index}
+              style={[styles.circle, pinEntered.length >= index && styles.filledCircle]}
+            >
+              {pinEntered.length >= index && (
+                <Text style={styles.circleText}>{pinEntered[index - 1]}</Text>
+              )}
+            </View>
+          ))}
         </View>
         <View style={styles.buttonContainer}>
           <View style={styles.row}>
@@ -103,6 +125,15 @@ const PinAuthScreen = () => {
             >
               <Text style={styles.buttonText}>0</Text>
             </TouchableOpacity>
+            <AppRoundTouchable
+              iconName="backspace"
+              iconSize={35}
+              iconColor="white"
+              iconLibrary="ion"
+              onPress={handleDeletePress}
+              touchableStyle={styles.roundTouchable}
+              iconStyle={styles.roundTouchableIcon}
+            />
           </View>
         </View>
       </View>
@@ -132,18 +163,27 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: 'white', // Adjust the text color as needed
   },
-  pinContainer: {
-    width: 200,
-    height: 40,
-    borderWidth: 1,
-    borderColor: 'white', // Adjust the border color as needed
+  circleContainer: {
+    flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
     marginBottom: 20,
   },
-  pin: {
-    fontSize: 18,
+  circle: {
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: 'white', // Adjust the border color as needed
+    marginHorizontal: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  filledCircle: {
+    backgroundColor: 'white', // Adjust the filled circle color as needed
+  },
+  circleText: {
     color: 'white', // Adjust the text color as needed
+    fontSize: 10,
   },
   buttonContainer: {
     marginTop: 20,
@@ -165,12 +205,16 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'white', // Adjust the border color as needed
   },
-  buttonLast: {
-    marginBottom: 0,
-  },
   buttonText: {
     fontSize: 24,
     color: 'white', // Adjust the text color as needed
+  },
+  roundTouchable: {
+    marginLeft: 20,
+    marginTop: 25
+  },
+  roundTouchableIcon: {
+    // Adjust icon styles as needed
   },
 });
 

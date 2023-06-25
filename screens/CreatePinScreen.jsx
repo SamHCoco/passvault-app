@@ -209,6 +209,7 @@ const styles = StyleSheet.create({
   },
   roundTouchable: {
     marginLeft: 20,
+    marginTop: 25
   },
   roundTouchableIcon: {
     // Adjust icon styles as needed
