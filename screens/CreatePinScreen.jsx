@@ -13,11 +13,19 @@ const CreatePinScreen = () => {
   const handlePinPress = (number) => {
     const newPin = pin + number;
     setPin(newPin);
+    console.log("CURRENT PIN state value: ", pin); // todo - remove
     setPinEntered([...pinEntered, number]);
 
     if (newPin.length === 4) {
-      storePin(newPin);
+        console.log("STORED PIN: ", newPin);
+    //   storePin(newPin);
     }
+  };
+
+  const handleDeletePress = () => {
+    const newPin = pin.slice(0, -1);
+    setPin(newPin);
+    setPinEntered(pinEntered.slice(0, -1));
   };
 
   const storePin = async (newPin) => {
@@ -92,16 +100,15 @@ const CreatePinScreen = () => {
             </TouchableOpacity>
             <AppRoundTouchable
               iconName="backspace"
-              iconSize={24}
+              iconSize={35}
               iconColor="white"
               iconLibrary="ion"
-              onPress={() => console.log('Button pressed')}
+              onPress={handleDeletePress}
               touchableStyle={styles.roundTouchable}
               iconStyle={styles.roundTouchableIcon}
             />
           </View>
         </View>
-        
       </View>
     </ImageBackground>
   );
