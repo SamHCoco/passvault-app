@@ -37,15 +37,47 @@ const CreatePinScreen = () => {
           <Text style={styles.pin}>{pin}</Text>
         </View>
         <View style={styles.buttonContainer}>
-          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 0].map((number) => (
+          <View style={styles.row}>
+            {[1, 2, 3].map((number) => (
+              <TouchableOpacity
+                key={number}
+                style={styles.button}
+                onPress={() => handlePinPress(number.toString())}
+              >
+                <Text style={styles.buttonText}>{number}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+          <View style={styles.row}>
+            {[4, 5, 6].map((number) => (
+              <TouchableOpacity
+                key={number}
+                style={styles.button}
+                onPress={() => handlePinPress(number.toString())}
+              >
+                <Text style={styles.buttonText}>{number}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+          <View style={styles.row}>
+            {[7, 8, 9].map((number) => (
+              <TouchableOpacity
+                key={number}
+                style={styles.button}
+                onPress={() => handlePinPress(number.toString())}
+              >
+                <Text style={styles.buttonText}>{number}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+          <View style={[styles.row, styles.rowLast]}>
             <TouchableOpacity
-              key={number}
-              style={styles.button}
-              onPress={() => handlePinPress(number.toString())}
+              style={[styles.button, styles.buttonLast]}
+              onPress={() => handlePinPress('0')}
             >
-              <Text style={styles.buttonText}>{number}</Text>
+              <Text style={styles.buttonText}>0</Text>
             </TouchableOpacity>
-          ))}
+          </View>
         </View>
       </View>
     </ImageBackground>
@@ -88,17 +120,27 @@ const styles = StyleSheet.create({
     color: 'white', // Adjust the text color as needed
   },
   buttonContainer: {
+    marginTop: 20,
+  },
+  row: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    marginBottom: 20, // Increased spacing between rows
+  },
+  rowLast: {
+    marginLeft: 80,
   },
   button: {
     width: 80,
     height: 80,
+    borderRadius: 40,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: 'white', // Adjust the border color as needed
-    margin: 10,
+  },
+  buttonLast: {
+    marginBottom: 0,
   },
   buttonText: {
     fontSize: 24,
