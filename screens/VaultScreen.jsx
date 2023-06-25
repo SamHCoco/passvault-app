@@ -10,7 +10,7 @@ import AppWebCredential from '../components/AppWebCredential';
 import AppCredentialProvider from '../components/AppCredentialProvider';
 import search from '../service/search';
 
-import { WHITE, DARK_GREY, BLUE } from '../constants/colors';
+import { WHITE, LIGHT_GREY } from '../constants/colors';
 
 import * as SQLite from 'expo-sqlite';
 
@@ -35,7 +35,7 @@ function VaultScreen({ route }) {
     console.log('handleSearch invoked: ', searchText);
     const tableName = selected === 'web' ? 'web' : 'card';
     const columnName = 'name';
-  
+
     // Perform a SELECT LIKE query against the selected table and column
     db.transaction((tx) => {
       tx.executeSql(
@@ -121,7 +121,7 @@ function VaultScreen({ route }) {
           setCredentialProviders(
             records.map((record) => ({
               id: record.id,
-              name: record.name,
+              name: capitalizeFirstLetter(record.name),
               image: require('../assets/icon.png'),
               type: tableName,
             }))
@@ -132,6 +132,10 @@ function VaultScreen({ route }) {
         }
       );
     });
+  };
+
+  const capitalizeFirstLetter = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
   const handleDeleteAction = () => {
@@ -150,7 +154,7 @@ function VaultScreen({ route }) {
         style={{
           flexDirection: 'row',
           alignItems: 'center',
-          backgroundColor: 'white',
+          backgroundColor: WHITE,
         }}
       >
         <View
@@ -165,7 +169,7 @@ function VaultScreen({ route }) {
         >
           <AppCredentialMetric
             iconName={'web'}
-            iconColor={selected === 'web' ? 'lightgreen' : 'dodgerblue'} // Check if selected is 'web' to set icon color
+            iconColor={selected === 'web' ? 'lightgreen' : LIGHT_GREY} // Check if selected is 'web' to set icon color
             iconLibrary={'material'}
             iconSize={45}
             text="Web"
@@ -212,4 +216,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default VaultScreen;
+export default VaultScreen

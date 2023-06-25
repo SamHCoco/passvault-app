@@ -6,6 +6,8 @@ import { useNavigation } from '@react-navigation/native';
 import AppWebCredential from './AppWebCredential';
 import AppCardCredential from './AppCardCredential';
 
+import { BLACK, LIGHT_GREY } from '../constants/colors';
+
 import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase('passvault.db');
@@ -240,7 +242,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 26,
     fontWeight: 'bold',
-    color: 'black',
+    color: BLACK,
     marginLeft: 15
   },
   rowBack: {
