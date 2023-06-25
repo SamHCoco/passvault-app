@@ -6,10 +6,12 @@ import * as Keychain from 'react-native-keychain';
 const CreatePinScreen = () => {
   const navigation = useNavigation();
   const [pin, setPin] = useState('');
+  const [pinEntered, setPinEntered] = useState([]);
 
   const handlePinPress = (number) => {
     const newPin = pin + number;
     setPin(newPin);
+    setPinEntered([...pinEntered, number]);
 
     if (newPin.length === 4) {
       storePin(newPin);
@@ -33,8 +35,17 @@ const CreatePinScreen = () => {
       <View style={styles.overlay} />
       <View style={styles.content}>
         <Text style={styles.title}>Create your Pin</Text>
-        <View style={styles.pinContainer}>
-          <Text style={styles.pin}>{pin}</Text>
+        <View style={styles.circleContainer}>
+          {[1, 2, 3, 4].map((index) => (
+            <View
+              key={index}
+              style={[styles.circle, pinEntered.length >= index && styles.filledCircle]}
+            >
+              {pinEntered.length >= index && (
+                <Text style={styles.circleText}>{pinEntered[index - 1]}</Text>
+              )}
+            </View>
+          ))}
         </View>
         <View style={styles.buttonContainer}>
           <View style={styles.row}>
@@ -79,6 +90,7 @@ const CreatePinScreen = () => {
             </TouchableOpacity>
           </View>
         </View>
+        
       </View>
     </ImageBackground>
   );
@@ -104,19 +116,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 20,
-    color: 'white', // Adjust the text color as needed
-  },
-  pinContainer: {
-    width: 200,
-    height: 40,
-    borderWidth: 1,
-    borderColor: 'white', // Adjust the border color as needed
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom: 20,
-  },
-  pin: {
-    fontSize: 18,
     color: 'white', // Adjust the text color as needed
   },
   buttonContainer: {
@@ -145,6 +144,27 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 24,
     color: 'white', // Adjust the text color as needed
+  },
+  circleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  circle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'white',
+    marginHorizontal: 5,
+  },
+  filledCircle: {
+    backgroundColor: 'white',
+  },
+  circleText: {
+    color: 'white',
+    fontSize: 14,
+    textAlign: 'center',
   },
 });
 
