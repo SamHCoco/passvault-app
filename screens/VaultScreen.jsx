@@ -12,7 +12,6 @@ import search from '../service/search';
 
 import { WHITE, DARK_GREY, BLUE } from '../constants/colors';
 
-
 import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase('passvault.db');
@@ -24,32 +23,15 @@ function VaultScreen({ route }) {
   const [webCredentialCount, setWebCredentialCount] = useState(0);
   const [cardCredentialCount, setCardCredentialCount] = useState(0);
   const [deleteActionFlag, setDeleteActionFlag] = useState(false);
+  const [selected, setSelected] = useState('web'); // New 'selected' state with default value 'web'
 
   const navigation = useNavigation();
-
-  const updateCredentialProviders = () => {
-    const providers = [
-      ...web.map((record) => ({
-        id: record.id,
-        name: record.name,
-        image: require('../assets/icon.png'),
-        type: 'web',
-      })),
-      ...card.map((record) => ({
-        id: record.id,
-        name: record.name,
-        image: require('../assets/icon.png'),
-        type: 'card',
-      })),
-    ];
-    setCredentialProviders(providers);
-  };
 
   /**
    * Search bar handler
    */
   const handleSearch = (searchText) => {
-    console.log('handleSearch invoked');
+    console.log('handleSearch invoked: ', searchText);
     search(searchText)
       .then((searchResults) => {
         console.log('FOUND SEARCH RESULTS: ', searchResults);
@@ -92,6 +74,7 @@ function VaultScreen({ route }) {
     console.log("VAULT SCREEN - useEffect Triggered - ROUTE: ", route); // todo - remove
     if (route && route.params) {
       const { selectedOption } = route.params;
+      setSelected(selectedOption ? selectedOption : 'web'); // Set 'selected' state based on 'selectedOption'
       fetchRecordsFromTable(selectedOption ? selectedOption : 'web');
     } else {
       fetchRecordsFromTable('web');
@@ -100,11 +83,8 @@ function VaultScreen({ route }) {
   }, [deleteActionFlag, route]);
 
   const handleAppCredentialMetricPress = (type) => {
-    if (type === 'web') {
-      fetchRecordsFromTable('web');
-    } else if (type === 'card') {
-      fetchRecordsFromTable('card');
-    }
+    setSelected(type); // Update 'selected' state
+    fetchRecordsFromTable(type);
   };
 
   const fetchRecordsFromTable = (tableName) => {
@@ -163,7 +143,7 @@ function VaultScreen({ route }) {
         >
           <AppCredentialMetric
             iconName={'web'}
-            iconColor={'black'}
+            iconColor={selected === 'web' ? 'lightgreen' : 'dodgerblue'} // Check if selected is 'web' to set icon color
             iconLibrary={'material'}
             iconSize={45}
             text="Web"
@@ -172,7 +152,7 @@ function VaultScreen({ route }) {
           />
           <AppCredentialMetric
             iconName={'card'}
-            iconColor={'black'}
+            iconColor={selected === 'card' ? 'lightgreen' : 'dodgerblue'} // Check if selected is 'card' to set icon color
             iconLibrary={'ion'}
             iconSize={45}
             text="Card"
@@ -183,7 +163,7 @@ function VaultScreen({ route }) {
 
         <AppRoundTouchable
           iconName={'plus'}
-          iconColor={'black'}
+          iconColor={'dodgerblue'}
           iconSize={70}
           iconLibrary={'material'}
           onPress={() => navigation.navigate('Credential')}
