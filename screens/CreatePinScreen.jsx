@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ImageBackground, Vibration } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as SecureStore from 'expo-secure-store';
+
 
 import AppRoundTouchable from '../components/AppRoundTouchable';
 
@@ -42,7 +43,7 @@ const CreatePinScreen = () => {
       // Handle incorrect pin
       setPin('');
       setPinEntered([]);
-      setConfirmPinMode(false);
+      vibrate();
     }
   };
 
@@ -55,6 +56,10 @@ const CreatePinScreen = () => {
     }
   };
 
+  const vibrate = () => {
+    Vibration.vibrate([0, 500]); // Vibrate for 500ms
+  };
+
   return (
     <ImageBackground
       source={require('../assets/blue-background.jpeg')}
@@ -62,7 +67,7 @@ const CreatePinScreen = () => {
     >
       <View style={styles.overlay} />
       <View style={styles.content}>
-        <Text style={styles.title}>{confirmPinMode ? 'Confirm your Pin' : 'Create your Pin'}</Text>
+        <Text style={styles.title}>{confirmPinMode ? 'Confirm Pin' : 'Create Pin'}</Text>
         <View style={styles.circleContainer}>
           {[1, 2, 3, 4].map((index) => (
             <View
