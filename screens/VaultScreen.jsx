@@ -10,6 +10,8 @@ import AppWebCredential from '../components/AppWebCredential';
 import AppCredentialProvider from '../components/AppCredentialProvider';
 import search from '../service/search';
 
+import capitalizeFirstLetter from '../service/stringUtil';
+
 import { WHITE, LIGHT_GREY } from '../constants/colors';
 
 import * as SQLite from 'expo-sqlite';
@@ -47,7 +49,7 @@ function VaultScreen({ route }) {
           setCredentialProviders(
             records.map((record) => ({
               id: record.id,
-              name: record.name,
+              name: capitalizeFirstLetter(record.name),
               image: require('../assets/icon.png'),
               type: tableName,
             }))
@@ -132,10 +134,6 @@ function VaultScreen({ route }) {
         }
       );
     });
-  };
-
-  const capitalizeFirstLetter = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1);
   };
 
   const handleDeleteAction = () => {
