@@ -1,15 +1,15 @@
 import React, { useEffect, useRef } from 'react';
-import { Animated, ImageBackground, StyleSheet, View, Image, useState } from 'react-native';
+import { Animated, ImageBackground, StyleSheet, View, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
-
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import PinAuthScreen from './screens/PinAuthScreen';
+import CreatePinScreen from './screens/CreatePinScreen';
 import VaultScreen from './screens/VaultScreen';
 import BackupScreen from './screens/BackupScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import EditWebCredentialScreen from './screens/EditWebCredentialScreen';
-import AppIcon from './components/AppIcon';
 import createTables from './service/createTable';
 
 const Tab = createBottomTabNavigator();
@@ -21,9 +21,9 @@ const SplashScreen = ({ navigation }) => {
 
   useEffect(() => {
     startAnimation();
-    // Simulating a delay before navigating to the Tabs screen
+    // Simulating a delay before navigating to the AppPinAuth screen
     const timer = setTimeout(() => {
-      navigation.replace('Tabs');
+      navigation.replace('AppPinAuth');
     }, 3000);
 
     return () => clearTimeout(timer); // Clean up the timer when the component unmounts
@@ -58,7 +58,10 @@ const SplashScreen = ({ navigation }) => {
             },
           ]}
         >
-          <Image source={require('/Users/euler/repos/passvault-app/assets/logo-icon-2.png')} style={styles.logoImage} />
+          <Image
+            source={require('/Users/euler/repos/passvault-app/assets/logo-icon-2.png')}
+            style={styles.logoImage}
+          />
         </Animated.View>
       </View>
     </ImageBackground>
@@ -78,18 +81,12 @@ function TabScreen() {
             iconName = focused ? 'cog' : 'cog-outline';
           }
 
-          return (
-            <AppIcon
-              name={iconName}
-              size={size}
-              color={color}
-            />
-          );
-        }
+          return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
+        },
       })}
       tabBarOptions={{
         activeTintColor: 'dodgerblue',
-        inactiveTintColor: 'grey'
+        inactiveTintColor: 'grey',
       }}
     >
       <Tab.Screen name="Vault" component={VaultScreen} />
@@ -107,6 +104,8 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator initialRouteName="SplashScreen" headerMode="none">
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
+        <Stack.Screen name="AppPinAuth" component={PinAuthScreen} />
+        <Stack.Screen name="CreatePin" component={CreatePinScreen} />
         <Stack.Screen name="Tabs" component={TabScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Credential" component={EditWebCredentialScreen} />
         <Stack.Screen name="Vault" component={VaultScreen} />

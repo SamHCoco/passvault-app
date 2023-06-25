@@ -9,6 +9,10 @@ import AppRoundTouchable from '../components/AppRoundTouchable';
 import AppWebCredential from '../components/AppWebCredential';
 import AppCredentialProvider from '../components/AppCredentialProvider';
 import search from '../service/search';
+
+import { WHITE, DARK_GREY, BLUE } from '../constants/colors';
+
+
 import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase('passvault.db');
@@ -85,10 +89,9 @@ function VaultScreen({ route }) {
   };
 
   useEffect(() => {
-    console.log("VAULT SCREEN - ROUTE: ", route); // todo - remove
+    console.log("VAULT SCREEN - useEffect Triggered - ROUTE: ", route); // todo - remove
     if (route && route.params) {
       const { selectedOption } = route.params;
-      console.log("VAULT SCREEN - useEFFECT ROUTE - selectedOption: ", selectedOption);
       fetchRecordsFromTable(selectedOption ? selectedOption : 'web');
     } else {
       fetchRecordsFromTable('web');
@@ -150,7 +153,7 @@ function VaultScreen({ route }) {
       >
         <View
           style={{
-            borderColor: 'black',
+            borderColor: 'lightgrey',
             borderWidth: 1,
             flexDirection: 'row',
             borderRadius: 25,
@@ -181,7 +184,7 @@ function VaultScreen({ route }) {
         <AppRoundTouchable
           iconName={'plus'}
           iconColor={'black'}
-          iconSize={75}
+          iconSize={70}
           iconLibrary={'material'}
           onPress={() => navigation.navigate('Credential')}
         />
