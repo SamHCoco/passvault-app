@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import * as Keychain from 'react-native-keychain';
+import * as SecureStore from 'expo-secure-store';
+
+import AppRoundTouchable from '../components/AppRoundTouchable';
 
 const CreatePinScreen = () => {
   const navigation = useNavigation();
@@ -20,7 +22,7 @@ const CreatePinScreen = () => {
 
   const storePin = async (newPin) => {
     try {
-      await Keychain.setGenericPassword('passvault-app-pin', newPin);
+      await SecureStore.setItemAsync('passvault-app-pin', newPin);
       navigation.navigate('Tabs');
     } catch (error) {
       // Handle error
@@ -88,6 +90,15 @@ const CreatePinScreen = () => {
             >
               <Text style={styles.buttonText}>0</Text>
             </TouchableOpacity>
+            <AppRoundTouchable
+              iconName="backspace"
+              iconSize={24}
+              iconColor="white"
+              iconLibrary="ion"
+              onPress={() => console.log('Button pressed')}
+              touchableStyle={styles.roundTouchable}
+              iconStyle={styles.roundTouchableIcon}
+            />
           </View>
         </View>
         
@@ -165,6 +176,12 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 14,
     textAlign: 'center',
+  },
+  roundTouchable: {
+    marginLeft: 20,
+  },
+  roundTouchableIcon: {
+    // Adjust icon styles as needed
   },
 });
 
