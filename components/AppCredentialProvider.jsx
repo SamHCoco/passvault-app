@@ -5,8 +5,9 @@ import { useNavigation } from '@react-navigation/native';
 
 import AppWebCredential from './AppWebCredential';
 import AppCardCredential from './AppCardCredential';
+import AppRoundTouchable from './AppRoundTouchable';
 
-import { BLACK, LIGHT_GREY } from '../constants/colors';
+import { BLACK, LIGHT_GREEN, LIGHT_GREY, WHITE } from '../constants/colors';
 
 import * as SQLite from 'expo-sqlite';
 
@@ -82,12 +83,17 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
   const renderHiddenItem = (data, rowMap) => {
     return (
       <View style={styles.rowBack}>
-        <TouchableOpacity style={styles.editButton} onPress={() => handleEditPress(data)}>
-          <Text>Edit</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.deleteButton} onPress={() => handleDeletePress(data)}>
-          <Text>Delete</Text>
-        </TouchableOpacity>
+        <AppRoundTouchable iconName="pencil" 
+                           iconSize={24} 
+                           iconColor={WHITE} 
+                           touchableStyle={styles.editButton}
+                           onPress={() => handleEditPress(data)} />
+        <AppRoundTouchable iconName="md-trash" 
+                           iconSize={24} 
+                           iconColor={WHITE} 
+                           iconLibrary="ion"
+                           touchableStyle={styles.editButton}
+                           onPress={() => handleDeletePress(data)} />
       </View>
     );
   };
@@ -250,7 +256,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    backgroundColor: 'gray',
+    backgroundColor: LIGHT_GREY,
     marginHorizontal: 10
   },
   editButton: {
@@ -258,7 +264,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 50,
     height: '100%',
-    backgroundColor: 'dodgerblue',
+    backgroundColor: LIGHT_GREEN,
     alignSelf: 'flex-end'
   },
   deleteButton: {
@@ -266,7 +272,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: 50,
     height: '100%',
-    backgroundColor: 'red',
+    backgroundColor: LIGHT_GREEN,
     alignSelf: 'flex-end'
   }
 });

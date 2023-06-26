@@ -153,7 +153,7 @@ function VaultScreen({ route }) {
             >
               <View
                 style={{
-                  borderColor: 'lightgrey',
+                  borderColor: LIGHT_GREY,
                   borderWidth: 0,
                   flexDirection: 'row',
                   borderRadius: 25,
@@ -165,7 +165,7 @@ function VaultScreen({ route }) {
                 <View style={styles.metricButtons}>
                   <AppCredentialMetric
                     iconName={'web'}
-                    iconColor={selected === 'web' ? 'lightgreen' : BLACK} // Check if selected is 'web' to set icon color
+                    iconColor={selected === 'web' ? LIGHT_GREEN : BLACK} // Check if selected is 'web' to set icon color
                     iconLibrary={'material'}
                     iconSize={45}
                     text="Web"

@@ -4,6 +4,8 @@ import { View, StyleSheet, Text, Clipboard } from 'react-native';
 import AppRoundTouchable from './AppRoundTouchable';
 import AppIcon from './AppIcon';
 
+import { BLACK } from '../constants/colors';
+
 function AppWebCredential({ username, password }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
   
@@ -41,7 +43,7 @@ function AppWebCredential({ username, password }) {
             iconName="eye-outline"
             iconLibrary="ion"
             iconSize={iconSize}
-            iconColor="black"
+            iconColor={BLACK}
             onPress={togglePasswordVisibility}
             touchableStyle={styles.touchable}
           />
@@ -65,8 +67,10 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     borderWidth: 1,
     borderColor: 'lightgrey',
-    marginHorizontal: 2,
+    marginHorizontal: 6,
+    marginVertical: 0,
     borderRadius: 7,
+    // height: 87,
     backgroundColor: "white"
   },
   row: {

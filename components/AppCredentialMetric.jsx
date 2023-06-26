@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, Image, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+
+import { LIGHT_GREY } from '../constants/colors';
 
 import AppIcon from './AppIcon';
 
@@ -41,7 +43,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
       },
       label: {
-        fontSize: 16,
+        fontSize: 20,
         marginRight: 10,
         fontWeight: 'bold'
       },
@@ -50,8 +52,9 @@ const styles = StyleSheet.create({
         height: 50,
       },
       subLabel: {
-        fontSize: 14,
+        fontSize: 17,
         fontStyle: 'italic',
+        color: LIGHT_GREY
       },
 });
 

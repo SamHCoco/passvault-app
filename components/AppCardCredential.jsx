@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 
+import { LIGHT_GREEN, LIGHT_GREY } from '../constants/colors';
+
 import AppIcon from './AppIcon';
 
 function AppCardCredential({ bank, cardNumber, expDate, securityCode }) {
@@ -34,9 +36,12 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     paddingHorizontal: 16,
     paddingTop: 16,
-    backgroundColor: 'grey',
-    marginHorizontal: 2,
+    marginHorizontal: 8,
     borderRadius: 10,
+    marginVertical: 3,
+    borderWidth: 2,
+    backgroundColor: LIGHT_GREEN,
+    borderColor: LIGHT_GREY
   },
   row: {
     flexDirection: 'row',
@@ -58,6 +63,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     textAlign: 'left',
     fontSize: 25,
+    fontWeight: 'bold',
     color: 'white'
   },
   expText: {
