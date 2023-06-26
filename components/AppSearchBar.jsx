@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
+import { BLACK } from '../constants/colors';
 
 const AppSearchBar = ({ onSearch }) => {
   const [searchText, setSearchText] = useState('');
@@ -16,7 +17,7 @@ const AppSearchBar = ({ onSearch }) => {
       <View style={styles.searchBarContainer}>
         <TextInput
           style={styles.searchBarInput}
-          placeholder="search"
+          placeholder="Search"
           placeholderTextColor="#999"
           value={searchText}
           onChangeText={(text) => {
@@ -25,7 +26,7 @@ const AppSearchBar = ({ onSearch }) => {
           }}
         />
         <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-          <AntDesign name="search1" size={18} color="dodgerblue" />
+          <AntDesign name="search1" size={25} color={BLACK} />
         </TouchableOpacity>
       </View>
     </View>
@@ -36,7 +37,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     marginHorizontal: 12,
-    marginVertical: 12,
+    marginVertical: 12
   },
   searchBarContainer: {
     flexDirection: 'row',
@@ -46,12 +47,14 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     paddingLeft: 10,
     paddingRight: 5,
+    backgroundColor: 'white',
+    borderWidth: 0
   },
   searchBarInput: {
     flex: 1,
-    height: 30,
+    height: 45,
     fontSize: 16,
-    color: '#333',
+    color: BLACK,
     marginRight: 5,
     paddingTop: 0,
     paddingBottom: 0,

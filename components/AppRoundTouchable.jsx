@@ -2,6 +2,8 @@ import React from 'react';
 import { TouchableOpacity, View, StyleSheet, Text } from 'react-native';
 import AppIcon from './AppIcon';
 
+import { LIGHT_GREY } from '../constants/colors';
+
 const AppRoundTouchable = ({ iconName, iconSize, iconColor, iconLibrary, onPress, touchableStyle, iconStyle, text }) => {
   const containerStyle = touchableStyle ? touchableStyle : styles.container;
   const textStyle = textStyle ? textStyle : styles.text;
@@ -31,7 +33,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: LIGHT_GREY,
     marginLeft: 25,
   },
   text: {

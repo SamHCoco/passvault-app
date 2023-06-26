@@ -13,6 +13,8 @@ import EditWebCredentialScreen from './screens/EditWebCredentialScreen';
 import createTables from './service/createTable';
 import AppIcon from './components/AppIcon';
 
+import { BLACK, LIGHT_GREEN } from './constants/colors';
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
@@ -88,8 +90,8 @@ function TabScreen() {
         },
       })}
       tabBarOptions={{
-        activeTintColor: 'dodgerblue',
-        inactiveTintColor: 'grey',
+        activeTintColor: LIGHT_GREEN,
+        inactiveTintColor: BLACK,
       }}
     >
       <Tab.Screen name="Vault" component={VaultScreen} />

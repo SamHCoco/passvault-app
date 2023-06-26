@@ -12,7 +12,7 @@ import search from '../service/search';
 
 import capitalizeFirstLetter from '../service/stringUtil';
 
-import { WHITE, LIGHT_GREY } from '../constants/colors';
+import { WHITE, LIGHT_GREY, BLACK, LIGHT_GREEN } from '../constants/colors';
 
 import * as SQLite from 'expo-sqlite';
 
@@ -149,49 +149,53 @@ function VaultScreen({ route }) {
   return (
     <View>
             <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                backgroundColor: WHITE,
-              }}
+              style={styles.topDashboard}
             >
               <View
                 style={{
                   borderColor: 'lightgrey',
-                  borderWidth: 1,
+                  borderWidth: 0,
                   flexDirection: 'row',
                   borderRadius: 25,
                   width: 255,
-                  marginLeft: 4,
+                  // marginLeft: 4,
+                  marginHorizontal: 6
                 }}
               >
-                <AppCredentialMetric
-                  iconName={'web'}
-                  iconColor={selected === 'web' ? 'lightgreen' : LIGHT_GREY} // Check if selected is 'web' to set icon color
-                  iconLibrary={'material'}
-                  iconSize={45}
-                  text="Web"
-                  subText={webCredentialCount}
-                  onPress={() => handleAppCredentialMetricPress('web')}
-                />
-                <AppCredentialMetric
-                  iconName={'card'}
-                  iconColor={selected === 'card' ? 'lightgreen' : 'dodgerblue'} // Check if selected is 'card' to set icon color
-                  iconLibrary={'ion'}
-                  iconSize={45}
-                  text="Card"
-                  subText={cardCredentialCount}
-                  onPress={() => handleAppCredentialMetricPress('card')}
-                />
+                <View style={styles.metricButtons}>
+                  <AppCredentialMetric
+                    iconName={'web'}
+                    iconColor={selected === 'web' ? 'lightgreen' : BLACK} // Check if selected is 'web' to set icon color
+                    iconLibrary={'material'}
+                    iconSize={45}
+                    text="Web"
+                    subText={webCredentialCount}
+                    onPress={() => handleAppCredentialMetricPress('web')}
+                  />
+                </View>
+                <View style={styles.metricButtons}>
+                  <AppCredentialMetric
+                    iconName={'card'}
+                    iconColor={selected === 'card' ? 'lightgreen' : BLACK} // Check if selected is 'card' to set icon color
+                    iconLibrary={'ion'}
+                    iconSize={45}
+                    text="Card"
+                    subText={cardCredentialCount}
+                    onPress={() => handleAppCredentialMetricPress('card')}
+                  />
+                </View>
               </View>
 
-              <AppRoundTouchable
-                iconName={'plus'}
-                iconColor={'dodgerblue'}
-                iconSize={70}
-                iconLibrary={'material'}
-                onPress={() => navigation.navigate('Credential')}
-              />
+              <View >
+                <AppRoundTouchable
+                  iconName={'plus'}
+                  iconColor={BLACK}
+                  iconSize={70}
+                  iconLibrary={'material'}
+                  onPress={() => navigation.navigate('Credential')}
+                  touchableStyle={styles.addButton}
+                />
+              </View>
             </View>
             <AppSearchBar onSearch={(searchText) => handleSearchTextChange(searchText)} />
             <FlatList
@@ -204,6 +208,26 @@ function VaultScreen({ route }) {
 }
 
 const styles = StyleSheet.create({
+  topDashboard : {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: WHITE,
+    borderWidth: 0,
+    borderRadius:  25,
+    marginTop: 12,
+    marginHorizontal: 10,
+    borderColor: LIGHT_GREY
+  },
+  addButton: {
+    marginRight: 4,
+    width: 100,
+    height: 100,
+    borderRadius: 150,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 2,
+    borderColor: LIGHT_GREY
+  },
   rowBack: {
     flex: 1,
     flexDirection: 'row',
@@ -212,6 +236,11 @@ const styles = StyleSheet.create({
     marginRight: 2,
     paddingHorizontal: 5,
   },
+  metricButtons: {
+    borderWidth: 0,
+    borderRadius: 60,
+    marginHorizontal: 6
+  }
 });
 
 export default VaultScreen

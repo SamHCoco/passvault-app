@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
       label: {
         fontSize: 16,
         marginRight: 10,
+        fontWeight: 'bold'
       },
       icon: {
         width: 50,
