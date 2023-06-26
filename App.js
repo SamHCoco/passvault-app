@@ -13,7 +13,7 @@ import EditWebCredentialScreen from './screens/EditWebCredentialScreen';
 import createTables from './service/createTable';
 import AppIcon from './components/AppIcon';
 
-import { BLACK, LIGHT_GREEN } from './constants/colors';
+import { BLACK, LIGHT_GREEN, WHITE } from './constants/colors';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -86,17 +86,20 @@ function TabScreen() {
             iconName = focused ? 'file-restore': 'file-restore-outline';
           }
 
-          return <AppIcon name={iconName} size={size} color={color} />;
+          return <AppIcon name={iconName} size={30} color={color} />;
         },
       })}
       tabBarOptions={{
         activeTintColor: LIGHT_GREEN,
         inactiveTintColor: BLACK,
+        labelStyle: {
+          fontSize: 14, // Adjust the fontSize value (14 in this example) to the desired font size
+        },
       }}
     >
-      <Tab.Screen name="Vault" component={VaultScreen} />
-      <Tab.Screen name="Backup" component={BackupScreen} />
-      <Tab.Screen name="Settings" component={SettingsScreen} />
+      <Tab.Screen name="Vault" component={VaultScreen} options={tabScreen.options} />
+      <Tab.Screen name="Backup" component={BackupScreen} options={tabScreen.options} />
+      <Tab.Screen name="Settings" component={SettingsScreen} options={tabScreen.options} />
     </Tab.Navigator>
   );
 }
@@ -118,6 +121,12 @@ export default function App() {
       </Stack.Navigator>
     </NavigationContainer>
   );
+}
+
+const tabScreen = {
+  options: {
+    headerTitleAlign: 'center'
+  }
 }
 
 // Styles
