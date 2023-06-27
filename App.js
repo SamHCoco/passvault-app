@@ -1,9 +1,9 @@
 import React, { useEffect, useRef } from 'react';
-import { Animated, ImageBackground, StyleSheet, View, Image } from 'react-native';
+import { Animated, ImageBackground, StyleSheet, View, Image, Dimensions, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 import PinAuthScreen from './screens/PinAuthScreen';
 import CreatePinScreen from './screens/CreatePinScreen';
 import VaultScreen from './screens/VaultScreen';
@@ -13,10 +13,13 @@ import EditWebCredentialScreen from './screens/EditWebCredentialScreen';
 import createTables from './service/createTable';
 import AppIcon from './components/AppIcon';
 
+import * as SecureStore from 'expo-secure-store';
+
 import { BLACK, LIGHT_GREEN, WHITE } from './constants/colors';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
+const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 // SplashScreen component
 const SplashScreen = ({ navigation }) => {
@@ -24,50 +27,50 @@ const SplashScreen = ({ navigation }) => {
 
   useEffect(() => {
     startAnimation();
-    // Simulating a delay before navigating to the AppPinAuth screen
     const timer = setTimeout(() => {
-      navigation.replace('AppPinAuth');
+      checkPinExists();
+      // navigation.replace('AppPinAuth');
     }, 3000);
 
-    return () => clearTimeout(timer); // Clean up the timer when the component unmounts
+    return () => clearTimeout(timer);
   }, []);
+
+
+  const checkPinExists = async () => {
+    try {
+      const credentials = await SecureStore.getItemAsync('passvault-app-pin');
+      if (credentials) {
+        navigation.navigate('AppPinAuth');
+      } else {
+        navigation.navigate('CreatePin'); // Pin does not exist, navigate to PIN creation screen
+      }
+    } catch (error) {
+      // Handle error
+    }
+  };
 
   const startAnimation = () => {
     Animated.timing(logoAnimation, {
-      toValue: 1,
-      duration: 1500,
+      toValue: 0.25,
+      duration: 2500,
       useNativeDriver: true,
     }).start();
   };
 
+  const logoTranslateY = logoAnimation.interpolate({
+    inputRange: [0, 1],
+    outputRange: [-200, 0.25 * SCREEN_HEIGHT],
+  });
+
   return (
-    <ImageBackground
-      style={styles.container}
-      source={require('/Users/euler/repos/passvault-app/assets/blue-background.jpeg')}
-    >
-      <View style={styles.logoContainer}>
-        <Animated.View
-          style={[
-            styles.logo,
-            {
-              transform: [
-                {
-                  translateY: logoAnimation.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [-200, 0], // Slide the logo from top to center
-                  }),
-                },
-              ],
-            },
-          ]}
-        >
-          <Image
-            source={require('/Users/euler/repos/passvault-app/assets/logo-icon-2.png')}
-            style={styles.logoImage}
-          />
-        </Animated.View>
+    <View style={styles.logoContainer}>
+      <Animated.View style={[styles.logo, { transform: [{ translateY: logoTranslateY }] }]}>
+        <Image source={require('/Users/euler/repos/passvault-app/assets/passvault-icon-v2-edit.png')} style={styles.logoImage} />
+      </Animated.View>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>PassVault</Text>
       </View>
-    </ImageBackground>
+    </View>
   );
 };
 
@@ -93,7 +96,7 @@ function TabScreen() {
         activeTintColor: LIGHT_GREEN,
         inactiveTintColor: BLACK,
         labelStyle: {
-          fontSize: 14, // Adjust the fontSize value (14 in this example) to the desired font size
+          fontSize: 14,
         },
       }}
     >
@@ -129,23 +132,34 @@ const tabScreen = {
   }
 }
 
-// Styles
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   logoContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: WHITE,
   },
   logo: {
-    width: 200,
-    height: 200,
+    width: 100,
+    height: 150,
   },
   logoImage: {
     width: '100%',
     height: '100%',
     resizeMode: 'contain',
+  },
+  titleContainer: {
+    position: 'absolute',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: 0.25 * SCREEN_HEIGHT + 10
+  },
+  title: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    marginTop: 10,
+    color: LIGHT_GREEN,
+    fontFamily: 'Roboto'
   },
 });
