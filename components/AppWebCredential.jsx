@@ -4,7 +4,7 @@ import { View, StyleSheet, Text, Clipboard } from 'react-native';
 import AppRoundTouchable from './AppRoundTouchable';
 import AppIcon from './AppIcon';
 
-import { BLACK } from '../constants/colors';
+import { BLACK, LIGHT_GREY } from '../constants/colors';
 
 function AppWebCredential({ username, password }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -22,7 +22,7 @@ function AppWebCredential({ username, password }) {
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <AppIcon name="md-person" size={25} color="black" library="ion" iconStyle={{ marginHorizontal: 3 }} />
+        <AppIcon name="md-person" size={25} color={LIGHT_GREY} library="ion" iconStyle={{ marginHorizontal: 3 }} />
         <Text style={styles.text}>{username}</Text>
         <View style={styles.alignRight}>
           <AppRoundTouchable
@@ -36,7 +36,7 @@ function AppWebCredential({ username, password }) {
         </View>
       </View>
       <View style={styles.row}>
-        <AppIcon name="lock-closed" size={25} color="black" library="ion" iconStyle={{ marginHorizontal: 3 }} />
+        <AppIcon name="lock-closed" size={25} color={LIGHT_GREY} library="ion" iconStyle={{ marginHorizontal: 3 }} />
         <Text style={styles.text}>{passwordVisible ? password : '•••••••••••••'}</Text>
         <View style={styles.alignRight}>
           <AppRoundTouchable
@@ -65,8 +65,9 @@ function AppWebCredential({ username, password }) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    borderWidth: 1,
+    borderWidth: 0,
     borderColor: 'lightgrey',
+    borderBottomWidth: 1,
     marginHorizontal: 6,
     marginVertical: 0,
     borderRadius: 7,

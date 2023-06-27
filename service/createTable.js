@@ -5,7 +5,7 @@ const db = SQLite.openDatabase('passvault.db');
 export const createTables = () => {
   db.transaction((tx) => {
     tx.executeSql(
-      'CREATE TABLE IF NOT EXISTS web (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE)',
+      'CREATE TABLE IF NOT EXISTS web (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, favicon TEXT)',
       [],
       (_, result) => {
         console.log('Web table created successfully');

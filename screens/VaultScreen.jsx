@@ -30,9 +30,6 @@ function VaultScreen({ route }) {
 
   const navigation = useNavigation();
 
-  /**
-   * Search bar handler
-   */
   const handleSearch = (searchText) => {
     console.log('handleSearch invoked: ', searchText);
     const tableName = selected === 'web' ? 'web' : 'card';

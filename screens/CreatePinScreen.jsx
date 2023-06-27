@@ -7,6 +7,7 @@ const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
 import AppRoundTouchable from '../components/AppRoundTouchable';
+import { BLACK, WHITE } from '../constants/colors';
 
 const CreatePinScreen = () => {
   const navigation = useNavigation();
@@ -63,11 +64,8 @@ const CreatePinScreen = () => {
   };
 
   return (
-    <ImageBackground
-      source={require('../assets/blue-background.jpeg')}
-      style={styles.container}
-    >
-      <View style={styles.overlay} />
+    <View style={styles.container}>
+          <View style={styles.overlay} />
       <View style={styles.content}>
         <Text style={styles.title}>{confirmPinMode ? 'Confirm Pin' : 'Create Pin'}</Text>
         <View style={styles.circleContainer}>
@@ -135,7 +133,7 @@ const CreatePinScreen = () => {
           </View>
         </View>
       </View>
-    </ImageBackground>
+    </View>
   );
 };
 
@@ -148,7 +146,7 @@ const styles = StyleSheet.create({
     },
     overlay: {
       ...StyleSheet.absoluteFillObject,
-      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Adjust the overlay opacity as needed
+      backgroundColor: WHITE, // Adjust the overlay opacity as needed
     },
     content: {
       flex: 1,
@@ -178,10 +176,10 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     },
     filledCircle: {
-      backgroundColor: 'white', // Adjust the filled circle color as needed
+      backgroundColor: BLACK, // Adjust the filled circle color as needed
     },
     circleText: {
-      color: 'white', // Adjust the text color as needed
+      color: BLACK, // Adjust the text color as needed
       fontSize: screenWidth * 0.025 * 0.6, // Adjust the circle text size based on screen width
     },
     buttonContainer: {
@@ -202,11 +200,12 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       borderWidth: 1,
-      borderColor: 'white', // Adjust the border color as needed
+      borderColor: BLACK, // Adjust the border color as needed
+      marginHorizontal: 8
     },
     buttonText: {
       fontSize: screenWidth * 0.2 * 0.6, // Adjust the button text size based on screen width
-      color: 'white', // Adjust the text color as needed
+      color: BLACK, // Adjust the text color as needed
     },
     roundTouchable: {
       marginLeft: screenWidth * 0.05, // Adjust the margin left based on screen width
