@@ -17,11 +17,7 @@ function SplashScreen(props) {
   };
 
   return (
-    <ImageBackground
-      style={styles.container}
-      source={require('../assets/blue-background.jpeg')}
-    >
-      <View style={styles.logoContainer}>
+    <View style={styles.logoContainer}>
         <Animated.View
           style={[
             styles.logo,
@@ -37,10 +33,9 @@ function SplashScreen(props) {
             },
           ]}
         >
-          <Image source={require('../assets/logo-icon-2.png')} style={styles.logoImage} />
+          <Image source={require('../assets/passvault-icon-v2.png')} style={styles.logoImage} />
         </Animated.View>
       </View>
-    </ImageBackground>
   );
 }
 

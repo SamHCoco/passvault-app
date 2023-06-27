@@ -115,6 +115,7 @@ const CreatePinScreen = () => {
             ))}
           </View>
           <View style={[styles.row, styles.rowLast]}>
+            <View style={styles.emptyButton} />
             <TouchableOpacity
               style={[styles.button, styles.buttonLast]}
               onPress={() => handlePinPress('0')}
@@ -124,7 +125,7 @@ const CreatePinScreen = () => {
             <AppRoundTouchable
               iconName="backspace"
               iconSize={35}
-              iconColor="white"
+              iconColor={BLACK}
               iconLibrary="ion"
               onPress={handleDeletePress}
               touchableStyle={styles.roundTouchable}
@@ -138,82 +139,99 @@ const CreatePinScreen = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      resizeMode: 'cover',
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    overlay: {
-      ...StyleSheet.absoluteFillObject,
-      backgroundColor: WHITE, // Adjust the overlay opacity as needed
-    },
-    content: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: screenWidth * 0.8, // Adjust the content width as needed (80% of screen width)
-    },
-    title: {
-      fontSize: screenWidth * 0.05, // Adjust the font size based on screen width
-      fontWeight: 'bold',
-      marginBottom: screenHeight * 0.025, // Adjust the margin bottom based on screen height
-      color: 'white', // Adjust the text color as needed
-    },
-    circleContainer: {
-      flexDirection: 'row',
-      justifyContent: 'center',
-      marginBottom: screenHeight * 0.025, // Adjust the margin bottom based on screen height
-    },
-    circle: {
-      width: screenWidth * 0.025, // Adjust the circle size based on screen width
-      height: screenWidth * 0.025, // Adjust the circle size based on screen width
-      borderRadius: (screenWidth * 0.025) / 2, // Adjust the circle border radius based on screen width
-      borderWidth: 1,
-      borderColor: 'white', // Adjust the border color as needed
-      marginHorizontal: screenWidth * 0.0125, // Adjust the margin horizontal based on screen width
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    filledCircle: {
-      backgroundColor: BLACK, // Adjust the filled circle color as needed
-    },
-    circleText: {
-      color: BLACK, // Adjust the text color as needed
-      fontSize: screenWidth * 0.025 * 0.6, // Adjust the circle text size based on screen width
-    },
-    buttonContainer: {
-      marginTop: screenHeight * 0.05, // Adjust the margin top based on screen height
-    },
-    row: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      marginBottom: screenHeight * 0.015, // Adjust the margin bottom based on screen height
-    },
-    rowLast: {
-      marginLeft: screenWidth * 0.2, // Adjust the margin left based on screen width
-    },
-    button: {
-      width: screenWidth * 0.2, // Adjust the button width based on screen width
-      height: screenWidth * 0.2, // Adjust the button height based on screen width
-      borderRadius: (screenWidth * 0.2) / 2, // Adjust the button border radius based on screen width
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderWidth: 1,
-      borderColor: BLACK, // Adjust the border color as needed
-      marginHorizontal: 8
-    },
-    buttonText: {
-      fontSize: screenWidth * 0.2 * 0.6, // Adjust the button text size based on screen width
-      color: BLACK, // Adjust the text color as needed
-    },
-    roundTouchable: {
-      marginLeft: screenWidth * 0.05, // Adjust the margin left based on screen width
-      marginTop: screenHeight * 0.03, // Adjust the margin top based on screen height
-    },
-    roundTouchableIcon: {
-      // Adjust icon styles as needed
-    },
+  container: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: WHITE
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: WHITE, // Adjust the overlay opacity as needed
+  },
+  content: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: screenWidth * 0.8, // Adjust the content width as needed (80% of screen width)
+  },
+  title: {
+    fontSize: screenWidth * 0.05, // Adjust the font size based on screen width
+    fontWeight: 'bold',
+    marginBottom: screenHeight * 0.025, // Adjust the margin bottom based on screen height
+    color: BLACK, // Adjust the text color as needed
+  },
+  circleContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: screenHeight * 0.025, // Adjust the margin bottom based on screen height
+  },
+  circle: {
+    width: screenWidth * 0.025, // Adjust the circle size based on screen width
+    height: screenWidth * 0.025, // Adjust the circle size based on screen width
+    borderRadius: (screenWidth * 0.025) / 2, // Adjust the circle border radius based on screen width
+    borderWidth: 1,
+    borderColor: BLACK, // Adjust the border color as needed
+    marginHorizontal: screenWidth * 0.0125, // Adjust the margin horizontal based on screen width
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  filledCircle: {
+    backgroundColor: BLACK, // Adjust the filled circle color as needed
+  },
+  circleText: {
+    color: BLACK, // Adjust the text color as needed - todo - remove number from circle
+    fontSize: screenWidth * 0.025 * 0.6, // Adjust the circle text size based on screen width
+  },
+  buttonContainer: {
+    marginTop: screenHeight * 0.05, // Adjust the margin top based on screen height
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: screenHeight * 0.015, // Adjust the margin bottom based on screen height
+  },
+  button: {
+    width: screenWidth * 0.2, // Adjust the button width based on screen width
+    height: screenWidth * 0.2, // Adjust the button height based on screen width
+    borderRadius: (screenWidth * 0.2) / 2, // Adjust the button border radius based on screen width
+    borderWidth: 1,
+    borderColor: BLACK, // Adjust the button border color as needed
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 8
+  },
+  emptyButton: {
+    width: screenWidth * 0.2, // Adjust the button width based on screen width
+    height: screenWidth * 0.2, // Adjust the button height based on screen width
+    borderRadius: (screenWidth * 0.2) / 2, // Adjust the button border radius based on screen width
+    borderWidth: 1,
+    borderColor: WHITE, // Adjust the button border color as needed
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: BLACK, // Adjust the button text color as needed
+    fontSize: screenWidth * 0.2 * 0.3, // Adjust the button text size based on screen width
+  },
+  rowLast: {
+    marginBottom: 0, // No margin bottom for the last row
+  },
+  buttonLast: {
+    backgroundColor: WHITE, // Adjust the button background color as needed
+  },
+  roundTouchable: {
+    width: screenWidth * 0.2, // Adjust the round touchable width based on screen width
+    height: screenWidth * 0.2, // Adjust the round touchable height based on screen width
+    borderRadius: (screenWidth * 0.2) / 2, // Adjust the round touchable border radius based on screen width
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: WHITE, // Adjust the round touchable background color as needed
+  },
+  roundTouchableIcon: {
+    marginTop: screenHeight * 0.015, // Adjust the margin top based on screen height
+  },
   });
 
 export default CreatePinScreen;
