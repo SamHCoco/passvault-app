@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Text, FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, FlatList, View, StyleSheet, Dimensions } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
-import Screen from '../components/Screen';
 import AppCredentialMetric from '../components/AppCredentialMetric';
 import AppSearchBar from '../components/AppSearchBar';
 import AppRoundTouchable from '../components/AppRoundTouchable';
@@ -17,6 +16,10 @@ import { WHITE, LIGHT_GREY, BLACK, LIGHT_GREEN } from '../constants/colors';
 import * as SQLite from 'expo-sqlite';
 
 const db = SQLite.openDatabase('passvault.db');
+
+const screenWidth = Dimensions.get('window').width;
+const screenHeight = Dimensions.get('window').height;
+const metricButtonWidth = screenWidth * 0.3;
 
 function VaultScreen({ route }) {
   const [web, setWeb] = useState([]);
@@ -144,100 +147,88 @@ function VaultScreen({ route }) {
   };
 
   return (
-    <View>
-            <View
-              style={styles.topDashboard}
-            >
-              <View
-                style={{
-                  borderColor: LIGHT_GREY,
-                  borderWidth: 0,
-                  flexDirection: 'row',
-                  borderRadius: 25,
-                  width: 255,
-                  // marginLeft: 4,
-                  marginHorizontal: 6
-                }}
-              >
-                <View style={styles.metricButtons}>
-                  <AppCredentialMetric
-                    iconName={'web'}
-                    iconColor={selected === 'web' ? LIGHT_GREEN : BLACK} // Check if selected is 'web' to set icon color
-                    iconLibrary={'material'}
-                    iconSize={45}
-                    text="Web"
-                    subText={webCredentialCount}
-                    onPress={() => handleAppCredentialMetricPress('web')}
-                  />
-                </View>
-                <View style={styles.metricButtons}>
-                  <AppCredentialMetric
-                    iconName={'card'}
-                    iconColor={selected === 'card' ? 'lightgreen' : BLACK} // Check if selected is 'card' to set icon color
-                    iconLibrary={'ion'}
-                    iconSize={45}
-                    text="Card"
-                    subText={cardCredentialCount}
-                    onPress={() => handleAppCredentialMetricPress('card')}
-                  />
-                </View>
-              </View>
-
-              <View >
-                <AppRoundTouchable
-                  iconName={'plus'}
-                  iconColor={BLACK}
-                  iconSize={70}
-                  iconLibrary={'material'}
-                  onPress={() => navigation.navigate('Credential')}
-                  touchableStyle={styles.addButton}
-                />
-              </View>
-            </View>
-            <AppSearchBar onSearch={(searchText) => handleSearchTextChange(searchText)} />
-            <FlatList
-              data={credentialProviders}
-              renderItem={renderItemFlatList}
-              keyExtractor={(item) => item.type + item.id.toString()}
-            />
+    <View style={styles.container}>
+      <View style={styles.topDashboard}>
+        <View style={styles.metricButtonsContainer}>
+          <AppCredentialMetric
+            iconName={'web'}
+            iconColor={selected === 'web' ? LIGHT_GREEN : BLACK} // Check if selected is 'web' to set icon color
+            iconLibrary={'material'}
+            iconSize={screenWidth * 0.11}
+            text="Web"
+            subText={webCredentialCount}
+            onPress={() => handleAppCredentialMetricPress('web')}
+            style={styles.metricButton}
+          />
+          <AppCredentialMetric
+            iconName={'card'}
+            iconColor={selected === 'card' ? LIGHT_GREEN : BLACK} // Check if selected is 'card' to set icon color
+            iconLibrary={'ion'}
+            iconSize={screenWidth * 0.11}
+            text="Card"
+            subText={cardCredentialCount}
+            onPress={() => handleAppCredentialMetricPress('card')}
+            style={styles.metricButton}
+          />
+        </View>
+        <View>
+          <AppRoundTouchable
+            iconName={'plus'}
+            iconColor={BLACK}
+            iconSize={screenWidth * 0.17}
+            iconLibrary={'material'}
+            onPress={() => navigation.navigate('Credential')}
+            touchableStyle={styles.addButton}
+          />
+        </View>
+      </View>
+      <AppSearchBar onSearch={(searchText) => handleSearchTextChange(searchText)} />
+      <FlatList
+        data={credentialProviders}
+        renderItem={renderItemFlatList}
+        keyExtractor={(item) => item.type + item.id.toString()}
+      />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  topDashboard : {
+  container: {
+    flex: 1,
+  },
+  topDashboard: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: WHITE,
     borderWidth: 0,
-    borderRadius:  25,
-    marginTop: 12,
-    marginHorizontal: 10,
-    borderColor: LIGHT_GREY
+    borderRadius: 25,
+    marginTop: screenHeight * 0.014,
+    marginHorizontal: screenWidth * 0.024,
+    borderColor: LIGHT_GREY,
+    paddingVertical: screenHeight * 0.013,
+  },
+  metricButtonsContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flex: 1,
+    marginHorizontal: screenWidth * 0.017,
+  },
+  metricButton: {
+    width: metricButtonWidth,
+    borderWidth: 0,
+    borderRadius: metricButtonWidth / 2,
   },
   addButton: {
-    marginRight: 4,
-    width: 100,
-    height: 100,
-    borderRadius: 150,
+    marginRight: screenWidth * 0.009,
+    width: screenWidth * 0.25,
+    height: screenWidth * 0.25,
+    borderRadius: (screenWidth * 0.25) / 2,
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: LIGHT_GREY
+    borderColor: LIGHT_GREY,
   },
-  rowBack: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    marginRight: 2,
-    paddingHorizontal: 5,
-  },
-  metricButtons: {
-    borderWidth: 0,
-    borderRadius: 60,
-    marginHorizontal: 6
-  }
 });
 
-export default VaultScreen
+export default VaultScreen;

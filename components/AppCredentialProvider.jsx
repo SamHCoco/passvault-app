@@ -10,6 +10,7 @@ import AppRoundTouchable from './AppRoundTouchable';
 import { BLACK, LIGHT_GREEN, LIGHT_GREY, WHITE } from '../constants/colors';
 
 import * as SQLite from 'expo-sqlite';
+import * as FileSystem from 'expo-file-system';
 
 const db = SQLite.openDatabase('passvault.db');
 
@@ -21,9 +22,15 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
   const [credentials, setCredentials] = useState([]);
   const [showList, setShowList] = useState(false);
 
+  // const iconPath = `${FileSystem.documentDirectory}assets/${provider.name}.ico`;
+
+  const iconName = provider?.name?.toLowerCase();
+  const iconPath = iconName ? `${FileSystem.documentDirectory}assets/${iconName}.ico` : null;
+
   const [deletionCompleted, setDeletionCompleted] = useState(false);
 
   const fetchData = () => {
+    console.log("ICON PATH: ", iconPath); // todo - remove
     const show = !showList;
     if (show) {
       db.transaction((tx) => {
@@ -211,7 +218,7 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
     <View>
       <TouchableOpacity onPress={fetchData}>
         <View style={styles.container}>
-          <Image source={provider.image} style={styles.image} />
+          <Image source={{uri: iconPath}} style={styles.image} />
           <Text style={styles.label}>{provider.name}</Text>
         </View>
       </TouchableOpacity>
@@ -227,7 +234,7 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
     </View>
   );
 };
-
+// image - previous 50/50
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -241,8 +248,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white'
   },
   image: {
-    width: 50,
-    height: 50,
+    width: 25,
+    height: 25,
     marginRight: 10,
   },
   label: {

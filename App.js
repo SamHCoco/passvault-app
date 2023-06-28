@@ -16,6 +16,7 @@ import AppIcon from './components/AppIcon';
 import * as SecureStore from 'expo-secure-store';
 
 import { BLACK, LIGHT_GREEN, WHITE } from './constants/colors';
+import createAssetsDirectory from './service/createAssetsDirectory';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -109,6 +110,7 @@ function TabScreen() {
 
 export default function App() {
   useEffect(() => {
+    createAssetsDirectory();
     createTables();
   }, []);
 

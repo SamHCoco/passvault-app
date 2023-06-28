@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import { saveFaviconAsAsset } from './FaviconUtil';
+import downloadFavicon from './downloadFavIcon';
 
 const db = SQLite.openDatabase('passvault.db');
 
@@ -76,9 +76,9 @@ const saveWebCredential = async (values) => {
           async (_, { insertId }) => {
             resolve(insertId);
     
-            // Save the favicon image as an asset using the insertId as the name
-            const faviconURI = await saveFaviconAsAsset(url, domain, insertId);
-            console.log('Favicon saved as asset:', faviconURI);
+            // Save the favicon image as an asset
+            await downloadFavicon(url, domain);
+            
           },
           (_, error) => {
             reject(error);

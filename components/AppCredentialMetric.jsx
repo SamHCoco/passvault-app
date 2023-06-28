@@ -5,7 +5,9 @@ import { LIGHT_GREY } from '../constants/colors';
 
 import AppIcon from './AppIcon';
 
-const AppCredentialMetric = ({ iconName, iconSize, iconColor, iconLibrary, text, subText, onPress }) => {
+const AppCredentialMetric = ({ iconName, iconSize, iconColor, iconLibrary, text, subText, onPress, textStyle, subTextStyle }) => {
+  const labelStyle = textStyle ? textStyle : styles.label;
+  const subLabelStyle = subTextStyle ? subTextStyle : styles.subLabel;
   return (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.container}>
@@ -13,8 +15,8 @@ const AppCredentialMetric = ({ iconName, iconSize, iconColor, iconLibrary, text,
           <AppIcon name={iconName} size={iconSize} color={iconColor} library={iconLibrary} iconStyle={styles.icon} />
         </View>
         <View style={styles.labels}>
-          <Text style={styles.label}>{text}</Text>
-          <Text style={styles.subLabel}>{subText}</Text>
+          <Text style={labelStyle}>{text}</Text>
+          <Text style={subLabelStyle}>{subText}</Text>
         </View>
       </View>
     </TouchableOpacity>
