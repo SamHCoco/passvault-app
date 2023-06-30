@@ -4,7 +4,7 @@ import { View, StyleSheet, Text, Clipboard } from 'react-native';
 import AppRoundTouchable from './AppRoundTouchable';
 import AppIcon from './AppIcon';
 
-import { BLACK, LIGHT_GREY } from '../constants/colors';
+import { BLACK, LIGHT_GREEN, LIGHT_GREY, WHITE } from '../constants/colors';
 
 function AppWebCredential({ username, password }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     borderWidth: 0,
-    borderColor: 'lightgrey',
+    borderColor: WHITE,
     borderBottomWidth: 1,
     marginHorizontal: 6,
     marginVertical: 0,

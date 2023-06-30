@@ -240,12 +240,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'lightgrey',
+    borderColor: WHITE,
     borderRadius: 15,
     padding: 10,
     marginVertical: 6,
     marginHorizontal: 4,
-    backgroundColor: 'white'
+    backgroundColor: WHITE
   },
   image: {
     width: 25,

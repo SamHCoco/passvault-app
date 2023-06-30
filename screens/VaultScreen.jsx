@@ -95,7 +95,7 @@ function VaultScreen({ route }) {
   };
 
   useEffect(() => {
-    console.log("VAULT SCREEN - useEffect Triggered - ROUTE: ", route); // todo - remove
+    countCredentials();
     if (route && route.params) {
       const { selectedOption } = route.params;
       setSelected(selectedOption ? selectedOption : 'web'); // Set 'selected' state based on 'selectedOption'
@@ -103,7 +103,6 @@ function VaultScreen({ route }) {
     } else {
       fetchRecordsFromTable('web');
     }
-    countCredentials();
   }, [deleteActionFlag, searchText, route]);
 
   const handleAppCredentialMetricPress = (type) => {
@@ -227,7 +226,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 2,
-    borderColor: LIGHT_GREY,
+    borderColor: WHITE,
+    backgroundColor: WHITE
   },
 });
 

@@ -16,6 +16,7 @@ import generateRandomPassword from '../service/generatePassword';
 import { validationSchema } from '../service/validationSchemas';
 
 import { useNavigation } from '@react-navigation/native';
+import { LIGHT_GREEN } from '../constants/colors';
 
 function EditWebCredentialScreen({ route }) {
   const navigation = useNavigation();
@@ -112,7 +113,11 @@ function EditWebCredentialScreen({ route }) {
         password
       });
       setWebFormBlank();
+      
       navigation.navigate('Vault', { selectedOption: 'web' });
+      
+      navigation.push(tabName); // Navigate to the screen of the target tab
+    
     } else if (selectedOption === 'Card') {
       await saveCardCredential({
         bank,
@@ -145,89 +150,89 @@ function EditWebCredentialScreen({ route }) {
       return (
         <>
           <View style={styles.webFormContainer}>
-          <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
-                <AppIcon name="web" color="black" size={45} library="material" />
-          </View>
+            <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
+                  <AppIcon name="web" color={LIGHT_GREEN} size={45} library="material" />
+            </View>
 
-            <Field
-                component={AppTextInput}
-                name="url"
-                placeholder="URL"
-                autoCapitalize="none"
-                autoCorrect={false}
-                value={url}
-                onChangeText={setUrl}
+              <Field
+                  component={AppTextInput}
+                  name="url"
+                  placeholder="URL"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  value={url}
+                  onChangeText={setUrl}
+                />
+              <ErrorMessage name="url" component={Text} style={styles.errorText} />
+
+              <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
+                  <AppIcon name="md-person-circle" color={LIGHT_GREEN} size={45} library="ion" />
+              </View>
+
+              <Field
+                  component={AppTextInput}
+                  name="username"
+                  placeholder="Username"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  value={username}
+                  onChangeText={setUsername}
               />
-            <ErrorMessage name="url" component={Text} style={styles.errorText} />
+              <ErrorMessage name="username" component={Text} style={styles.errorText} />
 
-            <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
-                <AppIcon name="md-person-circle" color="black" size={45} library="ion" />
-            </View>
-
-            <Field
+              <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
+                  <AppIcon name="md-lock-closed" color={LIGHT_GREEN} size={45} library="ion" />
+              </View>
+              
+              <Field
                 component={AppTextInput}
-                name="username"
-                placeholder="Username"
+                name="password"
+                placeholder="Password"
                 autoCapitalize="none"
                 autoCorrect={false}
-                value={username}
-                onChangeText={setUsername}
-            />
-            <ErrorMessage name="username" component={Text} style={styles.errorText} />
+                // secureTextEntry
+                value={password}
+                onChangeText={setPassword}
+              />
+              <ErrorMessage name="password" component={Text} style={styles.errorText} />
 
-            <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
-                <AppIcon name="md-lock-closed" color="black" size={45} library="ion" />
-            </View>
-            
-            <Field
-              component={AppTextInput}
-              name="password"
-              placeholder="Password"
-              autoCapitalize="none"
-              autoCorrect={false}
-              // secureTextEntry
-              value={password}
-              onChangeText={setPassword}
-            />
-            <ErrorMessage name="password" component={Text} style={styles.errorText} />
-
-            <View style={{borderWidth: 0}}>
-            <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                <AppRoundTouchable text={item ? "Edit" : "Save"} onPress={() => handleFormSubmit(values)} />
-                <AppRoundTouchable text="Generate" onPress={(values) => {
-                      const password = generateRandomPassword(passwordGeneratorConfig);
-                      setPassword(password);
+              <View style={{borderWidth: 0}}>
+              <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                  <AppRoundTouchable text={item ? "Edit" : "Save"} onPress={() => handleFormSubmit(values)} />
+                  <AppRoundTouchable text="Generate" onPress={(values) => {
+                        const password = generateRandomPassword(passwordGeneratorConfig);
+                        setPassword(password);
+                  }} />
+              </View>
+                <AppSlider value={sliderValue} label="Characters" onValueChange={(value) => {
+                    setSliderValue(value);
+                    passwordGeneratorConfig['length'] = value;
                 }} />
-            </View>
-              <AppSlider value={sliderValue} label="Characters" onValueChange={(value) => {
-                  setSliderValue(value);
-                  passwordGeneratorConfig['length'] = value;
-              }} />
-              <AppToggleButton label="Special characters"
-                               initialValue={true} 
-                               onToggle={(value) => setPasswordGeneratorConfig(prevState => ({
-                                        ...prevState,
-                                        includeSpecialChars: value
-                  }))} />
-              <AppToggleButton label="Numbers"
-                               initialValue={true} 
-                               onToggle={(value) => setPasswordGeneratorConfig(prevState => ({
-                                        ...prevState,
-                                        includeNumbers: value
-                  }))} />
-              <AppToggleButton label="Uppercase"
-                               initialValue={true}
-                               onToggle={(value) => setPasswordGeneratorConfig(prevState => ({
-                                        ...prevState,
-                                        includeUpperCase: value
-                  }))} />
-              <AppToggleButton label="Lowercase" 
-                               initialValue={true}
-                               onToggle={(value) => setPasswordGeneratorConfig(prevState => ({
-                                        ...prevState,
-                                        includeLowerCase: value
-                  }))} />
-            </View>
+                <AppToggleButton label="Special characters"
+                                initialValue={true} 
+                                onToggle={(value) => setPasswordGeneratorConfig(prevState => ({
+                                          ...prevState,
+                                          includeSpecialChars: value
+                    }))} />
+                <AppToggleButton label="Numbers"
+                                initialValue={true} 
+                                onToggle={(value) => setPasswordGeneratorConfig(prevState => ({
+                                          ...prevState,
+                                          includeNumbers: value
+                    }))} />
+                <AppToggleButton label="Uppercase"
+                                initialValue={true}
+                                onToggle={(value) => setPasswordGeneratorConfig(prevState => ({
+                                          ...prevState,
+                                          includeUpperCase: value
+                    }))} />
+                <AppToggleButton label="Lowercase" 
+                                initialValue={true}
+                                onToggle={(value) => setPasswordGeneratorConfig(prevState => ({
+                                          ...prevState,
+                                          includeLowerCase: value
+                    }))} />
+              </View>
           </View>
         </>
       );
@@ -364,7 +369,8 @@ const styles = {
   webFormContainer: {
     // borderWidth: 1,
     // borderRadius: 12,
-    width: 365
+    width: 365,
+    flex: 1
   },
   bankFormContainer: {
     flexDirection: 'column',

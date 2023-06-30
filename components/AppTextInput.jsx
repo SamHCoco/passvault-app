@@ -1,5 +1,6 @@
 import React from 'react';
 import { TextInput, View , StyleSheet, Platform } from 'react-native';
+import { LIGHT_GREY } from '../constants/colors';
 
 function AppTextInput({...props}) {
     return (
@@ -12,12 +13,13 @@ function AppTextInput({...props}) {
 const styles = StyleSheet.create({
     container: {
         backgroundColour: "grey",
-        borderRadius: 5,
+        borderRadius: 15,
         flexDirection: "row",
         width: '100%',
         padding: 15,
         marginVertical: 10,
-        borderBottomWidth: 1
+        borderWidth: 1,
+        borderColor: LIGHT_GREY
     },
     text: {
         fontSize: 18,

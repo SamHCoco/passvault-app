@@ -83,14 +83,14 @@ function TabScreen() {
           let iconName;
 
           if (route.name === 'Vault') {
-            iconName = focused ? 'home' : 'home-outline';
+            iconName = focused ? 'safe-square' : 'safe-square-outline';
           } else if (route.name === 'Settings') {
             iconName = focused ? 'cog' : 'cog-outline';
           } else if (route.name === 'Backup') {
             iconName = focused ? 'file-restore': 'file-restore-outline';
           }
 
-          return <AppIcon name={iconName} size={30} color={color} />;
+          return <AppIcon name={iconName} size={24} color={color} />;
         },
       })}
       tabBarOptions={{
@@ -131,7 +131,8 @@ export default function App() {
 const tabScreen = {
   options: {
     headerTitleAlign: 'center'
-  }
+  },
+  
 }
 
 const styles = StyleSheet.create({
