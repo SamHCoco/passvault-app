@@ -383,6 +383,7 @@ function EditWebCredentialScreen({ route }) {
                 name="bank"
                 placeholder="Bank"
                 autoCapitalize="none"
+                textAlign='center'
                 autoCorrect={false}
                 value={bank}
                 onChangeText={(value) => handleInputChange(value, 'bank')}
@@ -404,6 +405,7 @@ function EditWebCredentialScreen({ route }) {
                 placeholder="Card Number"
                 keyboardType="numeric"
                 maxLength={19}
+                textAlign='center'
                 value={cardNumber}
                 onChangeText={(value) => handleInputChange(value, 'cardNumber')}
               />
@@ -455,6 +457,7 @@ function EditWebCredentialScreen({ route }) {
                 autoCapitalize="none"
                 autoCorrect={false}
                 maxLength={4}
+                textAlign='center'
                 value={securityCode}
                 onChangeText={(value) => handleInputChange(value, 'securityCode')}
               />
@@ -592,7 +595,7 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     marginBottom: 2,
-    width: 350
+    width: 250
   },
   cardLabel: {
     marginRight: 5,
