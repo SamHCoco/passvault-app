@@ -16,7 +16,7 @@ import generateRandomPassword from '../service/generatePassword';
 import { validationSchema } from '../service/validationSchemas';
 
 import { useNavigation } from '@react-navigation/native';
-import { LIGHT_GREEN } from '../constants/colors';
+import { LIGHT_GREEN, LIGHT_GREY } from '../constants/colors';
 
 function EditWebCredentialScreen({ route }) {
   const navigation = useNavigation();
@@ -204,34 +204,36 @@ function EditWebCredentialScreen({ route }) {
                         setPassword(password);
                   }} />
               </View>
-                <AppSlider value={sliderValue} label="Characters" onValueChange={(value) => {
-                    setSliderValue(value);
-                    passwordGeneratorConfig['length'] = value;
-                }} />
-                <AppToggleButton label="Special characters"
-                                initialValue={true} 
-                                onToggle={(value) => setPasswordGeneratorConfig(prevState => ({
-                                          ...prevState,
-                                          includeSpecialChars: value
-                    }))} />
-                <AppToggleButton label="Numbers"
-                                initialValue={true} 
-                                onToggle={(value) => setPasswordGeneratorConfig(prevState => ({
-                                          ...prevState,
-                                          includeNumbers: value
-                    }))} />
-                <AppToggleButton label="Uppercase"
-                                initialValue={true}
-                                onToggle={(value) => setPasswordGeneratorConfig(prevState => ({
-                                          ...prevState,
-                                          includeUpperCase: value
-                    }))} />
-                <AppToggleButton label="Lowercase" 
-                                initialValue={true}
-                                onToggle={(value) => setPasswordGeneratorConfig(prevState => ({
-                                          ...prevState,
-                                          includeLowerCase: value
-                    }))} />
+                    <View style={styles.passwordGeneratorContainer}>
+                        <AppSlider value={sliderValue} label="Characters" onValueChange={(value) => {
+                        setSliderValue(value);
+                        passwordGeneratorConfig['length'] = value;
+                        }} />
+                        <AppToggleButton label="Special characters"
+                                        initialValue={true} 
+                                        onToggle={(value) => setPasswordGeneratorConfig(prevState => ({
+                                                  ...prevState,
+                                                  includeSpecialChars: value
+                            }))} />
+                        <AppToggleButton label="Numbers"
+                                        initialValue={true} 
+                                        onToggle={(value) => setPasswordGeneratorConfig(prevState => ({
+                                                  ...prevState,
+                                                  includeNumbers: value
+                            }))} />
+                        <AppToggleButton label="Uppercase"
+                                        initialValue={true}
+                                        onToggle={(value) => setPasswordGeneratorConfig(prevState => ({
+                                                  ...prevState,
+                                                  includeUpperCase: value
+                            }))} />
+                        <AppToggleButton label="Lowercase" 
+                                        initialValue={true}
+                                        onToggle={(value) => setPasswordGeneratorConfig(prevState => ({
+                                                  ...prevState,
+                                                  includeLowerCase: value
+                            }))} />
+                    </View>
               </View>
           </View>
         </>
@@ -366,6 +368,15 @@ function EditWebCredentialScreen({ route }) {
 }
 
 const styles = {
+  passwordGeneratorContainer: {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    marginVertical: 25,
+    borderRadius: 20,
+    borderColor: LIGHT_GREY 
+  },
   webFormContainer: {
     // borderWidth: 1,
     // borderRadius: 12,

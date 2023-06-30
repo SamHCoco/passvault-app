@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import Slider from '@react-native-community/slider';
+import { LIGHT_GREEN } from '../constants/colors';
 
 function AppSlider({ label, value, onValueChange }) {
   return (
@@ -10,7 +11,7 @@ function AppSlider({ label, value, onValueChange }) {
         style={styles.slider}
         maximumValue={15}
         minimumValue={5}
-        minimumTrackTintColor="#307ecc"
+        minimumTrackTintColor={LIGHT_GREEN}
         maximumTrackTintColor="#000000"
         step={1}
         value={value}
@@ -26,6 +27,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: 4,
+    marginVertical: 6,
     marginLeft: 27
   },
   label: {
@@ -34,8 +36,9 @@ const styles = StyleSheet.create({
   },
   slider: {
     width: 200,
-    height: 40,
-    marginVertical: 5,
+    // height: 70,
+    // marginVertical: 5,
+    // transform: [{ scaleY: 2 }]
   },
   value: {
     fontSize: 16,
