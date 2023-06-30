@@ -38,14 +38,39 @@ function EditWebCredentialScreen({ route }) {
   const [expirationYear, setExpirationYear] = useState('');
   const [securityCode, setSecurityCode] = useState('');
 
+  // password generator states
+  const [sliderValue, setSliderValue] = useState(10);
+  const [passwordLength, setPasswordLength] = useState(10);
+  const [isNumbers, setIsNumbers] = useState(true);
+  const [isSpecialChars, setIsSpecialChars] = useState(true);
+  const [isLowercase, setIsLowercase] = useState(true);
+  const [isUppercase, setIsUppercase] = useState(true);
+  const [passwordGeneratorConfig, setPasswordGeneratorConfig] = useState({
+      length: 10,
+      includeLowerCase: true,
+      includeNumbers: true,
+      includeSpecialChars: true,
+      includeUpperCase: true});
+
+  // error states
+  const [urlError, setUrlError] = useState('');
+  const [usernameError, setUsernameError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  
+  const [bankError, setBankError] = useState('');
+  const [cardNumberError, setCardNumberError] = useState('');
+  const [expirationError, setExpirationError] = useState('');
+  const [expirationMonthError, setExpirationMonthError] = useState('');
+  const [expirationYearError, setExpirationYearError] = useState('');
+  const [securityCodeError, setSecurityCodeError] = useState('');
+
   useEffect(() => {
     var effectItem;
-    console.log("ROUTE AVAILABLE: ", route); // todo - temove
+
     if (route && route.params) {
       setItem(route.params.item);
       effectItem = route.params.item;
     }
-    console.log("immediate useEFFECT effectItem: ", effectItem); // todo - remove
 
     if (effectItem) {
       const { type } = effectItem;
@@ -91,21 +116,19 @@ function EditWebCredentialScreen({ route }) {
     }
   }, [route]);
 
-  // password generator states
-  const [sliderValue, setSliderValue] = useState(10);
-  const [passwordLength, setPasswordLength] = useState(10);
-  const [isNumbers, setIsNumbers] = useState(true);
-  const [isSpecialChars, setIsSpecialChars] = useState(true);
-  const [isLowercase, setIsLowercase] = useState(true);
-  const [isUppercase, setIsUppercase] = useState(true);
-  const [passwordGeneratorConfig, setPasswordGeneratorConfig] = useState({
-      length: 10,
-      includeLowerCase: true,
-      includeNumbers: true,
-      includeSpecialChars: true,
-      includeUpperCase: true});
-
   const handleFormSubmit = async (values) => {
+    const hasErrors = validateForm(); // todo - fix
+
+    console.log("hasErrors: ", hasErrors);
+
+    if (!hasErrors) {
+      console.log("Validation passed!");
+      return;
+    } else {
+      console.log("Validation failed!");
+      return;
+    }
+
     if (selectedOption === 'Web') {
       await saveWebCredential({
         url,
@@ -128,6 +151,96 @@ function EditWebCredentialScreen({ route }) {
       });
       setCardFormBlank();
       navigation.navigate('Vault', { selectedOption: 'card'});
+    }
+  };
+
+  const validateForm = () => {
+    let hasErrors = false;
+
+    if (selectedOption === 'Web') {
+      if (!url) {
+        setUrlError('Required');
+        hasErrors = true;
+      } else {
+        setUrlError('');
+      }
+      if (!username) {
+        setUsernameError('Required');
+        hasErrors = true;
+      } else {
+        setUsernameError('');
+      }
+      if (!password) {
+        setPasswordError('Required');
+        hasErrors = true;
+      } else {
+        setPasswordError('');
+      }
+    } else if (selectedOption === 'Card') {
+      if (!bank) {
+        setBankError('Required');
+        hasErrors = true;
+      } else {
+        setBankError('');
+      }
+
+      if (!cardNumber) {
+        setCardNumberError('Required');
+        hasErrors = true;
+      } else {
+        setCardNumberError('');
+      }
+
+      if (!expirationMonth) {
+        setExpirationMonthError('Required');
+        hasErrors = true;
+      } else {
+        setExpirationMonthError('');
+      }
+
+      if (!expirationYear) {
+        setExpirationYearError('Required');
+        hasErrors = true;
+      } else {
+        setExpirationYearError('');
+      }
+
+      if (!securityCode) {
+        setSecurityCodeError('Required');
+        hasErrors = true;
+      } else {
+        setSecurityCodeError('');
+      }
+    }
+
+    return hasErrors;
+  };
+
+  const handleInputChange = (value, inputName) => {
+    if (inputName === 'url') {
+      setUrl(value);
+      setUrlError('');
+    } else if (inputName === 'username') {
+      setUsername(value);
+      setUsernameError('');
+    } else if (inputName === 'password') {
+      setPassword(value);
+      setPasswordError('');
+    } else if (inputName === 'bank') {
+      setBank(value);
+      setBankError('');
+    }  else if (inputName === 'cardNumber') {
+      setCardNumber(value);
+      setCardNumberError('');
+    } else if (inputName === 'expirationMonth') {
+      setExpirationMonth(value);
+      setExpirationMonthError('');
+    } else if (inputName === 'expirationYear') {
+      setExpirationYear(value);
+      setExpirationYearError('');
+    } else if (inputName === 'securityCode') {
+      setSecurityCode(value);
+      setSecurityCodeError('');
     }
   };
 
@@ -161,9 +274,12 @@ function EditWebCredentialScreen({ route }) {
                   autoCapitalize="none"
                   autoCorrect={false}
                   value={url}
-                  onChangeText={setUrl}
+                  onChangeText={(value) => handleInputChange(value, 'url')}
                 />
-              <ErrorMessage name="url" component={Text} style={styles.errorText} />
+              
+              {urlError ? (
+                <Text style={styles.errorText}>{urlError}</Text>
+              ) : null}
 
               <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
                   <AppIcon name="md-person-circle" color={LIGHT_GREEN} size={45} library="ion" />
@@ -176,9 +292,11 @@ function EditWebCredentialScreen({ route }) {
                   autoCapitalize="none"
                   autoCorrect={false}
                   value={username}
-                  onChangeText={setUsername}
+                  onChangeText={(value) => handleInputChange(value, 'username')}
               />
-              <ErrorMessage name="username" component={Text} style={styles.errorText} />
+              {usernameError ? (
+                <Text style={styles.errorText}>{usernameError}</Text>
+              ) : null}
 
               <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
                   <AppIcon name="md-lock-closed" color={LIGHT_GREEN} size={45} library="ion" />
@@ -192,9 +310,11 @@ function EditWebCredentialScreen({ route }) {
                 autoCorrect={false}
                 // secureTextEntry
                 value={password}
-                onChangeText={setPassword}
+                onChangeText={(value) => handleInputChange(value, 'password')}
               />
-              <ErrorMessage name="password" component={Text} style={styles.errorText} />
+              {passwordError ? (
+                <Text style={styles.errorText}>{passwordError}</Text>
+              ) : null}
 
               <View style={{borderWidth: 0}}>
               <View style={styles.touchableButtonContainer}>
@@ -256,9 +376,11 @@ function EditWebCredentialScreen({ route }) {
                 autoCapitalize="none"
                 autoCorrect={false}
                 value={bank}
-                onChangeText={setBank}
+                onChangeText={(value) => handleInputChange(value, 'bank')}
               />
-              <ErrorMessage name="bank" component={Text} style={styles.errorText} />
+              {bankError ? (
+                <Text style={styles.errorText}>{bankError}</Text>
+              ) : null}
             </View>
 
             <View style={styles.cardContainer}>
@@ -271,9 +393,11 @@ function EditWebCredentialScreen({ route }) {
                 style={styles.cardInput}
                 maxLength={16}
                 value={cardNumber}
-                onChangeText={setCardNumber}
+                onChangeText={(value) => handleInputChange(value, 'cardNumber')}
               />
-              <ErrorMessage name="cardNumber" component={Text} style={styles.errorText} />
+              {cardNumberError ? (
+                <Text style={styles.errorText}>{cardNumberError}</Text>
+              ) : null}
             </View>
 
             <View style={styles.expirationContainer}>
@@ -286,9 +410,11 @@ function EditWebCredentialScreen({ route }) {
                   keyboardType="numeric"
                   maxLength={2}
                   value={expirationMonth}
-                  onChangeText={setExpirationMonth}
+                  onChangeText={(value) => handleInputChange(value, 'expirationMonth')}
                 />
-                <ErrorMessage name="expirationMonth" component={Text} style={styles.errorText} />
+                {expirationMonthError ? (
+                <Text style={styles.errorText}>{expirationMonthError}</Text>
+              ) : null}
               </View>
 
               <View style={styles.expirationYearContainer}>
@@ -300,9 +426,11 @@ function EditWebCredentialScreen({ route }) {
                   keyboardType="numeric"
                   maxLength={2}
                   value={expirationYear}
-                  onChangeText={setExpirationYear}
+                  onChangeText={(value) => handleInputChange(value, 'expirationYear')}
                 />
-                <ErrorMessage name="expirationYear" component={Text} style={styles.errorText} />
+                {expirationYearError ? (
+                <Text style={styles.errorText}>{expirationYearError}</Text>
+                ) : null}
               </View>
             </View>
 
@@ -318,12 +446,13 @@ function EditWebCredentialScreen({ route }) {
                 style={styles.securityCodeInput}
                 maxLength={4}
                 value={securityCode}
-                onChangeText={setSecurityCode}
+                onChangeText={(value) => handleInputChange(value, 'securityCode')}
               />
-              <ErrorMessage name="securityCode" component={Text} style={styles.errorText} />
-
-              <AppRoundTouchable text={item ? "Edit" : "Save"} onPress={handleFormSubmit} />
-            </View>
+              {securityCodeError ? (
+                <Text style={styles.errorText}>{securityCodeError}</Text>
+                ) : null}
+          </View>
+          <AppRoundTouchable text={item ? "Edit" : "Save"} onPress={handleFormSubmit} />
         </>
       );
     }
@@ -409,7 +538,8 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     marginBottom: 4,
-    borderRadius: 12
+    borderRadius: 12,
+    width: 250
   },
   scrollContainer: {
     flexGrow: 1,
@@ -422,17 +552,19 @@ const styles = {
     flexDirection: 'row',
     justifyContent: 'center',
     marginBottom: 20,
+    marginVertical: 16
   },
   errorText: {
     color: 'red',
     fontSize: 14,
-    marginBottom: 8,
+    // marginBottom: 8,
   },
   expirationContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     marginBottom: 15,
+    width: 155
   },
   expirationLabel: {
     marginRight: 10,
@@ -448,6 +580,7 @@ const styles = {
     flexDirection: 'column',
     alignItems: 'center',
     marginBottom: 2,
+    width: 350
   },
   cardLabel: {
     marginRight: 5,
