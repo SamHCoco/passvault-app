@@ -2,10 +2,10 @@ import React from 'react';
 import { TextInput, View , StyleSheet, Platform } from 'react-native';
 import { LIGHT_GREY } from '../constants/colors';
 
-function AppTextInput({...props}) {
+function AppTextInput({ textAlign, ...props }) {
     return (
         <View style={styles.container}>
-            <TextInput style={styles.text} {...props}/>
+            <TextInput style={[styles.text, { textAlign }]} {...props}/>
         </View>
     );
 }
