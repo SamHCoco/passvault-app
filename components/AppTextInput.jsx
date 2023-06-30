@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         borderColor: LIGHT_GREY
     },
     text: {
-        fontSize: 18,
+        fontSize: 22,
         fontFamily: Platform.OS === "android" ? "Roboto" : "Avenir"
     }
 })

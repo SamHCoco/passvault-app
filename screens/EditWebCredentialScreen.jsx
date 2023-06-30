@@ -230,7 +230,17 @@ function EditWebCredentialScreen({ route }) {
       setBank(value);
       setBankError('');
     }  else if (inputName === 'cardNumber') {
-      setCardNumber(value);
+        // Remove any existing dashes from the value
+      const newValue = value.replace(/-/g, '');
+
+      // Split the value into groups of 4 characters
+      const groups = newValue.match(/.{1,4}/g);
+
+      // Add dashes after every group of 4 characters
+      const formattedValue = groups ? groups.join('-') : '';
+
+      // Update the state
+      setCardNumber(formattedValue);
       setCardNumberError('');
     } else if (inputName === 'expirationMonth') {
       setExpirationMonth(value);
@@ -308,7 +318,6 @@ function EditWebCredentialScreen({ route }) {
                 placeholder="Password"
                 autoCapitalize="none"
                 autoCorrect={false}
-                // secureTextEntry
                 value={password}
                 onChangeText={(value) => handleInputChange(value, 'password')}
               />
@@ -383,6 +392,10 @@ function EditWebCredentialScreen({ route }) {
               ) : null}
             </View>
 
+            <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
+                  <AppIcon name="card" color={LIGHT_GREEN} size={45} library="ion" />
+            </View>
+
             <View style={styles.cardContainer}>
               <Text style={styles.cardLabel}>Card Number</Text>
               <Field
@@ -390,8 +403,7 @@ function EditWebCredentialScreen({ route }) {
                 name="cardNumber"
                 placeholder="Card Number"
                 keyboardType="numeric"
-                style={styles.cardInput}
-                maxLength={16}
+                maxLength={19}
                 value={cardNumber}
                 onChangeText={(value) => handleInputChange(value, 'cardNumber')}
               />
@@ -442,8 +454,6 @@ function EditWebCredentialScreen({ route }) {
                 placeholder="Security Code"
                 autoCapitalize="none"
                 autoCorrect={false}
-                // secureTextEntry
-                style={styles.securityCodeInput}
                 maxLength={4}
                 value={securityCode}
                 onChangeText={(value) => handleInputChange(value, 'securityCode')}
@@ -585,9 +595,6 @@ const styles = {
   cardLabel: {
     marginRight: 5,
   },
-  // cardInput: {
-  //   flex: 1,
-  // },
   securityCodeContainer: {
     flexDirection: 'column',
     alignItems: 'center',
@@ -596,10 +603,6 @@ const styles = {
   securityCodeLabel: {
     marginRight: 10,
   },
-  // securityCodeInput: {
-  //   flex: 1,
-  //   alignItems: 'center'
-  // },
   bankLabel: {
     marginRight: 10,
   },
