@@ -117,15 +117,9 @@ function EditWebCredentialScreen({ route }) {
   }, [route]);
 
   const handleFormSubmit = async (values) => {
-    const hasErrors = validateForm(); // todo - fix
+    const hasErrors = validateForm();
 
-    console.log("hasErrors: ", hasErrors);
-
-    if (!hasErrors) {
-      console.log("Validation passed!");
-      return;
-    } else {
-      console.log("Validation failed!");
+    if (hasErrors) {
       return;
     }
 
@@ -142,9 +136,11 @@ function EditWebCredentialScreen({ route }) {
       navigation.push(tabName); // Navigate to the screen of the target tab
     
     } else if (selectedOption === 'Card') {
+      // Remove all dashes from the cardNumber state
+      const cardNumberWithoutDashes = cardNumber.replace(/-/g, '');
       await saveCardCredential({
         bank,
-        cardNumber,
+        cardNumber: cardNumberWithoutDashes,
         expirationMonth,
         expirationYear,
         securityCode,

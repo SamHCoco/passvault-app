@@ -5,8 +5,21 @@ import { LIGHT_GREEN, LIGHT_GREY } from '../constants/colors';
 
 import AppIcon from './AppIcon';
 
+function formatCardNumber(cardNumber) {
+  const formattedNumber = cardNumber.replace(/\s/g, ''); // Remove existing spaces
+  const chunks = [];
+  let index = 0;
+
+  while (index < formattedNumber.length) {
+    chunks.push(formattedNumber.substr(index, 4));
+    index += 4;
+  }
+
+  return chunks.join('  ');
+}
+
 function AppCardCredential({ bank, cardNumber, expDate, securityCode }) {
-  const textColor = 'white';
+  const formattedCardNumber = formatCardNumber(cardNumber);
 
   return (
     <View style={styles.container}>
@@ -18,7 +31,7 @@ function AppCardCredential({ bank, cardNumber, expDate, securityCode }) {
 
       {/* Second Row */}
       <View style={styles.row}>
-        <Text style={styles.cardNumberText}>{cardNumber}</Text>
+        <Text style={styles.cardNumberText}>{formattedCardNumber}</Text>
       </View>
 
       {/* Third Row */}
