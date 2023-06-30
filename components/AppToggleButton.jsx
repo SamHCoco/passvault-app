@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Switch, StyleSheet } from 'react-native';
+import { LIGHT_GREEN } from '../constants/colors';
 
 const AppToggleButton = ({ label, initialValue, onToggle }) => {
   const [value, setValue] = useState(initialValue);
@@ -16,8 +17,8 @@ const AppToggleButton = ({ label, initialValue, onToggle }) => {
       <Switch
         value={value}
         onValueChange={handleToggle}
-        trackColor={{ false: '#767577', true: '#81b0ff' }}
-        thumbColor={value ? '#f5dd4b' : '#f4f3f4'}
+        trackColor={{ false: '#767577', true: LIGHT_GREEN }}
+        thumbColor={value ? '#f4f3f4' : '#f4f3f4'}
         style={styles.switch}
       />
     </View>

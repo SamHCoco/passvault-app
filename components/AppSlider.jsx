@@ -13,6 +13,7 @@ function AppSlider({ label, value, onValueChange }) {
         minimumValue={5}
         minimumTrackTintColor={LIGHT_GREEN}
         maximumTrackTintColor="#000000"
+        thumbTintColor="darkgrey"
         step={1}
         value={value}
         onValueChange={onValueChange}

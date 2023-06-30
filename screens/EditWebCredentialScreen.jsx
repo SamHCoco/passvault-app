@@ -16,7 +16,7 @@ import generateRandomPassword from '../service/generatePassword';
 import { validationSchema } from '../service/validationSchemas';
 
 import { useNavigation } from '@react-navigation/native';
-import { LIGHT_GREEN, LIGHT_GREY } from '../constants/colors';
+import { LIGHT_GREEN, LIGHT_GREY, WHITE } from '../constants/colors';
 
 function EditWebCredentialScreen({ route }) {
   const navigation = useNavigation();
@@ -206,8 +206,8 @@ function EditWebCredentialScreen({ route }) {
               </View>
                     <View style={styles.passwordGeneratorContainer}>
                         <AppSlider value={sliderValue} label="Characters" onValueChange={(value) => {
-                        setSliderValue(value);
-                        passwordGeneratorConfig['length'] = value;
+                                                                              setSliderValue(value);
+                                                                              passwordGeneratorConfig['length'] = value;
                         }} />
                         <AppToggleButton label="Special characters"
                                         initialValue={true} 
