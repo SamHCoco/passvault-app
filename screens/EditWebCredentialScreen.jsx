@@ -462,7 +462,9 @@ function EditWebCredentialScreen({ route }) {
                 <Text style={styles.errorText}>{securityCodeError}</Text>
                 ) : null}
           </View>
-          <AppRoundTouchable text={item ? "Edit" : "Save"} onPress={handleFormSubmit} />
+          <AppRoundTouchable text={item ? "Edit" : "Save"} 
+                             onPress={handleFormSubmit} 
+                             touchableStyle={styles.touchableButtonStyle}  />
         </>
       );
     }
