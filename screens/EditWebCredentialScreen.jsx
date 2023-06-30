@@ -16,7 +16,7 @@ import generateRandomPassword from '../service/generatePassword';
 import { validationSchema } from '../service/validationSchemas';
 
 import { useNavigation } from '@react-navigation/native';
-import { LIGHT_GREEN, LIGHT_GREY, WHITE } from '../constants/colors';
+import { BLACK, LIGHT_GREEN, LIGHT_GREY, WHITE } from '../constants/colors';
 
 function EditWebCredentialScreen({ route }) {
   const navigation = useNavigation();
@@ -197,12 +197,18 @@ function EditWebCredentialScreen({ route }) {
               <ErrorMessage name="password" component={Text} style={styles.errorText} />
 
               <View style={{borderWidth: 0}}>
-              <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                  <AppRoundTouchable text={item ? "Edit" : "Save"} onPress={() => handleFormSubmit(values)} />
-                  <AppRoundTouchable text="Generate" onPress={(values) => {
-                        const password = generateRandomPassword(passwordGeneratorConfig);
-                        setPassword(password);
-                  }} />
+              <View style={styles.touchableButtonContainer}>
+                  <AppRoundTouchable text={item ? "Edit" : "Save"} 
+                                     onPress={() => handleFormSubmit(values)} 
+                                     touchableStyle={styles.touchableButtonStyle} 
+                  />
+                  
+                  <AppRoundTouchable text="Generate" 
+                                     onPress={(values) => {
+                                                      const password = generateRandomPassword(passwordGeneratorConfig);
+                                                      setPassword(password);}} 
+                                     touchableStyle={styles.touchableButtonStyle} 
+                  />
               </View>
                     <View style={styles.passwordGeneratorContainer}>
                         <AppSlider value={sliderValue} label="Characters" onValueChange={(value) => {
@@ -376,6 +382,22 @@ const styles = {
     marginVertical: 25,
     borderRadius: 20,
     borderColor: LIGHT_GREY 
+  },
+  touchableButtonContainer: {
+    flexDirection: 'row', 
+    justifyContent: 'center', 
+    alignItems: 'center'
+  },
+  touchableButtonStyle: {
+      width: 100,
+      height: 100,
+      borderRadius: 150,
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: WHITE,
+      backgroundColor: LIGHT_GREEN,
+      marginLeft: 25,
   },
   webFormContainer: {
     // borderWidth: 1,

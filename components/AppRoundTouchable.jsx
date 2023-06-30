@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, View, StyleSheet, Text } from 'react-native';
 import AppIcon from './AppIcon';
 
-import { LIGHT_GREY } from '../constants/colors';
+import { LIGHT_GREY, WHITE } from '../constants/colors';
 
 const AppRoundTouchable = ({ iconName, iconSize, iconColor, iconLibrary, onPress, touchableStyle, iconStyle, text }) => {
   const containerStyle = touchableStyle ? touchableStyle : styles.container;
@@ -37,8 +37,9 @@ const styles = StyleSheet.create({
     marginLeft: 25,
   },
   text: {
-    fontSize: 16,
+    fontSize: 19,
     fontWeight: 'bold',
+    color: WHITE
   },
 });
 
