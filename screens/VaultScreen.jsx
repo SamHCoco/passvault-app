@@ -154,6 +154,7 @@ function VaultScreen({ route }) {
             iconLibrary={'material'}
             iconSize={screenWidth * 0.11}
             text="Web"
+            textColor={selected === 'web' ? LIGHT_GREEN : BLACK}
             subText={webCredentialCount}
             onPress={() => handleAppCredentialMetricPress('web')}
             style={styles.metricButton}
@@ -164,6 +165,7 @@ function VaultScreen({ route }) {
             iconLibrary={'ion'}
             iconSize={screenWidth * 0.11}
             text="Card"
+            textColor={selected === 'card' ? LIGHT_GREEN : BLACK}
             subText={cardCredentialCount}
             onPress={() => handleAppCredentialMetricPress('card')}
             style={styles.metricButton}
