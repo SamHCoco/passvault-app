@@ -7,7 +7,7 @@ const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 
 import AppRoundTouchable from '../components/AppRoundTouchable';
-import { BLACK, WHITE } from '../constants/colors';
+import { BLACK, LIGHT_GREEN, LIGHT_GREY, WHITE } from '../constants/colors';
 
 const CreatePinScreen = () => {
   const navigation = useNavigation();
@@ -21,7 +21,7 @@ const CreatePinScreen = () => {
     setPin(newPin);
     setPinEntered([...pinEntered, number]);
 
-    if (newPin.length === 4) {
+    if (newPin.length === 6) { // Change the pin length to 6
       if (confirmPinMode) {
         confirmPin(newPin);
       } else {
@@ -65,18 +65,15 @@ const CreatePinScreen = () => {
 
   return (
     <View style={styles.container}>
-          <View style={styles.overlay} />
+      <View style={styles.overlay} />
       <View style={styles.content}>
         <Text style={styles.title}>{confirmPinMode ? 'Confirm Pin' : 'Create Pin'}</Text>
         <View style={styles.circleContainer}>
-          {[1, 2, 3, 4].map((index) => (
+          {[1, 2, 3, 4, 5, 6].map((index) => (
             <View
               key={index}
               style={[styles.circle, pinEntered.length >= index && styles.filledCircle]}
             >
-              {pinEntered.length >= index && (
-                <Text style={styles.circleText}>{pinEntered[index - 1]}</Text>
-              )}
             </View>
           ))}
         </View>
@@ -160,7 +157,7 @@ const styles = StyleSheet.create({
     fontSize: screenWidth * 0.05, // Adjust the font size based on screen width
     fontWeight: 'bold',
     marginBottom: screenHeight * 0.025, // Adjust the margin bottom based on screen height
-    color: BLACK, // Adjust the text color as needed
+    color: LIGHT_GREEN, // Adjust the text color as needed
   },
   circleContainer: {
     flexDirection: 'row',
@@ -172,18 +169,19 @@ const styles = StyleSheet.create({
     height: screenWidth * 0.025, // Adjust the circle size based on screen width
     borderRadius: (screenWidth * 0.025) / 2, // Adjust the circle border radius based on screen width
     borderWidth: 1,
-    borderColor: BLACK, // Adjust the border color as needed
-    marginHorizontal: screenWidth * 0.0125, // Adjust the margin horizontal based on screen width
+    borderColor: LIGHT_GREY, // Adjust the border color as needed
+    marginHorizontal: screenWidth * 0.0075, // Adjust the margin horizontal based on screen width
     justifyContent: 'center',
     alignItems: 'center',
   },
   filledCircle: {
-    backgroundColor: BLACK, // Adjust the filled circle color as needed
+    backgroundColor: LIGHT_GREEN, // Adjust the filled circle color as needed
+    borderColor: LIGHT_GREEN
   },
-  circleText: {
-    color: BLACK, // Adjust the text color as needed - todo - remove number from circle
-    fontSize: screenWidth * 0.025 * 0.6, // Adjust the circle text size based on screen width
-  },
+  // circleText: {
+  //   color: BLACK, // Adjust the text color as needed - todo - remove number from circle
+  //   fontSize: screenWidth * 0.015 * 0.6, // Adjust the circle text size based on screen width
+  // },
   buttonContainer: {
     marginTop: screenHeight * 0.05, // Adjust the margin top based on screen height
   },
@@ -232,6 +230,6 @@ const styles = StyleSheet.create({
   roundTouchableIcon: {
     marginTop: screenHeight * 0.015, // Adjust the margin top based on screen height
   },
-  });
+});
 
 export default CreatePinScreen;

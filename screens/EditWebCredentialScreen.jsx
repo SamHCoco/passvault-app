@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, ScrollView } from 'react-native';
-import { Formik, Field, ErrorMessage } from 'formik';
+import { Text, View, ScrollView, StyleSheet, Dimensions } from 'react-native';
+import { Formik, Field} from 'formik';
 
 import Screen from '../components/Screen';
 import AppTextInput from '../components/AppTextInput';
@@ -17,6 +17,8 @@ import { validationSchema } from '../service/validationSchemas';
 
 import { useNavigation } from '@react-navigation/native';
 import { BLACK, LIGHT_GREEN, LIGHT_GREY, WHITE } from '../constants/colors';
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 function EditWebCredentialScreen({ route }) {
   const navigation = useNavigation();
@@ -513,100 +515,98 @@ function EditWebCredentialScreen({ route }) {
   );
 }
 
-const styles = {
+const styles = StyleSheet.create({
   passwordGeneratorContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    marginVertical: 25,
-    borderRadius: 20,
-    borderColor: LIGHT_GREY 
+    marginVertical: screenHeight * 0.033,
+    borderRadius: 0.05 * screenWidth,
+    borderColor: LIGHT_GREY,
   },
   touchableButtonContainer: {
-    flexDirection: 'row', 
-    justifyContent: 'center', 
-    alignItems: 'center'
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   touchableButtonStyle: {
-      width: 100,
-      height: 100,
-      borderRadius: 150,
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderWidth: 1,
-      borderColor: WHITE,
-      backgroundColor: LIGHT_GREEN,
-      marginLeft: 25,
+    width: screenWidth * 0.25,
+    height: screenWidth * 0.25,
+    borderRadius: 0.3 * screenWidth,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: WHITE,
+    backgroundColor: LIGHT_GREEN,
+    marginLeft: screenWidth * 0.069,
   },
   webFormContainer: {
-    // borderWidth: 1,
-    // borderRadius: 12,
-    width: 365,
-    flex: 1
+    width: screenWidth * 0.91,
+    flex: 1,
   },
   bankFormContainer: {
     flexDirection: 'column',
     alignItems: 'center',
-    marginBottom: 4,
-    borderRadius: 12,
-    width: 250
+    marginBottom: screenHeight * 0.008,
+    borderRadius: 0.04 * screenWidth,
+    width: screenWidth * 0.62,
   },
   scrollContainer: {
     flexGrow: 1,
   },
   container: {
     alignItems: 'center',
-    paddingBottom: 20,
+    paddingBottom: screenHeight * 0.027,
   },
   optionsContainer: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: 20,
-    marginVertical: 16
+    marginBottom: screenHeight * 0.018,
+    marginVertical: screenHeight * 0.015,
   },
   errorText: {
     color: 'red',
-    fontSize: 14,
-    // marginBottom: 8,
+    fontSize: screenHeight * 0.018,
   },
   expirationContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 15,
-    width: 155
+    marginBottom: screenHeight * 0.013,
+    width: screenWidth * 0.45,
   },
   expirationLabel: {
-    marginRight: 10,
+    marginRight: screenWidth * 0.027,
   },
   expirationFieldContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   expirationField: {
-    width: 40, // Adjust the width as needed
+    width: screenWidth * 0.11,
   },
   cardContainer: {
     flexDirection: 'column',
     alignItems: 'center',
-    marginBottom: 2,
-    width: 250
+    marginBottom: screenHeight * 0.004,
+    width: screenWidth * 0.62,
   },
   cardLabel: {
-    marginRight: 5,
+    marginRight: screenWidth * 0.018,
   },
   securityCodeContainer: {
     flexDirection: 'column',
     alignItems: 'center',
-    marginBottom: 4,
+    marginBottom: screenHeight * 0.008,
   },
   securityCodeLabel: {
-    marginRight: 10,
+    marginRight: screenWidth * 0.027,
   },
   bankLabel: {
-    marginRight: 10,
+    marginRight: screenWidth * 0.027,
   },
-};
+});
+
 
 export default EditWebCredentialScreen;
