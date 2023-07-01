@@ -31,7 +31,7 @@ function BackupScreen(props) {
       };
     
     const handleCloseBackupAlert = () => {
-    setShowBackupAlert(false);
+        setShowBackupAlert(false);
     };
 
     const handleOpenRestoreAlert = () => {
@@ -126,18 +126,18 @@ const styles = StyleSheet.create({
     titleContainer: {
         alignItems: 'center',
         marginBottom: 16,
-      },
-      titleText: {
+    },
+    titleText: {
         fontSize: 21,
         fontWeight: 'bold',
         color: LIGHT_GREEN
-      },
-      touchableButtonContainer: {
+    },
+    touchableButtonContainer: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-      },
-      touchableButtonStyle: {
+    },
+    touchableButtonStyle: {
         width: screenWidth * 0.25,
         height: screenWidth * 0.25,
         borderRadius: screenWidth * 0.25, // Make it circular
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderColor: LIGHT_GREEN,
         backgroundColor: LIGHT_GREEN,
-      },
+    },
     textStyle: {
         fontSize: 32
     },
@@ -160,8 +160,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         borderWidth: 0,
         marginHorizontal: 25
-      },
-      keyInput: {
+    },
+    keyInput: {
         flex: 1,
         height: 45,
         fontSize: 16,
@@ -169,27 +169,27 @@ const styles = StyleSheet.create({
         marginRight: 5,
         paddingTop: 0,
         paddingBottom: 0,
-      },
-      keyButton: {
+    },
+    keyButton: {
         padding: 5,
-      },
-      fileSelectionContainer: {
+    },
+    fileSelectionContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 16,
-      },
-      selectedFileText: {
+    },
+    selectedFileText: {
         flex: 1,
         marginRight: 8,
-      },
-      selectFileButton: {
+    },
+    selectFileButton: {
         width: 100,
         height: 25,
         borderRadius: 8,
         backgroundColor: LIGHT_GREEN,
         justifyContent: 'center',
         alignItems: 'center',
-      },
+    },
 });
 
 export default BackupScreen;
