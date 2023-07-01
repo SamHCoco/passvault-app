@@ -42,11 +42,6 @@ function EditWebCredentialScreen({ route }) {
 
   // password generator states
   const [sliderValue, setSliderValue] = useState(10);
-  const [passwordLength, setPasswordLength] = useState(10);
-  const [isNumbers, setIsNumbers] = useState(true);
-  const [isSpecialChars, setIsSpecialChars] = useState(true);
-  const [isLowercase, setIsLowercase] = useState(true);
-  const [isUppercase, setIsUppercase] = useState(true);
   const [passwordGeneratorConfig, setPasswordGeneratorConfig] = useState({
       length: 10,
       includeLowerCase: true,
@@ -484,7 +479,7 @@ function EditWebCredentialScreen({ route }) {
           <View style={styles.optionsContainer}>
             <AppRoundTouchable
               iconName="web"
-              iconColor="black"
+              iconColor={selectedOption === 'Web' ? LIGHT_GREEN : BLACK}
               iconLibrary="material"
               iconSize={65}
               isSelected={selectedOption === 'Web'}
@@ -493,7 +488,7 @@ function EditWebCredentialScreen({ route }) {
             <AppRoundTouchable
               name="card"
               iconName="card"
-              iconColor="black"
+              iconColor={selectedOption === 'Card' ? LIGHT_GREEN : BLACK}
               iconLibrary="ion"
               iconSize={65}
               isSelected={selectedOption === 'Card'}
