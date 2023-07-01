@@ -241,11 +241,15 @@ function EditWebCredentialScreen({ route }) {
       setCardNumber(formattedValue);
       setCardNumberError('');
     } else if (inputName === 'expirationMonth') {
+      // ensures inputs are always aligned
       setExpirationMonth(value);
       setExpirationMonthError('');
+      setExpirationYearError('');
     } else if (inputName === 'expirationYear') {
+      // ensures inputs are always aligned
       setExpirationYear(value);
       setExpirationYearError('');
+      setExpirationMonthError('');
     } else if (inputName === 'securityCode') {
       setSecurityCode(value);
       setSecurityCodeError('');
