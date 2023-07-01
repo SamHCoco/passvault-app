@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Image, Text, StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
 import { SwipeListView }  from 'react-native-swipe-list-view';
 import { useNavigation } from '@react-navigation/native';
 
@@ -13,6 +13,7 @@ import * as SQLite from 'expo-sqlite';
 import * as FileSystem from 'expo-file-system';
 
 const db = SQLite.openDatabase('passvault.db');
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const AppCredentialProvider = ({ provider, onDeleteAction }) => {
   const navigation = useNavigation();
@@ -108,15 +109,13 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
   const handleEditPress = (data) => {
     const {item } = data;
     item.username ? item.type = 'web' : item.type = 'card';
-    navigation.navigate('EditWebCredentialScreen', {
+    navigation.navigate('Credential', {
         item: item
      });
   };
 
   const handleDeletePress = (data) => {
-    console.log("DELETE PRESSED"); // todo - remove
     const { id, type, cardId, webId } = data.item;
-    console.log("AppCredentialProvider - ITEM: ", data.item); // todo - remove
   
     db.transaction((tx) => {
       if (type === 'web') {
@@ -169,7 +168,7 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
           [id],
           (_, { rowsAffected }) => {
             if (rowsAffected > 0) {
-              console.log('Card credential with ID ${id} DELETE SUCCESS.');
+              console.log('Card credential with ID DELETE SUCCESS.');
               setDeletionCompleted(true); // Mark deletion as completed
   
               // Check if there are any other card credentials with the same card_id
@@ -240,48 +239,49 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: WHITE,
+    borderColor: 'white',
     borderRadius: 15,
+    width: screenWidth * 0.95,
     padding: 10,
-    marginVertical: 6,
-    marginHorizontal: 4,
-    backgroundColor: WHITE
+    marginVertical: screenHeight * 0.01,
+    marginHorizontal: screenWidth * 0.01,
+    backgroundColor: 'white',
   },
   image: {
-    width: 25,
-    height: 25,
-    marginRight: 10,
+    width: screenWidth * 0.06,
+    height: screenWidth * 0.06,
+    marginRight: screenWidth * 0.02,
   },
   label: {
-    fontSize: 26,
+    fontSize: screenWidth * 0.065,
     fontWeight: 'bold',
-    color: BLACK,
-    marginLeft: 15
+    color: 'black',
+    marginLeft: screenWidth * 0.03,
   },
   rowBack: {
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    backgroundColor: LIGHT_GREY,
-    marginHorizontal: 10
+    backgroundColor: BLACK,
+    marginHorizontal: screenWidth * 0.02,
   },
   editButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 50,
+    width: screenWidth * 0.1,
     height: '100%',
-    backgroundColor: LIGHT_GREEN,
-    alignSelf: 'flex-end'
+    backgroundColor: 'lightgreen',
+    alignSelf: 'flex-end',
   },
   deleteButton: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 50,
+    width: screenWidth * 0.1,
     height: '100%',
-    backgroundColor: LIGHT_GREEN,
-    alignSelf: 'flex-end'
-  }
+    backgroundColor: 'lightgreen',
+    alignSelf: 'flex-end',
+  },
 });
 
 export default AppCredentialProvider;

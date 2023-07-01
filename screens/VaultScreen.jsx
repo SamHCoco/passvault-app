@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Text, FlatList, View, StyleSheet, Dimensions } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import { FlatList, View, StyleSheet, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AppCredentialMetric from '../components/AppCredentialMetric';
 import AppSearchBar from '../components/AppSearchBar';
 import AppRoundTouchable from '../components/AppRoundTouchable';
-import AppWebCredential from '../components/AppWebCredential';
 import AppCredentialProvider from '../components/AppCredentialProvider';
-import search from '../service/search';
+import AppIcon from '../components/AppIcon';
 
 import capitalizeFirstLetter from '../service/stringUtil';
 
@@ -146,6 +144,7 @@ function VaultScreen({ route }) {
 
   return (
     <View style={styles.container}>
+      <AppIcon name="safe-square-outline" size={95} color={LIGHT_GREEN} />
       <View style={styles.topDashboard}>
         <View style={styles.metricButtonsContainer}>
           <AppCredentialMetric
@@ -195,6 +194,8 @@ function VaultScreen({ route }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
   },
   topDashboard: {
     flexDirection: 'row',

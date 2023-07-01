@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
         backgroundColor: LIGHT_GREEN,
         justifyContent: 'center',
         alignItems: 'center',
-    },
+      },
 });
 
 export default BackupScreen;
