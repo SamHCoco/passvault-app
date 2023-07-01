@@ -1,11 +1,12 @@
 import * as SQLite from 'expo-sqlite';
+import { SQLiteDatabase } from 'expo-sqlite';
 
-const db = SQLite.openDatabase('passvault.db');
+const db = SQLiteDatabase.openDatabase('passvault.db', 'sadsd');
 
 export const createTables = () => {
   db.transaction((tx) => {
     tx.executeSql(
-      'CREATE TABLE IF NOT EXISTS web (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE, favicon TEXT)',
+      'CREATE TABLE IF NOT EXISTS web (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL UNIQUE)',
       [],
       (_, result) => {
         console.log('Web table created successfully');

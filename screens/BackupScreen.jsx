@@ -1,11 +1,46 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TextInput, TouchableOpacity, Dimensions, Text } from 'react-native';
 import AppIcon from '../components/AppIcon';
 import { LIGHT_GREEN, LIGHT_GREY, WHITE, BLACK } from '../constants/colors';
 import AppRoundTouchable from '../components/AppRoundTouchable';
+import AppAlert from '../components/AppAlert';
+import AppTextInput from '../components/AppTextInput';
+import * as DocumentPicker from 'expo-document-picker';
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 function BackupScreen(props) {
     const [backupKey, setBackupKey] = useState('');
+    const [showBackupAlert, setShowBackupAlert] = useState(false);
+    const [showRestoreAlert, setShowRestoreAlert] = useState(false);
+    const [selectedFile, setSelectedFile] = useState(null);
+
+    const handleSelectFile = async () => {
+        try {
+          const fileResult = await DocumentPicker.getDocumentAsync({ type: '*/*' });
+          if (fileResult.type === 'success') {
+            setSelectedFile(fileResult.uri);
+          }
+        } catch (error) {
+          console.log('Error selecting file:', error);
+        }
+      };
+
+    const handleOpenBackupAlert = () => {
+        setShowBackupAlert(true);
+      };
+    
+    const handleCloseBackupAlert = () => {
+    setShowBackupAlert(false);
+    };
+
+    const handleOpenRestoreAlert = () => {
+        setShowRestoreAlert(true);
+    }
+
+    const handleCloseRestoreAlert = () => {
+        setShowRestoreAlert(false);
+    }
 
     return (
         <View style={styles.container}>
@@ -21,28 +56,56 @@ function BackupScreen(props) {
                     setBackupKey(text);
                 }}
                 />
-                <TouchableOpacity style={styles.keyButton} onPress={() => console.log("key button pressed")}>
-                <AppIcon name="md-checkmark-sharp" size={25} color={BLACK} library="ion" />
+                <TouchableOpacity style={styles.keyButton} onPress={() =>setBackupKey('')}>
+                <AppIcon name="window-close" size={25} color={BLACK} library="material" />
                 </TouchableOpacity>
             </View>
             
 
             <View style={styles.row}>
                 <AppRoundTouchable iconName="file-restore" 
-                                    iconSize={45} 
-                                    iconColor={WHITE} 
-                                    iconLibrary="material" 
+                                    // iconSize={45} 
+                                    // iconColor={WHITE} 
+                                    // iconLibrary="material" 
                                     touchableStyle={styles.touchableStyle}
                                     textStyle={styles.textStyle}
                                     text="Backup"
-                                    onPress={() => console.log("Backup pressed")}
+                                    onPress={() => handleOpenBackupAlert()}
                 />
                                     
                 <AppRoundTouchable text="Restore" 
                                    style={styles.touchableStyle} 
-                                   iconColor={WHITE}
-                                   onPress={() => console.log("Restore Pressed")}/>
+                                //    iconColor={WHITE}
+                                   touchableStyle={styles.touchableStyle}
+                                   textStyle={styles.textStyle}
+                                   onPress={handleOpenRestoreAlert}/>
             </View>
+            <AppAlert visible={showBackupAlert} onClose={handleCloseBackupAlert}> 
+                <View style={styles.titleContainer}>
+                    <Text style={styles.titleText}>Create Backup</Text>
+                </View>
+                <AppTextInput placeholder="Enter backup name" />
+                <View style={styles.touchableButtonContainer}>
+                    <AppRoundTouchable text="Backup" touchableStyle={styles.touchableButtonStyle} />
+                </View>
+            </AppAlert>
+            
+            <AppAlert visible={showRestoreAlert} onClose={handleCloseRestoreAlert}> 
+            <View style={styles.titleContainer}>
+            <Text style={styles.titleText}>Restore Backup</Text>
+          </View>
+            <View style={styles.fileSelectionContainer}>
+                <Text style={styles.selectedFileText}>{selectedFile ? selectedFile : 'No file selected'}</Text>
+                <AppRoundTouchable
+                text="Select"
+                touchableStyle={styles.selectFileButton}
+                onPress={handleSelectFile}
+                />
+            </View>
+            <View style={styles.touchableButtonContainer}>
+                <AppRoundTouchable text="Restore" touchableStyle={styles.touchableButtonStyle} />
+            </View>
+            </AppAlert>
         </View>
     );
 }
@@ -52,6 +115,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         alignItems: 'center',
+        backgroundColor: WHITE
     },
     row: {
         flexDirection: 'row',
@@ -59,17 +123,29 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginTop: 20,
     },
-    touchableStyle: {
-        width: 100,
-        height: 100,
-        borderRadius: 150,
+    titleContainer: {
+        alignItems: 'center',
+        marginBottom: 16,
+      },
+      titleText: {
+        fontSize: 21,
+        fontWeight: 'bold',
+        color: LIGHT_GREEN
+      },
+      touchableButtonContainer: {
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        borderWidth: 1,
-        borderColor: LIGHT_GREY,
-        backgroundColor: WHITE,
-        marginLeft: 25,
-    },
+      },
+      touchableButtonStyle: {
+        width: screenWidth * 0.25,
+        height: screenWidth * 0.25,
+        borderRadius: screenWidth * 0.25, // Make it circular
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: LIGHT_GREEN,
+        backgroundColor: LIGHT_GREEN,
+      },
     textStyle: {
         fontSize: 32
     },
@@ -96,6 +172,23 @@ const styles = StyleSheet.create({
       },
       keyButton: {
         padding: 5,
+      },
+      fileSelectionContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 16,
+      },
+      selectedFileText: {
+        flex: 1,
+        marginRight: 8,
+      },
+      selectFileButton: {
+        width: 100,
+        height: 25,
+        borderRadius: 8,
+        backgroundColor: LIGHT_GREEN,
+        justifyContent: 'center',
+        alignItems: 'center',
       },
 });
 

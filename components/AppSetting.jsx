@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet, Text } from 'react-native';
+import { LIGHT_GREY } from '../constants/colors';
 
 function AppSetting({ title, settingName, onPress }) {
     return (
@@ -19,6 +20,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: LIGHT_GREY
       },
     sectionTitle: {
         fontSize: 18,
