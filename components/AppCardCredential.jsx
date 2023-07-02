@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 
-import { LIGHT_GREEN, WHITE } from '../constants/colors';
+import { LIGHT_GREEN, WHITE, LIGHT_GREY } from '../constants/colors';
 
 import AppIcon from './AppIcon';
 
@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
     marginVertical: 3,
     borderWidth: 2,
     backgroundColor: LIGHT_GREEN,
-    borderColor: WHITE
+    borderColor: LIGHT_GREY
   },
   row: {
     flexDirection: 'row',
