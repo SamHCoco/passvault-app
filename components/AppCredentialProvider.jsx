@@ -198,6 +198,7 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
                   console.log('Error checking card credentials:', error);
                 }
               );
+              onDeleteAction();
             }
           },
           (error) => {

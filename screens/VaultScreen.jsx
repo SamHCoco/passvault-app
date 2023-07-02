@@ -130,11 +130,9 @@ function VaultScreen({ route }) {
         }
       );
     });
-  };
+  }; 
 
   const handleDeleteAction = () => {
-    // Toggle the flag to trigger a re-render of the VaultScreen component
-    console.log("Handle Delete Item triggered"); // todo - remove
     setDeleteActionFlag(!deleteActionFlag);
   };
 
