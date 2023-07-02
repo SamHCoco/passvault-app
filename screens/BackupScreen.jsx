@@ -159,16 +159,21 @@ const styles = StyleSheet.create({
         paddingRight: 5,
         backgroundColor: 'white',
         borderWidth: 0,
-        marginHorizontal: 25
+        marginHorizontal: 25,
+        borderColor: BLACK
     },
     keyInput: {
         flex: 1,
         height: 45,
         fontSize: 16,
-        color: BLACK,
-        marginRight: 5,
+        // marginRight: 5,
         paddingTop: 0,
         paddingBottom: 0,
+        width: screenWidth * 0.95,
+        paddingLeft: 14,
+        borderWidth: 1,
+        borderRadius: 25,
+        borderColor: LIGHT_GREY
     },
     keyButton: {
         padding: 5,
