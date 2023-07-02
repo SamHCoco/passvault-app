@@ -57,7 +57,7 @@ function BackupScreen(props) {
                 }}
                 />
                 <TouchableOpacity style={styles.keyButton} onPress={() =>setBackupKey('')}>
-                <AppIcon name="window-close" size={25} color={BLACK} library="material" />
+                    <AppIcon name="window-close" size={25} color={BLACK} library="material" />
                 </TouchableOpacity>
             </View>
             
