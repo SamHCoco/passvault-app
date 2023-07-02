@@ -519,7 +519,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
+    borderWidth: 0,
     marginVertical: screenHeight * 0.033,
     borderRadius: 0.05 * screenWidth,
     borderColor: LIGHT_GREY,
