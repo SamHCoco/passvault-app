@@ -488,7 +488,7 @@ function EditWebCredentialScreen({ route }) {
             <AppRoundTouchable
               name="card"
               iconName="card"
-              iconColor={selectedOption === 'Card ' ? LIGHT_GREEN : BLACK}
+              iconColor={selectedOption === 'Card' ? LIGHT_GREEN : BLACK}
               iconLibrary="ion"
               iconSize={65}
               isSelected={selectedOption === 'Card'}
