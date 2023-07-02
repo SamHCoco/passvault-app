@@ -1,7 +1,6 @@
 import * as SQLite from 'expo-sqlite';
-import { SQLiteDatabase } from 'expo-sqlite';
 
-const db = SQLiteDatabase.openDatabase('passvault.db', 'sadsd');
+const db = SQLite.openDatabase('passvault.db', 'sadsd');
 
 export const createTables = () => {
   db.transaction((tx) => {
