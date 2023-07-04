@@ -575,12 +575,20 @@ const styles = StyleSheet.create({
   },
   expirationContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 1,
     alignItems: 'center',
     marginBottom: screenHeight * 0.013,
-    width: screenWidth * 0.45,
+    width: screenWidth * 0.62, // Adjust the width as needed
   },
+  expirationMonthContainer: {
+    marginRight: screenWidth * 0.027, // Adjust the margin as needed
+  },
+  expirationYearContainer: {
+    marginRight: screenWidth * 0.027, // Adjust the margin as needed
+  },
+  securityCodeContainer: {
+    marginRight: screenWidth * 0.027, // Adjust the margin as needed
+  },
+  
   expirationLabel: {
     marginRight: screenWidth * 0.027,
   },
@@ -600,13 +608,6 @@ const styles = StyleSheet.create({
   },
   cardLabel: {
     marginRight: screenWidth * 0.018,
-  },
-  securityCodeContainer: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    
-    // marginBottom: screenHeight * 0.008,
-    width: screenWidth * 0.20
   },
   securityCodeLabel: {
     marginRight: screenWidth * 0.027,
