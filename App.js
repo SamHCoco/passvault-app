@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import { Animated, ImageBackground, StyleSheet, View, Image, Dimensions, Text } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Animated, StyleSheet, View, Image, Dimensions, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -13,10 +13,11 @@ import EditWebCredentialScreen from './screens/EditWebCredentialScreen';
 import createTables from './service/createTable';
 import AppIcon from './components/AppIcon';
 
-import * as SecureStore from 'expo-secure-store';
-
 import { BLACK, LIGHT_GREEN, WHITE } from './constants/colors';
 import createAssetsDirectory from './service/createAssetsDirectory';
+import generateRandomPassword from './service/generatePassword';
+import * as SecureStore from 'expo-secure-store';
+import { PASSVAULT_KEY } from './service/constants';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -26,16 +27,30 @@ const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SplashScreen = ({ navigation }) => {
   const logoAnimation = useRef(new Animated.Value(0)).current;
 
+  const [passwordGeneratorConfig, setPasswordGeneratorConfig] = useState({
+    length: 10,
+    includeLowerCase: true,
+    includeNumbers: true,
+    includeSpecialChars: true,
+    includeUpperCase: true});
+
   useEffect(() => {
     startAnimation();
     const timer = setTimeout(() => {
       checkPinExists();
       // navigation.replace('AppPinAuth');
     }, 3000);
-
+    generateMasterKey();
     return () => clearTimeout(timer);
   }, []);
-
+  
+  const generateMasterKey = async () => {
+    const passvaultKey = await SecureStore.getItemAsync(PASSVAULT_KEY);
+    if (!passvaultKey) {
+      await SecureStore.setItemAsync(PASSVAULT_KEY, generateRandomPassword(passwordGeneratorConfig));
+      console.log("PASSVAULT key successfully created"); // todo - remove
+    }
+  }
 
   const checkPinExists = async () => {
     try {

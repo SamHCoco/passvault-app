@@ -390,78 +390,80 @@ function EditWebCredentialScreen({ route }) {
               ) : null}
             </View>
 
-            <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
-                  <AppIcon name="card" color={LIGHT_GREEN} size={45} library="ion" />
+            <View style={styles.cardInputContainer}>
+                    <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
+                          <AppIcon name="card" color={LIGHT_GREEN} size={45} library="ion" />
+                    </View>
+
+                    <View style={styles.cardContainer}>
+                      <Text style={styles.cardLabel}>Card Number</Text>
+                      <Field
+                        component={AppTextInput}
+                        name="cardNumber"
+                        placeholder="Card Number"
+                        keyboardType="numeric"
+                        maxLength={19}
+                        textAlign='center'
+                        value={cardNumber}
+                        onChangeText={(value) => handleInputChange(value, 'cardNumber')}
+                      />
+                      {cardNumberError ? (
+                        <Text style={styles.errorText}>{cardNumberError}</Text>
+                      ) : null}
+                    </View>
+
+                    <View style={styles.expirationContainer}>
+                      <View style={styles.expirationMonthContainer}>
+                        <Text style={styles.expirationLabel}>Exp Month</Text>
+                        <Field
+                          component={AppTextInput}
+                          name="expirationMonth"
+                          placeholder="MM"
+                          keyboardType="numeric"
+                          maxLength={2}
+                          value={expirationMonth}
+                          onChangeText={(value) => handleInputChange(value, 'expirationMonth')}
+                        />
+                        {expirationMonthError ? (
+                        <Text style={styles.errorText}>{expirationMonthError}</Text>
+                      ) : null}
+                      </View>
+
+                      <View style={styles.expirationYearContainer}>
+                        <Text style={styles.expirationLabel}>Exp Year</Text>
+                        <Field
+                          component={AppTextInput}
+                          name="expirationYear"
+                          placeholder="YY"
+                          keyboardType="numeric"
+                          maxLength={2}
+                          value={expirationYear}
+                          onChangeText={(value) => handleInputChange(value, 'expirationYear')}
+                        />
+                        {expirationYearError ? (
+                        <Text style={styles.errorText}>{expirationYearError}</Text>
+                        ) : null}
+                      </View>
+                    </View>
+
+                    <View style={styles.securityCodeContainer}>
+                      <Text style={styles.securityCodeLabel}>Security Code</Text>
+                      <Field
+                        component={AppTextInput}
+                        name="securityCode"
+                        placeholder="Security Code"
+                        autoCapitalize="none"
+                        autoCorrect={false}
+                        maxLength={4}
+                        textAlign='center'
+                        value={securityCode}
+                        onChangeText={(value) => handleInputChange(value, 'securityCode')}
+                      />
+                      {securityCodeError ? (
+                        <Text style={styles.errorText}>{securityCodeError}</Text>
+                        ) : null}
+                  </View>
             </View>
-
-            <View style={styles.cardContainer}>
-              <Text style={styles.cardLabel}>Card Number</Text>
-              <Field
-                component={AppTextInput}
-                name="cardNumber"
-                placeholder="Card Number"
-                keyboardType="numeric"
-                maxLength={19}
-                textAlign='center'
-                value={cardNumber}
-                onChangeText={(value) => handleInputChange(value, 'cardNumber')}
-              />
-              {cardNumberError ? (
-                <Text style={styles.errorText}>{cardNumberError}</Text>
-              ) : null}
-            </View>
-
-            <View style={styles.expirationContainer}>
-              <View style={styles.expirationMonthContainer}>
-                <Text style={styles.expirationLabel}>Exp Month</Text>
-                <Field
-                  component={AppTextInput}
-                  name="expirationMonth"
-                  placeholder="MM"
-                  keyboardType="numeric"
-                  maxLength={2}
-                  value={expirationMonth}
-                  onChangeText={(value) => handleInputChange(value, 'expirationMonth')}
-                />
-                {expirationMonthError ? (
-                <Text style={styles.errorText}>{expirationMonthError}</Text>
-              ) : null}
-              </View>
-
-              <View style={styles.expirationYearContainer}>
-                <Text style={styles.expirationLabel}>Exp Year</Text>
-                <Field
-                  component={AppTextInput}
-                  name="expirationYear"
-                  placeholder="YY"
-                  keyboardType="numeric"
-                  maxLength={2}
-                  value={expirationYear}
-                  onChangeText={(value) => handleInputChange(value, 'expirationYear')}
-                />
-                {expirationYearError ? (
-                <Text style={styles.errorText}>{expirationYearError}</Text>
-                ) : null}
-              </View>
-            </View>
-
-            <View style={styles.securityCodeContainer}>
-              <Text style={styles.securityCodeLabel}>Security Code</Text>
-              <Field
-                component={AppTextInput}
-                name="securityCode"
-                placeholder="Security Code"
-                autoCapitalize="none"
-                autoCorrect={false}
-                maxLength={4}
-                textAlign='center'
-                value={securityCode}
-                onChangeText={(value) => handleInputChange(value, 'securityCode')}
-              />
-              {securityCodeError ? (
-                <Text style={styles.errorText}>{securityCodeError}</Text>
-                ) : null}
-          </View>
           <AppRoundTouchable text={item ? "Edit" : "Save"} 
                              onPress={handleFormSubmit} 
                              touchableStyle={styles.touchableButtonStyle}  />
@@ -515,6 +517,10 @@ function EditWebCredentialScreen({ route }) {
 }
 
 const styles = StyleSheet.create({
+  cardInputContainer: {
+      borderWidth: 1,
+      flex: 1
+  },
   passwordGeneratorContainer: {
     flexDirection: 'column',
     justifyContent: 'center',
@@ -571,6 +577,7 @@ const styles = StyleSheet.create({
   expirationContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingHorizontal: 1,
     alignItems: 'center',
     marginBottom: screenHeight * 0.013,
     width: screenWidth * 0.45,

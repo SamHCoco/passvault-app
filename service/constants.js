@@ -1,0 +1,1 @@
+export const PASSVAULT_KEY = "passvault-key";

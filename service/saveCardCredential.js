@@ -9,10 +9,7 @@ const saveCardCredential = async ({
   expirationYear,
   securityCode,
 }) => {
-  // const { bank, cardNumber, expDate, securityCode } = values;
-  // const { bank, cardNumber, securityCode, expirationMonth, expirationYear } = values;
   const expDate = `${expirationMonth}-${expirationYear}`;
-  console.log("CARD CREDENTIALS - onSubmit: ", bank, cardNumber, expirationMonth, expirationYear, expDate, securityCode); // todo - remove
   
   // Search for a match in the card(name) table
   const existingCard = await new Promise((resolve, reject) => {
@@ -34,7 +31,7 @@ const saveCardCredential = async ({
   const insertCardCredential = async (cardId) => {
     return new Promise((resolve, reject) => {
       db.transaction(tx => {
-        tx.executeSql(
+        tx.executeSql( 
           'INSERT INTO card_credential (card_id, card_number, exp_date, security_code) VALUES (?, ?, ?, ?)',
           [cardId, cardNumber, expDate, securityCode],
           (_, { insertId }) => {

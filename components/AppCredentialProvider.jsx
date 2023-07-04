@@ -11,6 +11,10 @@ import { BLACK, LIGHT_GREEN, LIGHT_GREY, WHITE } from '../constants/colors';
 
 import * as SQLite from 'expo-sqlite';
 import * as FileSystem from 'expo-file-system';
+import * as SecureStore from 'expo-secure-store';
+import { PASSVAULT_KEY } from '../service/constants';
+
+import { decryptValue} from '../service/crypto';
 
 const db = SQLite.openDatabase('passvault.db');
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
@@ -30,19 +34,36 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
 
   const [deletionCompleted, setDeletionCompleted] = useState(false);
 
-  const fetchData = () => {
-    console.log("ICON PATH: ", iconPath); // todo - remove
+  const fetchData = async () => {
     const show = !showList;
     if (show) {
+      const masterKey = await SecureStore.getItemAsync(PASSVAULT_KEY);
+      console.log("MASTER KEY: ", masterKey); // todo - remove
       db.transaction((tx) => {
         if (type === 'web') {
           tx.executeSql(
             'SELECT wc.id, wc.username, wc.password, wc.web_url_id, wu.url, wc.web_id AS webId, "web" AS type FROM web_credential AS wc INNER JOIN web_url AS wu ON wc.web_url_id = wu.id WHERE wc.web_id = ?',
             [id],
-            (_, { rows }) => {
+            async (_, { rows }) => {
               const webCredentialRecords = rows._array;
-              setCredentials(webCredentialRecords);
-              console.log('FOUND WEB_CREDENTIALS:', webCredentialRecords);
+
+              // Iterate over and print the objects
+              webCredentialRecords.forEach(async (record) => {
+                console.log('Web Credential Record:', record);
+                const test = await decryptValue(record.username, masterKey);
+                console.log("TEST value: ", test); // todo - remove
+              });
+  
+              // Decrypt the username and password for each record asynchronously
+              const decryptedRecords = await Promise.all(
+                webCredentialRecords.map(async (record) => ({
+                  ...record,
+                  username: await decryptValue(record.username, masterKey),
+                  password: await decryptValue(record.password, masterKey),
+                }))
+              );
+            console.log('FOUND WEB_CREDENTIALS:', decryptedRecords); // todo - remove
+            setCredentials(decryptedRecords);
             },
             (error) => {
               console.log('Error retrieving web credential records:', error);

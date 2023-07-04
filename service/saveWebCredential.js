@@ -1,10 +1,17 @@
 import * as SQLite from 'expo-sqlite';
+import { encryptValue, decryptValue} from '../service/crypto';
+
 import downloadFavicon from './downloadFavIcon';
 
 const db = SQLite.openDatabase('passvault.db');
 
 const saveWebCredential = async (values) => {
   const { url, username, password } = values;
+
+  const key = "password1";
+
+  const encryptedUsername = await encryptValue(username, key);
+  const encryptedPassword = await encryptValue(password, key);
 
   // Extract domain from URL and lowercase it
   const domain = url.toLowerCase().replace(/^(?:https?:\/\/)?(?:www\.)?([^/.]+).*$/, '$1');
@@ -31,13 +38,14 @@ const saveWebCredential = async (values) => {
       db.transaction(tx => {
         tx.executeSql(
           'INSERT INTO web_credential (web_url_id, web_id, username, password) VALUES (?, ?, ?, ?)',
-          [webUrlId, webId, username, password],
+          [webUrlId, webId, encryptedUsername, encryptedPassword],
           (_, { insertId }) => {
             resolve(insertId);
             console.log("New Web Credentials added with web_url_id ", webUrlId);
           },
           (_, error) => {
             reject(error);
+            console.log("Failed to save Web Credentials:", error);
           }
         );
       });
