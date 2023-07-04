@@ -449,7 +449,7 @@ function EditWebCredentialScreen({ route }) {
                       <Field
                         component={AppTextInput}
                         name="securityCode"
-                        placeholder="Security Code"
+                        placeholder="Code"
                         autoCapitalize="none"
                         autoCorrect={false}
                         maxLength={4}
@@ -518,7 +518,11 @@ function EditWebCredentialScreen({ route }) {
 const styles = StyleSheet.create({
   cardInputContainer: {
       borderWidth: 1,
-      flex: 1
+      flex: 1,
+      height: screenHeight * 0.45,
+      width: screenWidth * 0.70,
+      alignItems: 'center',
+      borderColor: WHITE
   },
   passwordGeneratorContainer: {
     flexDirection: 'column',
