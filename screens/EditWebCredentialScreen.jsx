@@ -587,6 +587,7 @@ const styles = StyleSheet.create({
   },
   securityCodeContainer: {
     marginRight: screenWidth * 0.027, // Adjust the margin as needed
+    width: screenWidth * 0.27
   },
   
   expirationLabel: {
