@@ -444,9 +444,7 @@ function EditWebCredentialScreen({ route }) {
                         <Text style={styles.errorText}>{expirationYearError}</Text>
                         ) : null}
                       </View>
-                    </View>
-
-                    <View style={styles.securityCodeContainer}>
+                      <View style={styles.securityCodeContainer}>
                       <Text style={styles.securityCodeLabel}>Security Code</Text>
                       <Field
                         component={AppTextInput}
@@ -462,7 +460,8 @@ function EditWebCredentialScreen({ route }) {
                       {securityCodeError ? (
                         <Text style={styles.errorText}>{securityCodeError}</Text>
                         ) : null}
-                  </View>
+                    </View>
+                    </View>
             </View>
           <AppRoundTouchable text={item ? "Edit" : "Save"} 
                              onPress={handleFormSubmit} 
@@ -597,6 +596,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: screenHeight * 0.004,
     width: screenWidth * 0.62,
+    marginBottom: 10
   },
   cardLabel: {
     marginRight: screenWidth * 0.018,
@@ -604,7 +604,9 @@ const styles = StyleSheet.create({
   securityCodeContainer: {
     flexDirection: 'column',
     alignItems: 'center',
-    marginBottom: screenHeight * 0.008,
+    
+    // marginBottom: screenHeight * 0.008,
+    width: screenWidth * 0.20
   },
   securityCodeLabel: {
     marginRight: screenWidth * 0.027,
