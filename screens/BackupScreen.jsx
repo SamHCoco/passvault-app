@@ -6,6 +6,7 @@ import AppRoundTouchable from '../components/AppRoundTouchable';
 import AppAlert from '../components/AppAlert';
 import AppTextInput from '../components/AppTextInput';
 import * as DocumentPicker from 'expo-document-picker';
+import copyDatabaseFile from '../service/copyDatabaseFile';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -64,9 +65,6 @@ function BackupScreen(props) {
 
             <View style={styles.row}>
                 <AppRoundTouchable iconName="file-restore" 
-                                    // iconSize={45} 
-                                    // iconColor={WHITE} 
-                                    // iconLibrary="material" 
                                     touchableStyle={styles.touchableStyle}
                                     textStyle={styles.textStyle}
                                     text="Backup"
@@ -75,7 +73,6 @@ function BackupScreen(props) {
                                     
                 <AppRoundTouchable text="Restore" 
                                    style={styles.touchableStyle} 
-                                //    iconColor={WHITE}
                                    touchableStyle={styles.touchableStyle}
                                    textStyle={styles.textStyle}
                                    onPress={handleOpenRestoreAlert}/>
@@ -86,7 +83,9 @@ function BackupScreen(props) {
                 </View>
                 <AppTextInput placeholder="Enter backup name" />
                 <View style={styles.touchableButtonContainer}>
-                    <AppRoundTouchable text="Backup" touchableStyle={styles.touchableButtonStyle} />
+                    <AppRoundTouchable text="Backup" 
+                                       touchableStyle={styles.touchableButtonStyle}
+                                       onPress={() => copyDatabaseFile("test-1")} />
                 </View>
             </AppAlert>
             

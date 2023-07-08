@@ -608,7 +608,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     marginBottom: screenHeight * 0.004,
-    width: screenWidth * 0.62,
+    width: screenWidth * 0.75,
     marginBottom: 10
   },
   cardLabel: {
