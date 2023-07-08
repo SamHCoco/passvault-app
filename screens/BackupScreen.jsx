@@ -28,7 +28,9 @@ function BackupScreen(props) {
       };
 
     const handleOpenBackupAlert = () => {
-        setShowBackupAlert(true);
+        if (backupKey.length > 0) {
+            setShowBackupAlert(true);
+        }
       };
     
     const handleCloseBackupAlert = () => {
@@ -36,7 +38,9 @@ function BackupScreen(props) {
     };
 
     const handleOpenRestoreAlert = () => {
-        setShowRestoreAlert(true);
+        if (backupKey.length > 0) {
+            setShowRestoreAlert(true);
+        }
     }
 
     const handleCloseRestoreAlert = () => {
@@ -50,8 +54,9 @@ function BackupScreen(props) {
             <View style={styles.keyContainer}>
                 <TextInput
                 style={styles.keyInput}
-                placeholder="Enter your backup key"
+                placeholder="Enter password to backup / restore"
                 placeholderTextColor="#999"
+                maxLength={25}
                 value={backupKey}
                 onChangeText={(text) => {
                     setBackupKey(text);
@@ -64,18 +69,20 @@ function BackupScreen(props) {
             
 
             <View style={styles.row}>
-                <AppRoundTouchable iconName="file-restore" 
-                                    touchableStyle={styles.touchableStyle}
-                                    textStyle={styles.textStyle}
-                                    text="Backup"
-                                    onPress={() => handleOpenBackupAlert()}
-                />
-                                    
-                <AppRoundTouchable text="Restore" 
-                                   style={styles.touchableStyle} 
-                                   touchableStyle={styles.touchableStyle}
-                                   textStyle={styles.textStyle}
-                                   onPress={handleOpenRestoreAlert}/>
+                <View style={styles.optionButtons}>
+                        <View style={styles.optionButtonView}>
+                            <AppRoundTouchable  text="Backup"
+                                                touchableStyle={styles.touchableButtonStyle}
+                                                onPress={() => handleOpenBackupAlert()}
+                            />
+                        </View>
+                                        
+                        <View style={styles.optionButtonView}>
+                        <AppRoundTouchable text="Restore" 
+                                            touchableStyle={styles.touchableButtonStyle}
+                                            onPress={handleOpenRestoreAlert}/>
+                        </View>
+                </View>
             </View>
             <AppAlert visible={showBackupAlert} onClose={handleCloseBackupAlert}> 
                 <View style={styles.titleContainer}>
@@ -115,12 +122,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         backgroundColor: WHITE
-    },
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 20,
     },
     titleContainer: {
         alignItems: 'center',
@@ -194,6 +195,21 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
       },
+      optionButtons: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        marginHorizontal: 80,
+      },
+      optionButtonView: {
+        marginHorizontal: 14
+      },
+      row: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 20,
+    },
 });
 
 export default BackupScreen;

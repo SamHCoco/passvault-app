@@ -14,9 +14,10 @@ const copyDatabaseFile = async (filename) => {
     }
 
     // Request permission to access the device's storage
-    const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
+    const { status } = await Permissions.askAsync(Permissions.READ_EXTERNAL_STORAGE);
+    console.log("STATUS: ", status); // todo - remove
     if (status !== 'granted') {
-      console.log('Permission to access storage denied.');
+      console.log('Permission to access storage denied Test.');
       return;
     }
 
