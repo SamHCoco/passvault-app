@@ -29,8 +29,8 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
 
   // const iconPath = `${FileSystem.documentDirectory}assets/${provider.name}.ico`;
 
-  const iconName = provider?.name?.toLowerCase();
-  const iconPath = iconName ? `${FileSystem.documentDirectory}assets/${iconName}.ico` : null;
+  // const iconName = provider?.name?.toLowerCase();
+  // const iconPath = iconName ? `${FileSystem.documentDirectory}assets/${iconName}.ico` : null;
 
   const [deletionCompleted, setDeletionCompleted] = useState(false);
 
@@ -239,7 +239,7 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
     <View>
       <TouchableOpacity onPress={fetchData}>
         <View style={styles.container}>
-          <Image source={{uri: iconPath}} style={styles.image} />
+          <Image source={require('../assets/passvault-icon-v2-edit.png')} style={styles.image} />
           <Text style={styles.label}>{provider.name}</Text>
         </View>
       </TouchableOpacity>
