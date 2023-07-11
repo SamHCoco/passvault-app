@@ -14,7 +14,6 @@ import createTables from './service/createTable';
 import AppIcon from './components/AppIcon';
 
 import { BLACK, LIGHT_GREEN, WHITE } from './constants/colors';
-import createAssetsDirectory from './service/createAssetsDirectory';
 import generateRandomPassword from './service/generatePassword';
 import * as SecureStore from 'expo-secure-store';
 import { PASSVAULT_KEY } from './service/constants';
@@ -68,7 +67,7 @@ const SplashScreen = ({ navigation }) => {
   const startAnimation = () => {
     Animated.timing(logoAnimation, {
       toValue: 0.25,
-      duration: 2500,
+      duration: 1500,
       useNativeDriver: true,
     }).start();
   };
@@ -125,7 +124,6 @@ function TabScreen() {
 
 export default function App() {
   useEffect(() => {
-    createAssetsDirectory();
     createTables();
   }, []);
 

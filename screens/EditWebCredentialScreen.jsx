@@ -240,14 +240,18 @@ function EditWebCredentialScreen({ route }) {
       setExpirationMonth(value);
       setExpirationMonthError('');
       setExpirationYearError('');
+      setSecurityCode('');
     } else if (inputName === 'expirationYear') {
       // ensures inputs are always aligned
       setExpirationYear(value);
       setExpirationYearError('');
       setExpirationMonthError('');
+      setSecurityCode('');
     } else if (inputName === 'securityCode') {
       setSecurityCode(value);
+      setExpirationYearError('');
       setSecurityCodeError('');
+      setExpirationMonthError('');
     }
   };
 

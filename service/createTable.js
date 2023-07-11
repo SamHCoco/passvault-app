@@ -49,7 +49,7 @@ export const createTables = () => {
     );
 
     tx.executeSql(
-      'CREATE TABLE IF NOT EXISTS card_credential (id INTEGER PRIMARY KEY AUTOINCREMENT, card_id INTEGER NOT NULL, card_number TEXT NOT NULL, exp_date TEXT NOT NULL, security_code INTEGER, iv TEXT NOT NULL, FOREIGN KEY (card_id) REFERENCES card(id), UNIQUE (card_id, card_number))',
+      'CREATE TABLE IF NOT EXISTS card_credential (id INTEGER PRIMARY KEY AUTOINCREMENT, card_id INTEGER NOT NULL, card_number TEXT NOT NULL, exp_date TEXT NOT NULL, security_code INTEGER, FOREIGN KEY (card_id) REFERENCES card(id), UNIQUE (card_id, card_number))',
       [],
       (_, result) => {
         console.log('Card Credential table created successfully');
