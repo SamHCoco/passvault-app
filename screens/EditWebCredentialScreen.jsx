@@ -223,14 +223,14 @@ function EditWebCredentialScreen({ route }) {
       setBank(value);
       setBankError('');
     }  else if (inputName === 'cardNumber') {
-        // Remove any existing dashes from the value
-      const newValue = value.replace(/-/g, '');
+      // Remove any existing spaces from the value
+      const newValue = value.replace(/ /g, '');
 
       // Split the value into groups of 4 characters
       const groups = newValue.match(/.{1,4}/g);
 
-      // Add dashes after every group of 4 characters
-      const formattedValue = groups ? groups.join('-') : '';
+      // Add empty spaces after every group of 4 characters
+      const formattedValue = groups ? groups.join(' ') : ''
 
       // Update the state
       setCardNumber(formattedValue);
@@ -612,7 +612,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     marginBottom: screenHeight * 0.004,
-    width: screenWidth * 0.75,
+    width: screenWidth * 0.65,
     marginBottom: 10
   },
   cardLabel: {
