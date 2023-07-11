@@ -275,7 +275,7 @@ function EditWebCredentialScreen({ route }) {
         <>
           <View style={styles.webFormContainer}>
             <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
-                  <AppIcon name="web" color={LIGHT_GREEN} size={45} library="material" />
+                  <AppIcon name="web" color={LIGHT_GREEN} size={screenWidth * 0.1095} library="material" />
             </View>
 
               <Field
@@ -293,7 +293,7 @@ function EditWebCredentialScreen({ route }) {
               ) : null}
 
               <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
-                  <AppIcon name="md-person-circle" color={LIGHT_GREEN} size={45} library="ion" />
+                  <AppIcon name="md-person-circle" color={LIGHT_GREEN} size={screenWidth * 0.1095} library="ion" />
               </View>
 
               <Field
@@ -310,7 +310,7 @@ function EditWebCredentialScreen({ route }) {
               ) : null}
 
               <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
-                  <AppIcon name="md-lock-closed" color={LIGHT_GREEN} size={45} library="ion" />
+                  <AppIcon name="md-lock-closed" color={LIGHT_GREEN} size={screenWidth * 0.1095} library="ion" />
               </View>
               
               <Field
@@ -396,7 +396,7 @@ function EditWebCredentialScreen({ route }) {
 
             <View style={styles.cardInputContainer}>
                     <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
-                          <AppIcon name="card" color={LIGHT_GREEN} size={45} library="ion" />
+                          <AppIcon name="card" color={LIGHT_GREEN} size={screenWidth * 0.1095} library="ion" />
                     </View>
 
                     <View style={styles.cardContainer}>
@@ -486,7 +486,7 @@ function EditWebCredentialScreen({ route }) {
               iconName="web"
               iconColor={selectedOption === 'Web' ? LIGHT_GREEN : BLACK}
               iconLibrary="material"
-              iconSize={65}
+              iconSize={screenWidth * 0.1582}
               isSelected={selectedOption === 'Web'}
               onPress={() => setSelectedOption('Web')}
             />
@@ -495,7 +495,7 @@ function EditWebCredentialScreen({ route }) {
               iconName="card"
               iconColor={selectedOption === 'Card' ? LIGHT_GREEN : BLACK}
               iconLibrary="ion"
-              iconSize={65}
+              iconSize={screenWidth * 0.1582}
               isSelected={selectedOption === 'Card'}
               onPress={() => setSelectedOption('Card')}
             />
@@ -595,7 +595,7 @@ const styles = StyleSheet.create({
   },
   securityCodeContainer: {
     marginRight: screenWidth * 0.027, // Adjust the margin as needed
-    width: screenWidth * 0.27
+    width: screenWidth * 0.24
   },
   
   expirationLabel: {
@@ -613,7 +613,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: screenHeight * 0.004,
     width: screenWidth * 0.65,
-    marginBottom: 10
+    marginBottom: screenWidth * 0.0243
   },
   cardLabel: {
     marginRight: screenWidth * 0.018,
