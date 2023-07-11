@@ -54,16 +54,16 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
                 console.log("TEST value: ", test); // todo - remove
               });
   
-              // Decrypt the username and password for each record asynchronously
-              const decryptedRecords = await Promise.all(
-                webCredentialRecords.map(async (record) => ({
-                  ...record,
-                  username: await decryptValue(record.username, masterKey),
-                  password: await decryptValue(record.password, masterKey),
-                }))
-              );
-            console.log('FOUND WEB_CREDENTIALS:', decryptedRecords); // todo - remove
-            setCredentials(decryptedRecords);
+              // // Decrypt the username and password for each record asynchronously
+              // const decryptedRecords = await Promise.all(
+              //   webCredentialRecords.map(async (record) => ({
+              //     ...record,
+              //     username: await decryptValue(record.username, masterKey),
+              //     password: await decryptValue(record.password, masterKey),
+              //   }))
+              // );
+            // console.log('FOUND WEB_CREDENTIALS:', decryptedRecords); // todo - remove
+            setCredentials(webCredentialRecords);
             },
             (error) => {
               console.log('Error retrieving web credential records:', error);

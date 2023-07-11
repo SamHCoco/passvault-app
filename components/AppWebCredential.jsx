@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, Clipboard } from 'react-native';
+import { View, StyleSheet, Text, Clipboard, ScrollView } from 'react-native';
 // import { Clipboard } from '@react-native-community/clipboard';
 import AppRoundTouchable from './AppRoundTouchable';
 import AppIcon from './AppIcon';
@@ -23,7 +23,9 @@ function AppWebCredential({ username, password }) {
     <View style={styles.container}>
       <View style={styles.row}>
         <AppIcon name="md-person" size={25} color={LIGHT_GREY} library="ion" iconStyle={{ marginHorizontal: 3 }} />
-        <Text style={styles.text}>{username}</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <Text style={styles.text}>{username}</Text>
+        </ScrollView>
         <View style={styles.alignRight}>
           <AppRoundTouchable
             iconName="copy-outline"
@@ -37,7 +39,9 @@ function AppWebCredential({ username, password }) {
       </View>
       <View style={styles.row}>
         <AppIcon name="lock-closed" size={25} color={LIGHT_GREY} library="ion" iconStyle={{ marginHorizontal: 3 }} />
-        <Text style={styles.text}>{passwordVisible ? password : '•••••••••••••'}</Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <Text style={styles.text}>{passwordVisible ? password : '•••••••••••••'}</Text>
+        </ScrollView>
         <View style={styles.alignRight}>
           <AppRoundTouchable
             iconName="eye-outline"
