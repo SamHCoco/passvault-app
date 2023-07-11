@@ -36,8 +36,10 @@ function AppCardCredential({ bank, cardNumber, expDate, securityCode }) {
 
       {/* Third Row */}
       <View style={styles.row}>
-        <Text style={styles.expText}>exp.</Text>
-        <Text style={styles.expDateText}>{expDate}</Text>
+        <View style={styles.expRow}>
+          <Text style={styles.expText}>exp.</Text>
+          <Text style={styles.expDateText}>{expDate}</Text>
+        </View>
         <Text style={styles.securityCodeText}>{securityCode}</Text>
       </View>
     </View>
@@ -54,7 +56,7 @@ const styles = StyleSheet.create({
     marginVertical: 3,
     borderWidth: 2,
     backgroundColor: LIGHT_GREEN,
-    borderColor: LIGHT_GREY
+    borderColor: WHITE
   },
   row: {
     flexDirection: 'row',
@@ -79,15 +81,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white'
   },
+  expRow: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
   expText: {
-    alignSelf: 'flex-start',
-    textAlign: 'left',
     fontSize: 16,
     color: 'white'
   },
   expDateText: {
-    alignSelf: 'flex-start',
-    textAlign: 'left',
+    marginLeft: 5,
     fontSize: 21,
     color: 'white'
   },
