@@ -55,8 +55,7 @@ const styles = StyleSheet.create({
     paddingTop: screenHeight * 0.02,
     marginHorizontal: screenWidth * 0.02,
     borderRadius: screenWidth * 0.02,
-    marginVertical: screenHeight * 0.005,
-    borderWidth: screenWidth * 0.01,
+    borderWidth: screenWidth * 0.001,
     backgroundColor: LIGHT_GREEN,
     borderColor: WHITE
   },
