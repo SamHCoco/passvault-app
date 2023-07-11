@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, Text, Dimensions } from 'react-native';
+import { View, StyleSheet, Text, Dimensions, Clipboard } from 'react-native';
 
 import { LIGHT_GREEN, WHITE } from '../constants/colors';
 
 import AppIcon from './AppIcon';
-
+import AppRoundTouchable from './AppRoundTouchable';
+ 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 function formatCardNumber(cardNumber) {
@@ -23,6 +24,13 @@ function formatCardNumber(cardNumber) {
 function AppCardCredential({ bank, cardNumber, expDate, securityCode }) {
   const formattedCardNumber = formatCardNumber(cardNumber);
 
+  const copyToClipboard = (text) => {
+    const trimmedText = text.replace(/\s/g, ''); // Remove empty spaces
+    console.log("SCREEN-WIDTH: ", screenWidth); // todo - remove
+    console.log("SCREEN-HEIGHT: ", screenHeight); // todo - remove
+    Clipboard.setString(trimmedText);
+  };
+
   return (
     <View style={styles.container}>
       {/* First Row */}
@@ -33,7 +41,18 @@ function AppCardCredential({ bank, cardNumber, expDate, securityCode }) {
 
       {/* Second Row */}
       <View style={styles.row}>
-        <Text style={styles.cardNumberText}>{formattedCardNumber}</Text>
+        <View style={styles.cardNumberRow}>
+          <Text style={styles.cardNumberText}>{formattedCardNumber}</Text>
+          <AppRoundTouchable
+            iconName="copy-outline"
+            iconLibrary="ion"
+            iconSize={19}
+            iconColor={WHITE}
+            touchableStyle={styles.touchable}
+            iconStyle={styles.icon}
+            onPress={() => copyToClipboard(formattedCardNumber)}
+          />
+        </View>
       </View>
 
       {/* Third Row */}
@@ -75,6 +94,10 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     textAlign: 'right'
   },
+  cardNumberRow: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
   cardNumberText: {
     alignSelf: 'flex-start',
     textAlign: 'left',
@@ -100,6 +123,19 @@ const styles = StyleSheet.create({
     textAlign: 'left',
     fontSize: screenWidth * 0.045,
     color: 'white'
+  },
+  touchable: {
+    width: screenWidth * 0.061,
+    height: screenWidth * 0.061,
+    borderRadius: screenWidth * 0.182,
+    borderWidth: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderColor: 'gray',
+    marginLeft: screenWidth * 0.02,
+  },
+  icon: {
+    alignSelf: 'center',
   },
 });
 

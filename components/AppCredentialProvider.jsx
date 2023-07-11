@@ -27,11 +27,6 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
   const [credentials, setCredentials] = useState([]);
   const [showList, setShowList] = useState(false);
 
-  // const iconPath = `${FileSystem.documentDirectory}assets/${provider.name}.ico`;
-
-  // const iconName = provider?.name?.toLowerCase();
-  // const iconPath = iconName ? `${FileSystem.documentDirectory}assets/${iconName}.ico` : null;
-
   const [deletionCompleted, setDeletionCompleted] = useState(false);
 
   const fetchData = async () => {
