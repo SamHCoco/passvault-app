@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import React from 'react';
+import { View, StyleSheet, Text, Dimensions } from 'react-native';
 
-import { LIGHT_GREEN, WHITE, LIGHT_GREY } from '../constants/colors';
+import { LIGHT_GREEN, WHITE } from '../constants/colors';
 
 import AppIcon from './AppIcon';
+
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 function formatCardNumber(cardNumber) {
   const formattedNumber = cardNumber.replace(/\s/g, ''); // Remove existing spaces
@@ -49,24 +51,24 @@ function AppCardCredential({ bank, cardNumber, expDate, securityCode }) {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-    paddingHorizontal: 16,
-    paddingTop: 16,
-    marginHorizontal: 8,
-    borderRadius: 10,
-    marginVertical: 3,
-    borderWidth: 2,
+    paddingHorizontal: screenWidth * 0.04,
+    paddingTop: screenHeight * 0.02,
+    marginHorizontal: screenWidth * 0.02,
+    borderRadius: screenWidth * 0.02,
+    marginVertical: screenHeight * 0.005,
+    borderWidth: screenWidth * 0.01,
     backgroundColor: LIGHT_GREEN,
     borderColor: WHITE
   },
   row: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 16,
+    marginBottom: screenHeight * 0.02,
   },
   bankText: {
     alignSelf: 'flex-start',
     textAlign: 'left',
-    fontSize: 19,
+    fontSize: screenWidth * 0.05,
     fontWeight: 'bold',
     color: 'white'
   },
@@ -77,7 +79,7 @@ const styles = StyleSheet.create({
   cardNumberText: {
     alignSelf: 'flex-start',
     textAlign: 'left',
-    fontSize: 25,
+    fontSize: screenWidth * 0.06,
     fontWeight: 'bold',
     color: 'white'
   },
@@ -86,18 +88,18 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   expText: {
-    fontSize: 16,
+    fontSize: screenWidth * 0.035,
     color: 'white'
   },
   expDateText: {
-    marginLeft: 5,
-    fontSize: 21,
+    marginLeft: screenWidth * 0.01,
+    fontSize: screenWidth * 0.045,
     color: 'white'
   },
   securityCodeText: {
     alignSelf: 'flex-start',
     textAlign: 'left',
-    fontSize: 21,
+    fontSize: screenWidth * 0.045,
     color: 'white'
   },
 });
