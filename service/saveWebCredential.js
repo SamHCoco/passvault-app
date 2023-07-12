@@ -8,10 +8,10 @@ const db = SQLite.openDatabase('passvault.db');
 const saveWebCredential = async (values) => {
   const { url, username, password } = values;
 
-  const key = "password1";
+  const masterKey = await SecureStore.getItemAsync(PASSVAULT_KEY);
 
-  const encryptedUsername = await encryptValue(username, key);
-  const encryptedPassword = await encryptValue(password, key);
+  const encryptedUsername = await encryptValue(username, masterKey);
+  const encryptedPassword = await encryptValue(password, masterKey);
 
   // Extract domain from URL and lowercase it
   const domain = url.toLowerCase().replace(/^(?:https?:\/\/)?(?:www\.)?([^/.]+).*$/, '$1');
