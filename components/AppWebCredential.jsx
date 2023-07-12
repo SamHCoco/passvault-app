@@ -4,7 +4,7 @@ import { View, StyleSheet, Text, Clipboard, ScrollView } from 'react-native';
 import AppRoundTouchable from './AppRoundTouchable';
 import AppIcon from './AppIcon';
 
-import { BLACK, LIGHT_GREEN, LIGHT_GREY, WHITE } from '../constants/colors';
+import { BLACK, LIGHT_GREY, WHITE } from '../constants/colors';
 
 function AppWebCredential({ username, password }) {
   const [passwordVisible, setPasswordVisible] = useState(false);

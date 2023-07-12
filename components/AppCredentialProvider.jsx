@@ -33,7 +33,6 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
     const show = !showList;
     if (show) {
       const masterKey = await SecureStore.getItemAsync(PASSVAULT_KEY);
-      console.log("MASTER KEY: ", masterKey); // todo - remove
       db.transaction((tx) => {
         if (type === 'web') {
           tx.executeSql(
@@ -43,21 +42,17 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
               const webCredentialRecords = rows._array;
 
               // Iterate over and print the objects
-              webCredentialRecords.forEach(async (record) => {
+              for (const record of webCredentialRecords) {
                 console.log('Web Credential Record:', record);
-                const test = await decryptValue(record.username, masterKey);
-                console.log("TEST value: ", test); // todo - remove
-              });
+                console.log("MASTER KEY: ", masterKey);
+                
+                const decryptedUsername = await decryptValue(record.username, masterKey);
+                const decryptedPassword = await decryptValue(record.password, masterKey);
+                
+                record.username = decryptedUsername;
+                record.password = decryptedPassword;
+              }
   
-              // // Decrypt the username and password for each record asynchronously
-              // const decryptedRecords = await Promise.all(
-              //   webCredentialRecords.map(async (record) => ({
-              //     ...record,
-              //     username: await decryptValue(record.username, masterKey),
-              //     password: await decryptValue(record.password, masterKey),
-              //   }))
-              // );
-            // console.log('FOUND WEB_CREDENTIALS:', decryptedRecords); // todo - remove
             setCredentials(webCredentialRecords);
             },
             (error) => {
