@@ -3,6 +3,7 @@ import { Animated, StyleSheet, View, Image, Dimensions, Text } from 'react-nativ
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import * as LocalAuthentication from 'expo-local-authentication';
 
 import PinAuthScreen from './screens/PinAuthScreen';
 import CreatePinScreen from './screens/CreatePinScreen';
@@ -17,6 +18,7 @@ import { BLACK, LIGHT_GREEN, WHITE } from './constants/colors';
 import generateRandomPassword from './service/generatePassword';
 import * as SecureStore from 'expo-secure-store';
 import { PASSVAULT_KEY } from './service/constants';
+import { BIO_AUTH_ENABLED } from './service/constants';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -35,11 +37,10 @@ const SplashScreen = ({ navigation }) => {
 
   useEffect(() => {
     startAnimation();
-    const timer = setTimeout(() => {
-      checkPinExists();
-      // navigation.replace('AppPinAuth');
-    }, 3000);
     generateMasterKey();
+    const timer = setTimeout(() => {
+      checkBiometricEnabled();
+    }, 3000);
     return () => clearTimeout(timer);
   }, []);
   
@@ -50,6 +51,29 @@ const SplashScreen = ({ navigation }) => {
       console.log("PASSVAULT key successfully created"); // todo - remove
     }
   }
+
+  const checkBiometricEnabled = async () => {
+    try {
+      const bioAuthEnabled = await SecureStore.getItemAsync(BIO_AUTH_ENABLED);
+      if (bioAuthEnabled === 'true') {
+        const hasBiometricAuth = await LocalAuthentication.hasHardwareAsync();
+        if (hasBiometricAuth) {
+          const biometricRecords = await LocalAuthentication.isEnrolledAsync();
+          if (biometricRecords) {
+            const result = await LocalAuthentication.authenticateAsync();
+            if (result.success) {
+              navigation.replace('Tabs');
+            }
+          }
+        }
+      } else {
+        checkPinExists();
+      }
+    } catch (error) {
+      console.log('Error checking biometric authentication:', error);
+      checkPinExists();
+    }
+  };
 
   const checkPinExists = async () => {
     try {

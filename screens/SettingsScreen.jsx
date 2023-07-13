@@ -1,13 +1,33 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, Image, Switch } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, TouchableOpacity, Text, Image, Switch, Alert } from 'react-native';
+import * as LocalAuthentication from 'expo-local-authentication';
+import * as SecureStore from 'expo-secure-store';
+
+import { BIO_AUTH_ENABLED } from '../service/constants';
 
 import AppIcon from '../components/AppIcon';
 import { BLACK, LIGHT_GREEN, LIGHT_GREY, WHITE } from '../constants/colors';
-import AppSetting from '../components/AppSetting';
 import AppAlert from '../components/AppAlert';
 
 const SettingsScreen = () => {
   const [showInfoAlert, setShowInfoAlert] = useState(false);
+  const [biometricEnabled, setBiometricEnabled] = useState(false); // State for biometric authentication
+
+  useEffect(() => {
+    const loadBioAuthSetting = async () => {
+      try {
+        const bioAuthEnabled = await SecureStore.getItemAsync(BIO_AUTH_ENABLED);
+        console.log("bioAuthEnabled: ", bioAuthEnabled); // todo - remove
+        if (bioAuthEnabled === 'true') {
+          setBiometricEnabled(true); // Enable biometric authentication if BIO_AUTH_ENABLED is true
+        }
+      } catch (error) {
+        console.log('Error reading bioAuthEnabled from SecureStore:', error);
+      }
+    };
+
+    loadBioAuthSetting();
+  }, []);
 
   const handleOpenShowInfoAlert = () => {
     setShowInfoAlert(true);
@@ -17,14 +37,36 @@ const SettingsScreen = () => {
     setShowInfoAlert(false);
   };
 
+  const handleBiometricToggle = async (value) => {
+    try {
+      if (value) {
+        const hasBiometricAuth = await LocalAuthentication.hasHardwareAsync();
+        if (hasBiometricAuth) {
+          const biometricRecords = await LocalAuthentication.isEnrolledAsync();
+          if (biometricRecords) {
+            setBiometricEnabled(true);
+            await SecureStore.setItemAsync(BIO_AUTH_ENABLED, 'true');
+          } else {
+            Alert.alert('No biometric records found.');
+          }
+        } else {
+          Alert.alert('Biometric authentication not supported by this device.');
+        }
+      } else {
+        setBiometricEnabled(false);
+        await SecureStore.setItemAsync(BIO_AUTH_ENABLED, 'false');
+      }
+    } catch (error) {
+      console.log('Error checking biometric availability:', error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.icon}>
         <AppIcon name="cog-outline" size={95} color={LIGHT_GREEN} />
       </View>
-      <Section title="Security">
-        <Option title="Change Pin" onPress={() => handlePress('Change Password')} />
-      </Section>
+      <Section title="Security" biometricEnabled={biometricEnabled} handleBiometricToggle={handleBiometricToggle} />
       <Section title="Info">
         <Option title="About" onPress={handleOpenShowInfoAlert} />
       </Section>
@@ -41,26 +83,20 @@ const SettingsScreen = () => {
   );
 };
 
-const Section = ({ title, children }) => {
-  const [biometricEnabled, setBiometricEnabled] = useState(false);
-
-  const handleBiometricToggle = () => {
-    setBiometricEnabled(!biometricEnabled);
-  };
-
+const Section = ({ title, children, biometricEnabled, handleBiometricToggle }) => {
   return (
     <View style={styles.sectionContainer}>
       <Text style={styles.sectionTitle}>{title}</Text>
       {children}
       {title === 'Security' && (
         <View style={styles.optionContainer}>
-          <TouchableOpacity onPress={handleBiometricToggle} style={styles.biometricToggle}>
+          <TouchableOpacity onPress={() => handleBiometricToggle(!biometricEnabled)} style={styles.biometricToggle}>
             <Text style={styles.optionTitle}>Enable Biometric Auth</Text>
             <Switch
               value={biometricEnabled}
-              onValueChange={handleBiometricToggle}
+              onValueChange={(value) => handleBiometricToggle(value)}
               trackColor={{ false: LIGHT_GREY, true: LIGHT_GREEN }}
-              thumbColor={biometricEnabled ? LIGHT_GREEN : LIGHT_GREY}
+              thumbColor={biometricEnabled ? WHITE : WHITE}
               style={styles.switch}
             />
           </TouchableOpacity>
@@ -76,11 +112,6 @@ const Option = ({ title, onPress }) => {
       <Text style={styles.optionTitle}>{title}</Text>
     </TouchableOpacity>
   );
-};
-
-const handlePress = (option) => {
-  // Handle the option press event
-  console.log('Selected option:', option);
 };
 
 const styles = StyleSheet.create({
