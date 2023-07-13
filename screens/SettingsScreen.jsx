@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, Image} from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, Image, Switch } from 'react-native';
 
 import AppIcon from '../components/AppIcon';
 import { BLACK, LIGHT_GREEN, LIGHT_GREY, WHITE } from '../constants/colors';
@@ -7,45 +7,65 @@ import AppSetting from '../components/AppSetting';
 import AppAlert from '../components/AppAlert';
 
 const SettingsScreen = () => {
-    const [showInfoAlert, setShowInfoAlert] = useState(false);
+  const [showInfoAlert, setShowInfoAlert] = useState(false);
 
-    const handleOpenShowInfoAlert = () => {
-        setShowInfoAlert(true);
-    }
+  const handleOpenShowInfoAlert = () => {
+    setShowInfoAlert(true);
+  };
 
-    const handleCloseShowInfoAlert = () => {
-        setShowInfoAlert(false);
-    }
+  const handleCloseShowInfoAlert = () => {
+    setShowInfoAlert(false);
+  };
 
-    return (
-      <View style={styles.container}>
-        <View style={styles.icon}>
-            <AppIcon name="cog-outline" size={95} color={LIGHT_GREEN} />
-        </View>
-        <Section title="Security">
-          <Option title="Change Pin" onPress={() => handlePress('Change Password')} />
-        </Section>
-        <Section title="Info">
-          <Option title="About" onPress={handleOpenShowInfoAlert} />
-        </Section>
-        
-        <AppAlert visible={showInfoAlert} onClose={handleCloseShowInfoAlert}>
-          <View style={styles.logoContainer}>
-            <Image style={styles.logo} source={require('../assets/passvault-icon-v2-edit.png')} /> 
-          </View>
-          <View style={styles.titleContainer}>
-            <Text style={styles.titleText}>App version:     1.0.0</Text>
-          </View>
-        </AppAlert>
+  return (
+    <View style={styles.container}>
+      <View style={styles.icon}>
+        <AppIcon name="cog-outline" size={95} color={LIGHT_GREEN} />
       </View>
-    );
+      <Section title="Security">
+        <Option title="Change Pin" onPress={() => handlePress('Change Password')} />
+      </Section>
+      <Section title="Info">
+        <Option title="About" onPress={handleOpenShowInfoAlert} />
+      </Section>
+
+      <AppAlert visible={showInfoAlert} onClose={handleCloseShowInfoAlert}>
+        <View style={styles.logoContainer}>
+          <Image style={styles.logo} source={require('../assets/passvault-icon-v2-edit.png')} />
+        </View>
+        <View style={styles.titleContainer}>
+          <Text style={styles.titleText}>App version:     1.0.0</Text>
+        </View>
+      </AppAlert>
+    </View>
+  );
 };
 
 const Section = ({ title, children }) => {
+  const [biometricEnabled, setBiometricEnabled] = useState(false);
+
+  const handleBiometricToggle = () => {
+    setBiometricEnabled(!biometricEnabled);
+  };
+
   return (
     <View style={styles.sectionContainer}>
       <Text style={styles.sectionTitle}>{title}</Text>
       {children}
+      {title === 'Security' && (
+        <View style={styles.optionContainer}>
+          <TouchableOpacity onPress={handleBiometricToggle} style={styles.biometricToggle}>
+            <Text style={styles.optionTitle}>Enable Biometric Auth</Text>
+            <Switch
+              value={biometricEnabled}
+              onValueChange={handleBiometricToggle}
+              trackColor={{ false: LIGHT_GREY, true: LIGHT_GREEN }}
+              thumbColor={biometricEnabled ? LIGHT_GREEN : LIGHT_GREY}
+              style={styles.switch}
+            />
+          </TouchableOpacity>
+        </View>
+      )}
     </View>
   );
 };
@@ -68,7 +88,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 32,
-    backgroundColor: WHITE
+    backgroundColor: WHITE,
   },
   sectionContainer: {
     marginBottom: 24,
@@ -91,7 +111,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   logoContainer: {
     justifyContent: 'center',
@@ -109,7 +129,15 @@ const styles = StyleSheet.create({
   },
   titleText: {
     fontSize: 21,
-    color: BLACK
+    color: BLACK,
+  },
+  biometricToggle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  switch: {
+    transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }], // Adjust the scale as needed
   },
 });
 

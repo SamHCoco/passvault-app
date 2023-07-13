@@ -15,7 +15,7 @@ import AppIcon from '../components/AppIcon';
 import generateRandomPassword from '../service/generatePassword';
 import { validationSchema } from '../service/validationSchemas';
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, CommonActions } from '@react-navigation/native';
 import { BLACK, LIGHT_GREEN, LIGHT_GREY, WHITE } from '../constants/colors';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
@@ -128,9 +128,24 @@ function EditWebCredentialScreen({ route }) {
       });
       setWebFormBlank();
       
-      navigation.navigate('Vault', { selectedOption: 'web' });
-      
-      // navigation.push(tabName); // Navigate to the screen of the target tab
+      // navigation.navigate('Vault', { selectedOption: 'web' });
+
+      // navigation.push('Vault', { selectedOption: 'web' });
+
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [
+            {
+              name: 'Vault',
+              params: {
+                selectedOption: 'web'
+              }
+            }
+          ],
+        })
+      );
+ 
     
     } else if (selectedOption === 'Card') {
       // Remove all dashes from the cardNumber state

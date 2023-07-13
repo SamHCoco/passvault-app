@@ -23,6 +23,7 @@
     "expo-crypto": "^12.2.2",
     "expo-document-picker": "^11.2.2",
     "expo-file-system": "^15.2.2",
+    "expo-local-authentication": "^13.4.1",
     "expo-permissions": "~14.1.1",
     "expo-secure-store": "~12.1.1",
     "expo-sharing": "^11.2.2",
