@@ -1,4 +1,8 @@
 import * as SQLite from 'expo-sqlite';
+import * as SecureStore from 'expo-secure-store';
+
+import { PASSVAULT_KEY } from './constants';
+import { encryptValue} from '../service/crypto';
 
 const db = SQLite.openDatabase('passvault.db');
 
@@ -27,13 +31,19 @@ const saveCardCredential = async ({
     });
   });
 
+  const masterKey = await SecureStore.getItemAsync(PASSVAULT_KEY);
+  
+  const encryptedCardNumber = await encryptValue(cardNumber, masterKey);
+  const encryptedExpDate = await encryptValue(expDate, masterKey);
+  const encryptedSecurityCode = await encryptValue(securityCode, masterKey);
+
   // Insert into card_credential table
   const insertCardCredential = async (cardId) => {
     return new Promise((resolve, reject) => {
       db.transaction(tx => {
         tx.executeSql( 
           'INSERT INTO card_credential (card_id, card_number, exp_date, security_code) VALUES (?, ?, ?, ?)',
-          [cardId, cardNumber, expDate, securityCode],
+          [cardId, encryptedCardNumber, encryptedExpDate, encryptedSecurityCode],
           (_, { insertId }) => {
             resolve(insertId);
             console.log("New Card Credentials added with card_id ", cardId);

@@ -1,5 +1,8 @@
 import * as SQLite from 'expo-sqlite';
-import { encryptValue, decryptValue} from '../service/crypto';
+import * as SecureStore from 'expo-secure-store';
+
+import { encryptValue} from '../service/crypto';
+import { PASSVAULT_KEY } from './constants';
 
 import downloadFavicon from './downloadFavIcon';
 

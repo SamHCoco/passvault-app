@@ -43,8 +43,7 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
 
               // Iterate over and print the objects
               for (const record of webCredentialRecords) {
-                console.log('Web Credential Record:', record);
-                console.log("MASTER KEY: ", masterKey);
+                console.log("MASTER KEY: ", masterKey); // todo - remove
                 
                 const decryptedUsername = await decryptValue(record.username, masterKey);
                 const decryptedPassword = await decryptValue(record.password, masterKey);
@@ -63,10 +62,23 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
           tx.executeSql(
             'SELECT cc.id, cc.card_number AS cardNumber, cc.exp_date AS expDate, cc.card_id AS cardId, cc.security_code AS securityCode, c.name AS bank, "card" AS type FROM card_credential AS cc INNER JOIN card AS c ON cc.card_id = c.id WHERE cc.card_id = ?',
             [id],
-            (_, { rows }) => {
+            async (_, { rows }) => {
               const cardCredentialRecords = rows._array;
+
+              for (const record of cardCredentialRecords) {
+                console.log("MASTER KEY: ", masterKey); // todo - remove
+                
+                const decryptedCardNumber = await decryptValue(record.cardNumber, masterKey);
+                const decryptedSecurityCode = await decryptValue(record.securityCode, masterKey);
+                const decryptedExpDate = await decryptValue(record.expDate, masterKey);
+                
+                record.cardNumber = decryptedCardNumber;
+                record.securityCode = decryptedSecurityCode;
+                record.expDate = decryptedExpDate;
+              }
+
               setCredentials(cardCredentialRecords);
-              console.log('FOUND CARD_CREDENTIALS:', cardCredentialRecords);
+              console.log('FOUND CARD_CREDENTIALS:', cardCredentialRecords); // todo - remove
             },
             (error) => {
               console.log('Error retrieving card credential records:', error);
