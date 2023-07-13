@@ -7,7 +7,7 @@ import AppWebCredential from './AppWebCredential';
 import AppCardCredential from './AppCardCredential';
 import AppRoundTouchable from './AppRoundTouchable';
 
-import { BLACK, LIGHT_GREEN, LIGHT_GREY, WHITE } from '../constants/colors';
+import {  WHITE } from '../constants/colors';
 
 import * as SQLite from 'expo-sqlite';
 import * as FileSystem from 'expo-file-system';

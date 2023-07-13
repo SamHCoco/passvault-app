@@ -130,7 +130,7 @@ function EditWebCredentialScreen({ route }) {
       
       navigation.navigate('Vault', { selectedOption: 'web' });
       
-      navigation.push(tabName); // Navigate to the screen of the target tab
+      // navigation.push(tabName); // Navigate to the screen of the target tab
     
     } else if (selectedOption === 'Card') {
       // Remove all dashes from the cardNumber state

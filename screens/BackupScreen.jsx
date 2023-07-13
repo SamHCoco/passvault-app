@@ -6,7 +6,7 @@ import AppRoundTouchable from '../components/AppRoundTouchable';
 import AppAlert from '../components/AppAlert';
 import AppTextInput from '../components/AppTextInput';
 import * as DocumentPicker from 'expo-document-picker';
-import copyDatabaseFile from '../service/copyDatabaseFile';
+import copyEncryptedDatabase from '../service/copyEncryptedDatabase';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -92,7 +92,7 @@ function BackupScreen(props) {
                 <View style={styles.touchableButtonContainer}>
                     <AppRoundTouchable text="Backup" 
                                        touchableStyle={styles.touchableButtonStyle}
-                                       onPress={() => copyDatabaseFile("test-1")} />
+                                       onPress={() => copyEncryptedDatabase("test", "password1")} />
                 </View>
             </AppAlert>
             

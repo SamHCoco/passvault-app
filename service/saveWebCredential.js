@@ -4,8 +4,6 @@ import * as SecureStore from 'expo-secure-store';
 import { encryptValue} from '../service/crypto';
 import { PASSVAULT_KEY } from './constants';
 
-import downloadFavicon from './downloadFavIcon';
-
 const db = SQLite.openDatabase('passvault.db');
 
 const saveWebCredential = async (values) => {
@@ -76,7 +74,6 @@ const saveWebCredential = async (values) => {
     });
 
     const insertId = await insertWebCredential(insertWebUrl, webId);
-    console.log('Credential saved successfully with ID:', insertId);
   } else {
     // Insert a new record into web table
     const insertWeb = await new Promise((resolve, reject) => {
@@ -85,11 +82,7 @@ const saveWebCredential = async (values) => {
           'INSERT INTO web (name) VALUES (?)',
           [domain],
           async (_, { insertId }) => {
-            resolve(insertId);
-    
-            // Save the favicon image as an asset
-            await downloadFavicon(url, domain);
-            
+            resolve(insertId);            
           },
           (_, error) => {
             reject(error);
@@ -116,7 +109,6 @@ const saveWebCredential = async (values) => {
     });
 
     const insertId = await insertWebCredential(insertWebUrl, webId);
-    console.log('Credential saved successfully with ID:', insertId);
   }
 };
 
