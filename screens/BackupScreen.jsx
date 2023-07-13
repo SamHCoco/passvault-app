@@ -72,14 +72,20 @@ function BackupScreen(props) {
                 <View style={styles.optionButtons}>
                         <View style={styles.optionButtonView}>
                             <AppRoundTouchable  text="Backup"
-                                                touchableStyle={styles.touchableButtonStyle}
+                                                touchableStyle={[
+                                                    styles.touchableButtonStyle,
+                                                    { backgroundColor: backupKey.length > 0 ? LIGHT_GREEN : LIGHT_GREY },
+                                                  ]}
                                                 onPress={() => handleOpenBackupAlert()}
                             />
                         </View>
                                         
                         <View style={styles.optionButtonView}>
                         <AppRoundTouchable text="Restore" 
-                                            touchableStyle={styles.touchableButtonStyle}
+                                            touchableStyle={[
+                                                styles.touchableButtonStyle,
+                                                { backgroundColor: backupKey.length > 0 ? LIGHT_GREEN : LIGHT_GREY },
+                                              ]}
                                             onPress={handleOpenRestoreAlert}/>
                         </View>
                 </View>
