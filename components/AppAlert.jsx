@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: screenWidth * 0.0243,
     padding: screenWidth * 0.0388,
-    width: screenWidth * 0.1941,
+    width: screenWidth * 0.6141,
   },
   closeButton: {
     alignSelf: 'flex-end',

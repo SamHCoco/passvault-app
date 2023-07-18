@@ -73,10 +73,10 @@ const SettingsScreen = () => {
 
       <AppAlert visible={showInfoAlert} onClose={handleCloseShowInfoAlert}>
         <View style={styles.logoContainer}>
-          <Image style={styles.logo} source={require('../assets/passvault-icon-v2-edit.png')} />
+          <Image style={styles.logo} source={require('../assets/passvault-icon-final.png')} />
         </View>
         <View style={styles.titleContainer}>
-          <Text style={styles.titleText}>App version:     1.0.0</Text>
+          <Text style={styles.titleText}>Version:     1.0.0</Text>
         </View>
       </AppAlert>
     </View>
