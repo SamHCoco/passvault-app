@@ -349,7 +349,7 @@ function EditWebCredentialScreen({ route }) {
                 <Text style={styles.errorText}>{passwordError}</Text>
               ) : null}
 
-              <View style={{borderWidth: 0}}>
+              <View style={{borderWidth: 0, marginVertical: screenWidth * 0.0633}}>
               <View style={styles.touchableButtonContainer}>
                   <AppRoundTouchable text={item ? "Edit" : "Save"} 
                                      onPress={() => handleFormSubmit(values)} 
