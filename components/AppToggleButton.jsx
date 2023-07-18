@@ -20,7 +20,7 @@ const AppToggleButton = ({ label, initialValue, onToggle }) => {
         value={value}
         onValueChange={handleToggle}
         trackColor={{ false: '#767577', true: LIGHT_GREEN }}
-        thumbColor={value ? '#f4f3f4' : '#f4f3f4'}
+        thumbColor='#f4f3f4'
         style={styles.switch}
       />
     </View>

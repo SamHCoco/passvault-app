@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: screenWidth * 0.0388,
     paddingVertical: screenWidth * 0.0194,
     marginBottom: screenWidth * 0.0243,
-    width: screenWidth * 0.95, // Set container width to 95% of screen width
+    width: screenWidth * 0.90, // Set container width to 95% of screen width
   },
   sliderRow: {
     flex: 1,
@@ -48,22 +48,21 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: 4,
-    marginVertical: 6,
-    // marginLeft: 27,
+    marginHorizontal: screenWidth * 0.0097,
+    marginVertical: screenWidth * 0.0146,
     width: '100%', // Ensure content stays within the container
   },
   label: {
-    fontSize: 16,
-    marginRight: 0,
+    fontSize: screenWidth * 0.0388,
+    marginLeft: screenWidth * 0.0243
   },
   slider: {
-    width: '70%', // Adjust the slider width as needed
-    height: 40,
+    width: '65%', // Adjust the slider width as needed
+    height: screenWidth * 0.0975,
   },
   value: {
-    fontSize: 19,
-    marginLeft: 1,
+    fontSize: screenWidth * 0.0412,
+    marginLeft: screenWidth * 0.0024,
   },
 });
 
