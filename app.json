@@ -22,20 +22,10 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": [
-        "READ_EXTERNAL_STORAGE",
-        "WRITE_EXTERNAL_STORAGE"
-      ],
       "package": "com.reguro.app.passvault"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "ios": {
-      "supportsTablet": true,
-      "infoPlist": {
-        "NSPhotoLibraryUsageDescription": "Allow access to the photo library"
-      }
     },
     "extra": {
       "eas": {

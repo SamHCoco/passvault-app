@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, Image, Switch, Alert } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Text, Image, Switch, Alert, Dimensions } from 'react-native';
 import * as LocalAuthentication from 'expo-local-authentication';
 import * as SecureStore from 'expo-secure-store';
 
 import { BIO_AUTH_ENABLED } from '../service/constants';
-
 import AppIcon from '../components/AppIcon';
 import { BLACK, LIGHT_GREEN, LIGHT_GREY, WHITE } from '../constants/colors';
 import AppAlert from '../components/AppAlert';
+
+const { width: screenWidth} = Dimensions.get('window');
 
 const SettingsScreen = () => {
   const [showInfoAlert, setShowInfoAlert] = useState(false);
@@ -17,7 +18,6 @@ const SettingsScreen = () => {
     const loadBioAuthSetting = async () => {
       try {
         const bioAuthEnabled = await SecureStore.getItemAsync(BIO_AUTH_ENABLED);
-        console.log("bioAuthEnabled: ", bioAuthEnabled); // todo - remove
         if (bioAuthEnabled === 'true') {
           setBiometricEnabled(true); // Enable biometric authentication if BIO_AUTH_ENABLED is true
         }
@@ -117,28 +117,28 @@ const Option = ({ title, onPress }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingTop: 32,
+    paddingHorizontal: screenWidth * 0.0388,
+    paddingTop: screenWidth * 0.0777,
     backgroundColor: WHITE,
   },
   sectionContainer: {
-    marginBottom: 24,
+    marginBottom: screenWidth * 0.0584,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: screenWidth * 0.0438,
     fontWeight: 'bold',
-    marginBottom: 16,
+    marginBottom: screenWidth * 0.0388,
   },
   optionContainer: {
     backgroundColor: WHITE,
-    borderRadius: 8,
-    borderBottomWidth: 1,
+    borderRadius: screenWidth * 0.0194,
+    borderBottomWidth: screenWidth * 0.0024,
     borderColor: LIGHT_GREY,
-    padding: 16,
-    marginBottom: 8,
+    padding: screenWidth * 0.0388,
+    marginBottom: screenWidth * 0.0194,
   },
   optionTitle: {
-    fontSize: 16,
+    fontSize: screenWidth * 0.0388,
   },
   icon: {
     justifyContent: 'center',
@@ -147,19 +147,19 @@ const styles = StyleSheet.create({
   logoContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: screenWidth * 0.0388,
   },
   logo: {
-    width: 100,
-    height: 100,
+    width: screenWidth * 0.2430,
+    height: screenWidth * 0.2430,
     resizeMode: 'contain',
   },
   titleContainer: {
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: screenWidth * 0.0388,
   },
   titleText: {
-    fontSize: 21,
+    fontSize: screenWidth * 0.0511,
     color: BLACK,
   },
   biometricToggle: {

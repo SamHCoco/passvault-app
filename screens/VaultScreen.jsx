@@ -22,8 +22,6 @@ const screenHeight = Dimensions.get('window').height;
 const metricButtonWidth = screenWidth * 0.3;
 
 function VaultScreen({ route }) {
-  const [web, setWeb] = useState([]);
-  const [card, setCard] = useState([]);
   const [credentialProviders, setCredentialProviders] = useState([]);
   const [webCredentialCount, setWebCredentialCount] = useState(0);
   const [cardCredentialCount, setCardCredentialCount] = useState(0);
@@ -205,7 +203,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: WHITE,
     borderWidth: 0,
-    borderRadius: 25,
+    borderRadius: 0.0608 * screenWidth,
     marginTop: screenHeight * 0.014,
     marginHorizontal: screenWidth * 0.024,
     borderColor: LIGHT_GREY,

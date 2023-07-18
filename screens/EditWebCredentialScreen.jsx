@@ -607,16 +607,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: screenHeight * 0.013,
-    width: screenWidth * 0.62, // Adjust the width as needed
+    width: screenWidth * 0.62,
   },
   expirationMonthContainer: {
-    marginRight: screenWidth * 0.027, // Adjust the margin as needed
+    marginRight: screenWidth * 0.027,
   },
   expirationYearContainer: {
-    marginRight: screenWidth * 0.027, // Adjust the margin as needed
+    marginRight: screenWidth * 0.027,
   },
   securityCodeContainer: {
-    marginRight: screenWidth * 0.027, // Adjust the margin as needed
+    marginRight: screenWidth * 0.027,
     width: screenWidth * 0.24
   },
   
