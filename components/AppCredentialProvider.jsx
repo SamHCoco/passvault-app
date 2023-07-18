@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: screenWidth * 0.065,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     color: 'black',
     marginLeft: screenWidth * 0.03,
   },
