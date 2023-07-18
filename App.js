@@ -48,7 +48,6 @@ const SplashScreen = ({ navigation }) => {
     const passvaultKey = await SecureStore.getItemAsync(PASSVAULT_KEY);
     if (!passvaultKey) {
       await SecureStore.setItemAsync(PASSVAULT_KEY, generateRandomPassword(passwordGeneratorConfig));
-      console.log("PASSVAULT key successfully created"); // todo - remove
     }
   }
 
@@ -104,7 +103,7 @@ const SplashScreen = ({ navigation }) => {
   return (
     <View style={styles.logoContainer}>
       <Animated.View style={[styles.logo, { transform: [{ translateY: logoTranslateY }] }]}>
-        <Image source={require('/Users/euler/repos/passvault-app/assets/passvault-icon-v2-edit.png')} style={styles.logoImage} />
+        <Image source={require('/Users/euler/repos/passvault-app/assets/passvault-icon-final.png')} style={styles.logoImage} />
       </Animated.View>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>PassVault</Text>

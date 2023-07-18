@@ -14,7 +14,7 @@ import AppIcon from '../components/AppIcon';
 
 import generateRandomPassword from '../service/generatePassword';
 
-import { useNavigation, CommonActions } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { BLACK, LIGHT_GREEN, LIGHT_GREY, WHITE } from '../constants/colors';
 import isValidUrl from '../service/urlUtil';
 

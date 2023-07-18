@@ -93,7 +93,7 @@ function VaultScreen({ route }) {
     countCredentials();
     if (route && route.params) {
       const { selectedOption } = route.params;
-      setSelected(selectedOption ? selectedOption : 'web'); // Set 'selected' state based on 'selectedOption'
+      setSelected(selectedOption ? selectedOption : 'web');
       fetchRecordsFromTable(selectedOption ? selectedOption : 'web');
     } else {
       fetchRecordsFromTable('web');
@@ -116,7 +116,6 @@ function VaultScreen({ route }) {
             records.map((record) => ({
               id: record.id,
               name: record.name,
-              image: require('../assets/icon.png'),
               type: tableName,
             }))
           );
@@ -145,7 +144,7 @@ function VaultScreen({ route }) {
             requestNonPersonalizedAdsOnly: false,
           }}
       /> */}
-      <AppIcon name="safe-square-outline" size={95} color={LIGHT_GREEN} />
+      <AppIcon name="safe-square-outline" size={0.2312 * screenWidth} color={LIGHT_GREEN} />
       <View style={styles.topDashboard}>
         <View style={styles.metricButtonsContainer}>
           <AppCredentialMetric

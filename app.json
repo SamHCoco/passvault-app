@@ -4,13 +4,13 @@
     "slug": "passvault-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/passvault-icon-final.png",
     "userInterfaceStyle": "light",
     "react-native-google-mobile-ads": {
       "android_app_id": "ca-app-pub-5113688719095404~2869573168"
     },
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/passvault-icon-final.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,7 +19,7 @@
     ],
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/passvault-icon-final.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.reguro.app.passvault"

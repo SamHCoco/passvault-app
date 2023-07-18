@@ -232,7 +232,7 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
     <View>
       <TouchableOpacity onPress={fetchData}>
         <View style={styles.container}>
-          <Image source={require('../assets/passvault-icon-v2-edit.png')} style={styles.image} />
+          <Image source={require('../assets/passvault-icon-final.png')} style={styles.image} />
           <Text style={styles.label}>{provider.name}</Text>
         </View>
       </TouchableOpacity>
