@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, Switch, StyleSheet } from 'react-native';
+import { View, Text, Switch, StyleSheet, Dimensions } from 'react-native';
 import { LIGHT_GREEN } from '../constants/colors';
+
+const { width: screenWidth } = Dimensions.get('window');
 
 const AppToggleButton = ({ label, initialValue, onToggle }) => {
   const [value, setValue] = useState(initialValue);
@@ -30,19 +32,19 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#f9f9f9',
-    borderRadius: 20,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    marginBottom: 10,
-    width: 250
+    borderRadius: screenWidth * 0.0487,
+    paddingHorizontal: screenWidth * 0.0388,
+    paddingVertical: screenWidth * 0.0194,
+    marginBottom: screenWidth * 0.0243,
+    width: screenWidth * 0.6083,
   },
   label: {
     flex: 1,
-    fontSize: 16,
+    fontSize: screenWidth * 0.0388,
     color: '#333',
   },
   switch: {
-    marginLeft: 10,
+    marginLeft: screenWidth * 0.0243,
   },
 });
 

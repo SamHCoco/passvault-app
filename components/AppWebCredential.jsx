@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, Clipboard, ScrollView } from 'react-native';
+import { View, StyleSheet, Text, Clipboard, ScrollView, Dimensions } from 'react-native';
 // import { Clipboard } from '@react-native-community/clipboard';
 import AppRoundTouchable from './AppRoundTouchable';
 import AppIcon from './AppIcon';
 
 import { BLACK, LIGHT_GREY, WHITE } from '../constants/colors';
+
+const { width: screenWidth } = Dimensions.get('window');
 
 function AppWebCredential({ username, password }) {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -17,12 +19,12 @@ function AppWebCredential({ username, password }) {
     Clipboard.setString(text);
   };
 
-  const iconSize = 19; // Set the desired icon size
+  const iconSize = screenWidth * 0.0462;
 
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <AppIcon name="md-person" size={25} color={LIGHT_GREY} library="ion" iconStyle={{ marginHorizontal: 3 }} />
+        <AppIcon name="md-person" size={screenWidth * 0.0608} color={LIGHT_GREY} library="ion" iconStyle={{ marginHorizontal: 3 }} />
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <Text style={styles.text}>{username}</Text>
         </ScrollView>
@@ -38,7 +40,7 @@ function AppWebCredential({ username, password }) {
         </View>
       </View>
       <View style={styles.row}>
-        <AppIcon name="lock-closed" size={25} color={LIGHT_GREY} library="ion" iconStyle={{ marginHorizontal: 3 }} />
+        <AppIcon name="lock-closed" size={screenWidth * 0.0608} color={LIGHT_GREY} library="ion" iconStyle={{ marginHorizontal: 3 }} />
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <Text style={styles.text}>{passwordVisible ? password : '•••••••••••••'}</Text>
         </ScrollView>
@@ -71,33 +73,32 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     borderWidth: 0,
     borderColor: WHITE,
-    borderBottomWidth: 1,
-    marginHorizontal: 6,
+    borderBottomWidth: screenWidth * 0.0024,
+    marginHorizontal: screenWidth * 0.0146,
     marginVertical: 0,
-    borderRadius: 7,
-    // height: 87,
+    borderRadius: screenWidth * 0.0170,
     backgroundColor: "white"
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    marginVertical: 5,
+    marginVertical: screenWidth * 0.0122,
   },
   text: {
-    marginRight: 10,
+    marginRight: screenWidth * 0.0243,
     color: 'black',
-    fontSize: 20,
+    fontSize: screenWidth * 0.0486,
   },
   touchable: {
-    width: 25,
-    height: 25,
-    borderRadius: 75,
+    width: screenWidth * 0.0608,
+    height: screenWidth * 0.0608,
+    borderRadius: screenWidth * 0.1825,
     borderWidth: 0,
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: 'gray',
-    marginHorizontal: 3,
+    marginHorizontal: screenWidth * 0.0073,
   },
   icon: {
     alignSelf: 'center',

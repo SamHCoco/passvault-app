@@ -178,10 +178,6 @@ const styles = StyleSheet.create({
     backgroundColor: LIGHT_GREEN, // Adjust the filled circle color as needed
     borderColor: LIGHT_GREEN
   },
-  // circleText: {
-  //   color: BLACK, // Adjust the text color as needed - todo - remove number from circle
-  //   fontSize: screenWidth * 0.015 * 0.6, // Adjust the circle text size based on screen width
-  // },
   buttonContainer: {
     marginTop: screenHeight * 0.05, // Adjust the margin top based on screen height
   },
@@ -198,7 +194,7 @@ const styles = StyleSheet.create({
     borderColor: BLACK, // Adjust the button border color as needed
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 8
+    marginHorizontal: screenWidth * 0.0195
   },
   emptyButton: {
     width: screenWidth * 0.2, // Adjust the button width based on screen width
