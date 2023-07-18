@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
   icon: {
     width: screenWidth * 0.1217,
     height: screenWidth * 0.1217,
+    marginRight: screenWidth * 0.0102
   },
   subLabel: {
     fontSize: screenWidth * 0.0413,
