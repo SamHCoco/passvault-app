@@ -73,7 +73,6 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     borderColor: WHITE,
     borderBottomWidth: screenWidth * 0.0024,
-    // borderBottomColor: LIGHT_GREY
     marginHorizontal: screenWidth * 0.0146,
     marginVertical: 0,
     borderRadius: screenWidth * 0.0170,
