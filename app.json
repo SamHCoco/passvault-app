@@ -6,6 +6,9 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
+    "react-native-google-mobile-ads": {
+      "android_app_id": "ca-app-pub-5113688719095404~2869573168"
+    },
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -22,7 +25,8 @@
       "permissions": [
         "READ_EXTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE"
-      ]
+      ],
+      "package": "com.reguro.app.passvault"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -31,6 +35,11 @@
       "supportsTablet": true,
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "Allow access to the photo library"
+      }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "1b1e9135-e080-42f3-bbfa-7fb234ef175e"
       }
     }
   }

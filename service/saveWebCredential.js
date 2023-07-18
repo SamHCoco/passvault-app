@@ -1,28 +1,26 @@
 import * as SQLite from 'expo-sqlite';
 import * as SecureStore from 'expo-secure-store';
 
-import { encryptValue} from '../service/crypto';
+import { encryptValue } from '../service/crypto';
 import { PASSVAULT_KEY } from './constants';
 
 const db = SQLite.openDatabase('passvault.db');
 
 const saveWebCredential = async (values) => {
-  const { url, username, password } = values;
+  const { url, name, username, password } = values;
 
   const masterKey = await SecureStore.getItemAsync(PASSVAULT_KEY);
 
+  const encryptedUrl = await encryptValue(url, masterKey);
   const encryptedUsername = await encryptValue(username, masterKey);
   const encryptedPassword = await encryptValue(password, masterKey);
 
-  // Extract domain from URL and lowercase it
-  const domain = url.toLowerCase().replace(/^(?:https?:\/\/)?(?:www\.)?([^/.]+).*$/, '$1');
-
-  // Search for a match in the web(name) table
+  // Persist name in the web table
   const existingWeb = await new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
         'SELECT id FROM web WHERE LOWER(name) = ? LIMIT 1',
-        [domain],
+        [name.toLowerCase()],
         (_, { rows }) => {
           resolve(rows.item(0));
         },
@@ -33,7 +31,6 @@ const saveWebCredential = async (values) => {
     });
   });
 
-  // Insert into web_credential table
   const insertWebCredential = async (webUrlId, webId) => {
     return new Promise((resolve, reject) => {
       db.transaction(tx => {
@@ -53,16 +50,14 @@ const saveWebCredential = async (values) => {
     });
   };
 
-  // Handle the found or new web record
   if (existingWeb) {
-    // Use the existing web_id
     const webId = existingWeb.id;
 
     const insertWebUrl = await new Promise((resolve, reject) => {
       db.transaction(tx => {
         tx.executeSql(
           'INSERT INTO web_url (url, web_id) VALUES (?, ?)',
-          [url, webId],
+          [encryptedUrl, webId],
           (_, { insertId }) => {
             resolve(insertId);
           },
@@ -75,14 +70,13 @@ const saveWebCredential = async (values) => {
 
     const insertId = await insertWebCredential(insertWebUrl, webId);
   } else {
-    // Insert a new record into web table
     const insertWeb = await new Promise((resolve, reject) => {
       db.transaction(async (tx) => {
         tx.executeSql(
           'INSERT INTO web (name) VALUES (?)',
-          [domain],
+          [name],
           async (_, { insertId }) => {
-            resolve(insertId);            
+            resolve(insertId);
           },
           (_, error) => {
             reject(error);
@@ -97,7 +91,7 @@ const saveWebCredential = async (values) => {
       db.transaction(tx => {
         tx.executeSql(
           'INSERT INTO web_url (url, web_id) VALUES (?, ?)',
-          [url, webId],
+          [encryptedUrl, webId],
           (_, { insertId }) => {
             resolve(insertId);
           },

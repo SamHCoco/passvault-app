@@ -13,10 +13,10 @@ import AppSlider from '../components/AppSlider';
 import AppIcon from '../components/AppIcon';
 
 import generateRandomPassword from '../service/generatePassword';
-import { validationSchema } from '../service/validationSchemas';
 
 import { useNavigation, CommonActions } from '@react-navigation/native';
 import { BLACK, LIGHT_GREEN, LIGHT_GREY, WHITE } from '../constants/colors';
+import isValidUrl from '../service/urlUtil';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -30,6 +30,7 @@ function EditWebCredentialScreen({ route }) {
   // web credential states
   const [id, setId] = useState();
   const [url, setUrl] = useState('');
+  const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -51,12 +52,12 @@ function EditWebCredentialScreen({ route }) {
 
   // error states
   const [urlError, setUrlError] = useState('');
+  const [nameError, setNameError] = useState('');
   const [usernameError, setUsernameError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   
   const [bankError, setBankError] = useState('');
   const [cardNumberError, setCardNumberError] = useState('');
-  const [expirationError, setExpirationError] = useState('');
   const [expirationMonthError, setExpirationMonthError] = useState('');
   const [expirationYearError, setExpirationYearError] = useState('');
   const [securityCodeError, setSecurityCodeError] = useState('');
@@ -64,50 +65,46 @@ function EditWebCredentialScreen({ route }) {
   useEffect(() => {
     var effectItem;
 
-    if (route && route.params) {
+    if (route && route.params && route.params.item) {
       setItem(route.params.item);
       effectItem = route.params.item;
+    } else if (route.params.createType) {
+      effectItem = route.params;
     }
 
     if (effectItem) {
       const { type } = effectItem;
       if (type === 'web') {
-        console.log("OPTION SET TO WEB"); // todo - remove
         setSelectedOption('Web');
-        
         setId(effectItem.id);
+        setName(effectItem.name);
         setUrl(effectItem.url);
         setUsername(effectItem.username);
         setPassword(effectItem.password);
         
         setInitialValues({
           url: effectItem.url || '',
+          name: effectItem.name || '',
           username: effectItem.username || '',
           password: effectItem.password || '',
-          bank: '',
-          cardNumber: '',
-          expirationMonth: '',
-          expirationYear: '',
-          securityCode: '',
         });
       } else if (type === 'card') {
         setSelectedOption('Card');
 
         setBank(effectItem.bank);
         setCardNumber(effectItem.cardNumber);
-        setExpirationMonth(effectItem.expDate.substring(0, 2));
-        setExpirationYear(effectItem.expDate.substring(3, 5));
-        setSecurityCode(effectItem.securityCode.toString());
+        if (effectItem.expDate && effectItem.securityCode) {
+          setExpirationMonth(effectItem.expDate.substring(0, 2));
+          setExpirationYear(effectItem.expDate.substring(3, 5));
+          setSecurityCode(effectItem.securityCode.toString());
+        }
 
         setInitialValues({
-          url: '',
-          username: '',
-          password: '',
           bank: effectItem.bank || '',
           cardNumber: effectItem.cardNumber || '',
           expirationMonth: effectItem.expirationMonth || '',
           expirationYear: effectItem.expirationYear || '',
-          securityCode: effectItem.securityCode.toString() || '',
+          securityCode: effectItem.securityCode ?  effectItem.securityCode.toString() : '',
         });
       }
     }
@@ -123,29 +120,13 @@ function EditWebCredentialScreen({ route }) {
     if (selectedOption === 'Web') {
       await saveWebCredential({
         url,
+        name,
         username,
         password
       });
       setWebFormBlank();
-      
-      // navigation.navigate('Vault', { selectedOption: 'web' });
-
-      // navigation.push('Vault', { selectedOption: 'web' });
-
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [
-            {
-              name: 'Vault',
-              params: {
-                selectedOption: 'web'
-              }
-            }
-          ],
-        })
-      );
- 
+    
+      navigation.replace('Tabs', { selectedOption: 'web'});
     
     } else if (selectedOption === 'Card') {
       // Remove all dashes from the cardNumber state
@@ -158,7 +139,7 @@ function EditWebCredentialScreen({ route }) {
         securityCode,
       });
       setCardFormBlank();
-      navigation.navigate('Vault', { selectedOption: 'card'});
+      navigation.replace('Tabs', { selectedOption: 'card'});
     }
   };
 
@@ -166,11 +147,22 @@ function EditWebCredentialScreen({ route }) {
     let hasErrors = false;
 
     if (selectedOption === 'Web') {
+      if (!name) {
+        setNameError('Required');
+        hasErrors = true;
+      } else {
+        setNameError('');
+      }
       if (!url) {
         setUrlError('Required');
         hasErrors = true;
       } else {
-        setUrlError('');
+        if (!isValidUrl(url)) {
+          hasErrors = true;
+          setUrlError('Invalid URL');
+        } else {
+          setUrlError('');
+        }
       }
       if (!username) {
         setUsernameError('Required');
@@ -220,7 +212,6 @@ function EditWebCredentialScreen({ route }) {
         setSecurityCodeError('');
       }
     }
-
     return hasErrors;
   };
 
@@ -228,6 +219,9 @@ function EditWebCredentialScreen({ route }) {
     if (inputName === 'url') {
       setUrl(value);
       setUrlError('');
+    } else if (inputName === 'name') {
+      setName(value);
+      setNameError('');
     } else if (inputName === 'username') {
       setUsername(value);
       setUsernameError('');
@@ -289,6 +283,20 @@ function EditWebCredentialScreen({ route }) {
       return (
         <>
           <View style={styles.webFormContainer}>
+          <Field
+              component={AppTextInput}
+              name="name"
+              placeholder="Name"
+              autoCapitalize="none"
+              autoCorrect={false}
+              value={name}
+              onChangeText={(value) => handleInputChange(value, 'name')}
+          />
+
+                  {nameError ? (
+                    <Text style={styles.errorText}>{nameError}</Text>
+                  ) : null}
+
             <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
                   <AppIcon name="web" color={LIGHT_GREEN} size={screenWidth * 0.1095} library="material" />
             </View>
@@ -301,7 +309,7 @@ function EditWebCredentialScreen({ route }) {
                   autoCorrect={false}
                   value={url}
                   onChangeText={(value) => handleInputChange(value, 'url')}
-                />
+              />
               
               {urlError ? (
                 <Text style={styles.errorText}>{urlError}</Text>
@@ -518,7 +526,6 @@ function EditWebCredentialScreen({ route }) {
 
           <Formik
             initialValues={initialValues}
-            validationSchema={validationSchema}
             onSubmit={handleFormSubmit}
           >
             {({ handleChange, handleFormSubmit, errors, touched, values }) => (
@@ -594,7 +601,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     color: 'red',
-    fontSize: screenHeight * 0.018,
+    fontSize: screenHeight * 0.019,
   },
   expirationContainer: {
     flexDirection: 'row',

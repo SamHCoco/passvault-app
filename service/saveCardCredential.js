@@ -46,7 +46,6 @@ const saveCardCredential = async ({
           [cardId, encryptedCardNumber, encryptedExpDate, encryptedSecurityCode],
           (_, { insertId }) => {
             resolve(insertId);
-            console.log("New Card Credentials added with card_id ", cardId);
           },
           (_, error) => {
             reject(error);
@@ -61,7 +60,6 @@ const saveCardCredential = async ({
     // Use the existing card_id
     const cardId = existingCard.id;
     const insertId = await insertCardCredential(cardId);
-    console.log('Card credentials saved successfully with ID:', insertId);
   } else {
     // Insert a new record into card table
     const insertCard = await new Promise((resolve, reject) => {
@@ -82,7 +80,6 @@ const saveCardCredential = async ({
     // Use the new card_id
     const cardId = insertCard;
     const insertId = await insertCardCredential(cardId);
-    console.log('Card credentials saved successfully with ID:', insertId);
   }
 };
 

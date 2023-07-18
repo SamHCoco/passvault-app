@@ -10,7 +10,6 @@ import AppRoundTouchable from './AppRoundTouchable';
 import {  WHITE } from '../constants/colors';
 
 import * as SQLite from 'expo-sqlite';
-import * as FileSystem from 'expo-file-system';
 import * as SecureStore from 'expo-secure-store';
 import { PASSVAULT_KEY } from '../service/constants';
 
@@ -36,18 +35,18 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
       db.transaction((tx) => {
         if (type === 'web') {
           tx.executeSql(
-            'SELECT wc.id, wc.username, wc.password, wc.web_url_id, wu.url, wc.web_id AS webId, "web" AS type FROM web_credential AS wc INNER JOIN web_url AS wu ON wc.web_url_id = wu.id WHERE wc.web_id = ?',
+            'SELECT wc.id, wc.username, wc.password, wc.web_url_id, wu.url, wc.web_id AS webId, w.name, "web" AS type FROM web_credential AS wc INNER JOIN web_url AS wu ON wc.web_url_id = wu.id INNER JOIN web AS w ON wc.web_id = w.id WHERE wc.web_id = ?',
             [id],
             async (_, { rows }) => {
               const webCredentialRecords = rows._array;
 
               // Iterate over and print the objects
-              for (const record of webCredentialRecords) {
-                console.log("MASTER KEY: ", masterKey); // todo - remove
-                
+              for (const record of webCredentialRecords) {              
+                const decryptedUrl = await decryptValue(record.url, masterKey);
                 const decryptedUsername = await decryptValue(record.username, masterKey);
                 const decryptedPassword = await decryptValue(record.password, masterKey);
                 
+                record.url = decryptedUrl;
                 record.username = decryptedUsername;
                 record.password = decryptedPassword;
               }
@@ -66,7 +65,6 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
               const cardCredentialRecords = rows._array;
 
               for (const record of cardCredentialRecords) {
-                console.log("MASTER KEY: ", masterKey); // todo - remove
                 
                 const decryptedCardNumber = await decryptValue(record.cardNumber, masterKey);
                 const decryptedSecurityCode = await decryptValue(record.securityCode, masterKey);
@@ -78,7 +76,6 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
               }
 
               setCredentials(cardCredentialRecords);
-              console.log('FOUND CARD_CREDENTIALS:', cardCredentialRecords); // todo - remove
             },
             (error) => {
               console.log('Error retrieving card credential records:', error);
@@ -147,8 +144,6 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
           [id],
           (_, { rowsAffected }) => {
             if (rowsAffected > 0) {
-              console.log('Web_Credential with ID ${id} DELETED SUCCESS.');
-
               setDeletionCompleted(true); // Mark deletion as completed
   
               // Check if there are any other web credentials with the same web_id
@@ -164,7 +159,6 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
                       [webId],
                       (_, { rowsAffected }) => {
                         if (rowsAffected > 0) {
-                          console.log('Web with ID ${webId} DELETE SUCCESS.');
                           // Perform any additional actions on success
                         }
                       },
@@ -191,9 +185,7 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
           [id],
           (_, { rowsAffected }) => {
             if (rowsAffected > 0) {
-              console.log('Card credential with ID DELETE SUCCESS.');
               setDeletionCompleted(true); // Mark deletion as completed
-  
               // Check if there are any other card credentials with the same card_id
               tx.executeSql(
                 'SELECT COUNT(*) AS count FROM card_credential WHERE card_id = ?',
@@ -207,7 +199,6 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
                       [cardId],
                       (_, { rowsAffected }) => {
                         if (rowsAffected > 0) {
-                          console.log('Card deleted successfully.');
                           // Perform any additional actions on success
                         }
                       },

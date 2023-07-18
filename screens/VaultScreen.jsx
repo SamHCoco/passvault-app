@@ -6,10 +6,12 @@ import AppSearchBar from '../components/AppSearchBar';
 import AppRoundTouchable from '../components/AppRoundTouchable';
 import AppCredentialProvider from '../components/AppCredentialProvider';
 import AppIcon from '../components/AppIcon';
+// import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 
-import capitalizeFirstLetter from '../service/stringUtil';
+// const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-5113688719095404~2869573168';
 
 import { WHITE, LIGHT_GREY, BLACK, LIGHT_GREEN } from '../constants/colors';
+
 
 import * as SQLite from 'expo-sqlite';
 
@@ -42,12 +44,10 @@ function VaultScreen({ route }) {
         [],
         (_, { rows }) => {
           const records = rows._array;
-          console.log('FOUND SEARCH RESULTS: ', records);
           setCredentialProviders(
             records.map((record) => ({
               id: record.id,
-              name: capitalizeFirstLetter(record.name),
-              image: require('../assets/icon.png'),
+              name: record.name,
               type: tableName,
             }))
           );
@@ -103,23 +103,21 @@ function VaultScreen({ route }) {
   }, [deleteActionFlag, searchText, route]);
 
   const handleAppCredentialMetricPress = (type) => {
-    setSelected(type); // Update 'selected' state
+    setSelected(type);
     fetchRecordsFromTable(type);
   };
 
   const fetchRecordsFromTable = (tableName) => {
-    console.log("Fetch Records from Table trigger for table: ", tableName); // todo - remove
     db.transaction((tx) => {
       tx.executeSql(
         `SELECT * FROM ${tableName}`,
         [],
         (_, { rows }) => {
           const records = rows._array;
-          console.log("Fetched Credential - table ", tableName, records);
           setCredentialProviders(
             records.map((record) => ({
               id: record.id,
-              name: capitalizeFirstLetter(record.name),
+              name: record.name,
               image: require('../assets/icon.png'),
               type: tableName,
             }))
@@ -142,6 +140,13 @@ function VaultScreen({ route }) {
 
   return (
     <View style={styles.container}>
+      {/* <BannerAd
+          unitId={adUnitId}
+          size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+          requestOptions={{
+            requestNonPersonalizedAdsOnly: false,
+          }}
+      /> */}
       <AppIcon name="safe-square-outline" size={95} color={LIGHT_GREEN} />
       <View style={styles.topDashboard}>
         <View style={styles.metricButtonsContainer}>
@@ -174,7 +179,7 @@ function VaultScreen({ route }) {
             iconColor={BLACK}
             iconSize={screenWidth * 0.17}
             iconLibrary={'material'}
-            onPress={() => navigation.navigate('Credential')}
+            onPress={() => navigation.navigate('Credential', { createType: selected, type: selected })}
             touchableStyle={styles.addButton}
           />
         </View>

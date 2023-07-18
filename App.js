@@ -4,11 +4,11 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as LocalAuthentication from 'expo-local-authentication';
+import 'expo-dev-client';
 
 import PinAuthScreen from './screens/PinAuthScreen';
 import CreatePinScreen from './screens/CreatePinScreen';
 import VaultScreen from './screens/VaultScreen';
-import BackupScreen from './screens/BackupScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import EditWebCredentialScreen from './screens/EditWebCredentialScreen';
 import createTables from './service/createTable';
@@ -124,8 +124,6 @@ function TabScreen() {
             iconName = focused ? 'safe-square' : 'safe-square-outline';
           } else if (route.name === 'Settings') {
             iconName = focused ? 'cog' : 'cog-outline';
-          } else if (route.name === 'Backup') {
-            iconName = focused ? 'file-restore': 'file-restore-outline';
           }
 
           return <AppIcon name={iconName} size={24} color={color} />;
@@ -140,7 +138,6 @@ function TabScreen() {
       }}
     >
       <Tab.Screen name="Vault" component={VaultScreen} options={tabScreen.options} />
-      <Tab.Screen name="Backup" component={BackupScreen} options={tabScreen.options} />
       <Tab.Screen name="Settings" component={SettingsScreen} options={tabScreen.options} />
     </Tab.Navigator>
   );
