@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, TextInput, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { BLACK } from '../constants/colors';
+
+const { width: screenWidth } = Dimensions.get('window');
 
 const AppSearchBar = ({ onSearch }) => {
   const [searchText, setSearchText] = useState('');
@@ -26,7 +28,7 @@ const AppSearchBar = ({ onSearch }) => {
           }}
         />
         <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-          <AntDesign name="search1" size={25} color={BLACK} />
+          <AntDesign name="search1" size={screenWidth * 0.06083} color={BLACK} />
         </TouchableOpacity>
       </View>
     </View>
@@ -36,31 +38,31 @@ const AppSearchBar = ({ onSearch }) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    marginHorizontal: 12,
-    marginVertical: 12
+    marginHorizontal: screenWidth * 0.0292,
+    marginVertical: screenWidth * 0.0292,
   },
   searchBarContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
+    borderWidth: screenWidth * 0.0024,
     borderColor: '#999',
-    borderRadius: 20,
-    paddingLeft: 10,
-    paddingRight: 5,
+    borderRadius: screenWidth * 0.0487,
+    paddingLeft: screenWidth * 0.0243,
+    paddingRight: screenWidth * 0.0122,
     backgroundColor: 'white',
-    borderWidth: 0
+    borderWidth: 0,
   },
   searchBarInput: {
     flex: 1,
-    height: 45,
-    fontSize: 16,
+    height: screenWidth * 0.1095,
+    fontSize: screenWidth * 0.0388,
     color: BLACK,
-    marginRight: 5,
+    marginRight: screenWidth * 0.0122,
     paddingTop: 0,
     paddingBottom: 0,
   },
   searchButton: {
-    padding: 5,
+    padding: screenWidth * 0.0122,
   },
 });
 

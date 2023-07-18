@@ -13,7 +13,7 @@ import * as SQLite from 'expo-sqlite';
 import * as SecureStore from 'expo-secure-store';
 import { PASSVAULT_KEY } from '../service/constants';
 
-import { decryptValue} from '../service/crypto';
+import { decryptValue } from '../service/crypto';
 
 const db = SQLite.openDatabase('passvault.db');
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
@@ -112,12 +112,12 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
     return (
       <View style={styles.rowBack}>
         <AppRoundTouchable iconName="pencil" 
-                           iconSize={24} 
+                           iconSize={screenWidth * 0.0584} 
                            iconColor={WHITE} 
                            touchableStyle={styles.editButton}
                            onPress={() => handleEditPress(data)} />
         <AppRoundTouchable iconName="md-trash" 
-                           iconSize={24} 
+                           iconSize={screenWidth * 0.0584} 
                            iconColor={WHITE} 
                            iconLibrary="ion"
                            touchableStyle={styles.editButton}
@@ -248,16 +248,16 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
     </View>
   );
 };
-// image - previous 50/50
+
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
     borderColor: 'white',
-    borderRadius: 15,
+    borderRadius: screenWidth * 0.0365,
     width: screenWidth * 0.95,
-    padding: 10,
+    padding: screenWidth * 0.02435,
     marginVertical: screenHeight * 0.01,
     marginHorizontal: screenWidth * 0.01,
     backgroundColor: 'white',

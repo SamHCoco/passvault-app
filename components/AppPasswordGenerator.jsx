@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet, Text, Dimensions } from 'react-native';
 import Slider from '@react-native-community/slider';
 import Checkbox from 'expo-checkbox';
+
+const { width: screenWidth } = Dimensions.get('window');
 
 function AppPasswordGenerator(props) {
   const [sliderValue, setSliderValue] = useState(5);
@@ -66,31 +68,30 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     alignItems: 'flex-start',
-    // justifyContent: 'center',
-    borderWidth: 1,
-    width: 380,
-    height: 170,
-    marginHorizontal: 5,
-    borderRadius: 50,
+    borderWidth: screenWidth * 0.0024,
+    width: screenWidth * 0.9253,
+    height: screenWidth * 0.4136,
+    marginHorizontal: screenWidth * 0.0122,
+    borderRadius: screenWidth * 0.1217,
   },
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: 4,
-    marginLeft: 27
+    marginHorizontal: screenWidth * 0.0097,
+    marginLeft: screenWidth * 0.0657,
   },
   label: {
-    fontSize: 16,
-    marginRight: 10,
+    fontSize: screenWidth * 0.0388,
+    marginRight: screenWidth * 0.0243,
   },
   slider: {
-    width: 200,
-    height: 40,
-    marginVertical: 10,
+    width: screenWidth * 0.4861,
+    height: screenWidth * 0.0973,
+    marginVertical: screenWidth * 0.0243,
   },
   value: {
-    fontSize: 16,
-    marginLeft: 10,
+    fontSize: screenWidth * 0.0388,
+    marginLeft: screenWidth * 0.0243,
   },
 });
 

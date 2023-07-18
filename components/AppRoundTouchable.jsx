@@ -1,8 +1,10 @@
 import React from 'react';
-import { TouchableOpacity, View, StyleSheet, Text } from 'react-native';
-import AppIcon from './AppIcon';
+import { TouchableOpacity, View, StyleSheet, Text, Dimensions } from 'react-native';
 
+import AppIcon from './AppIcon';
 import { LIGHT_GREY, WHITE } from '../constants/colors';
+
+const { width: screenWidth } = Dimensions.get('window');
 
 const AppRoundTouchable = ({ iconName, iconSize, iconColor, iconLibrary, onPress, touchableStyle, iconStyle, text }) => {
   const containerStyle = touchableStyle ? touchableStyle : styles.container;
@@ -27,19 +29,19 @@ const AppRoundTouchable = ({ iconName, iconSize, iconColor, iconLibrary, onPress
 
 const styles = StyleSheet.create({
   container: {
-    width: 100,
-    height: 100,
-    borderRadius: 150,
+    width: screenWidth * 0.2430,
+    height: screenWidth * 0.2430,
+    borderRadius: screenWidth * 0.3641,
     justifyContent: 'center',
     alignItems: 'center',
-    borderWidth: 1,
+    borderWidth: screenWidth * 0.0024,
     borderColor: LIGHT_GREY,
-    marginLeft: 25,
+    marginLeft: screenWidth * 0.0608,
   },
   text: {
-    fontSize: 19,
+    fontSize: screenWidth * 0.0462,
     fontWeight: 'bold',
-    color: WHITE
+    color: WHITE,
   },
 });
 

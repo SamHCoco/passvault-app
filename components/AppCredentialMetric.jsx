@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 
 import { LIGHT_GREY } from '../constants/colors';
-
 import AppIcon from './AppIcon';
+
+const { width: screenWidth } = Dimensions.get('window');
 
 const AppCredentialMetric = ({ 
       iconName, 
@@ -36,40 +37,40 @@ const AppCredentialMetric = ({
 };
 
 const styles = StyleSheet.create({
-    container: {
-        borderWidth: 0,
-        borderColor: 'black',
-        borderRadius: 50, // Modified value for perfect circle
-        padding: 3,
-        flexDirection: 'row',
-        width: 110, // Modify the width and height according to your needs
-        height: 110,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginHorizontal: 5
-      },
-      labels: {
-        flexDirection: 'column',
-      },
-      row: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 10,
-      },
-      label: {
-        fontSize: 20,
-        marginRight: 10,
-        fontWeight: 'bold'
-      },
-      icon: {
-        width: 50,
-        height: 50,
-      },
-      subLabel: {
-        fontSize: 17,
-        fontStyle: 'italic',
-        color: LIGHT_GREY
-      },
+  container: {
+    borderWidth: 0,
+    borderColor: 'black',
+    borderRadius: screenWidth * 0.1217,
+    padding: screenWidth * 0.0073,
+    flexDirection: 'row',
+    width: screenWidth * 0.2679,
+    height: screenWidth * 0.2679,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: screenWidth * 0.0122,
+  },
+  labels: {
+    flexDirection: 'column',
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: screenWidth * 0.0243,
+  },
+  label: {
+    fontSize: screenWidth * 0.0486,
+    marginRight: screenWidth * 0.0243,
+    fontWeight: 'bold',
+  },
+  icon: {
+    width: screenWidth * 0.1217,
+    height: screenWidth * 0.1217,
+  },
+  subLabel: {
+    fontSize: screenWidth * 0.0413,
+    fontStyle: 'italic',
+    color: LIGHT_GREY,
+  },
 });
 
 export default AppCredentialMetric;

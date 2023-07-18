@@ -46,7 +46,7 @@ function AppCardCredential({ bank, cardNumber, expDate, securityCode }) {
           <AppRoundTouchable
             iconName="copy-outline"
             iconLibrary="ion"
-            iconSize={19}
+            iconSize={screenWidth * 0.04623}
             iconColor={WHITE}
             touchableStyle={styles.touchable}
             iconStyle={styles.icon}

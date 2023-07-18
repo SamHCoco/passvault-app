@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
-import { View, Modal, Text, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import React from 'react';
+import { View, Modal, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import AppTextInput from './AppTextInput';
-import AppRoundTouchable from './AppRoundTouchable';
-import { LIGHT_GREEN, WHITE, LIGHT_GREY } from '../constants/colors';
+import { LIGHT_GREEN } from '../constants/colors';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -13,7 +11,7 @@ function AppAlert({ visible, onClose, children }) {
       <View style={styles.overlay}>
         <View style={styles.container}>
           <TouchableOpacity style={styles.closeButton} onPress={onClose}>
-            <Ionicons name="close" size={24} color="black" />
+            <Ionicons name="close" size={screenWidth * 0.0584} color="black" />
           </TouchableOpacity>
           {children}
         </View>
@@ -31,36 +29,22 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 16,
-    width: '80%',
+    borderRadius: screenWidth * 0.0243,
+    padding: screenWidth * 0.0388,
+    width: screenWidth * 0.1941,
   },
   closeButton: {
     alignSelf: 'flex-end',
-    marginBottom: 8,
+    marginBottom: screenWidth * 0.0194,
   },
   titleContainer: {
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: screenWidth * 0.0388,
   },
   titleText: {
-    fontSize: 21,
+    fontSize: screenWidth * 0.0511,
     fontWeight: 'bold',
     color: LIGHT_GREEN
-  },
-  touchableButtonContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  touchableButtonStyle: {
-    width: screenWidth * 0.25,
-    height: screenWidth * 0.25,
-    borderRadius: screenWidth * 0.25, // Make it circular
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderColor: LIGHT_GREY,
-    backgroundColor: LIGHT_GREEN,
   },
 });
 
