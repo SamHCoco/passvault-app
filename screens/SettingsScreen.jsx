@@ -64,7 +64,7 @@ const SettingsScreen = () => {
   return (
     <View style={styles.container}>
       <View style={styles.icon}>
-        <AppIcon name="cog-outline" size={95} color={LIGHT_GREEN} />
+        <AppIcon name="cog-outline" size={screenWidth * 0.2311} color={LIGHT_GREEN} />
       </View>
       <Section title="Security" biometricEnabled={biometricEnabled} handleBiometricToggle={handleBiometricToggle} />
       <Section title="Info">
