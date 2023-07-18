@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Text, Clipboard, ScrollView, Dimensions } from 'react-native';
-// import { Clipboard } from '@react-native-community/clipboard';
 import AppRoundTouchable from './AppRoundTouchable';
 import AppIcon from './AppIcon';
 
@@ -74,10 +73,12 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     borderColor: WHITE,
     borderBottomWidth: screenWidth * 0.0024,
+    // borderBottomColor: LIGHT_GREY
     marginHorizontal: screenWidth * 0.0146,
     marginVertical: 0,
     borderRadius: screenWidth * 0.0170,
-    backgroundColor: "white"
+    backgroundColor: "white",
+
   },
   row: {
     flexDirection: 'row',
