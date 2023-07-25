@@ -14,7 +14,7 @@ function AppTextInput({ textAlign, ...props }) {
 
     return (
         <TouchableOpacity onPress={handleInputPress}>
-              <View style={styles.container}>
+              <View style={[styles.container]}>
                   <TextInput ref={inputRef} style={[styles.text, { textAlign }]} {...props}/>
               </View>
         </TouchableOpacity>

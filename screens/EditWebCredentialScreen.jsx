@@ -588,6 +588,7 @@ const styles = StyleSheet.create({
   bankFormContainer: {
     flexDirection: 'column',
     alignItems: 'center',
+    flex: 1,
     marginBottom: screenHeight * 0.008,
     borderRadius: 0.04 * screenWidth,
     width: screenWidth * 0.70,
