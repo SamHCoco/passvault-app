@@ -590,7 +590,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: screenHeight * 0.008,
     borderRadius: 0.04 * screenWidth,
-    width: screenWidth * 0.62,
+    width: screenWidth * 0.70,
   },
   scrollContainer: {
     flexGrow: 1,
