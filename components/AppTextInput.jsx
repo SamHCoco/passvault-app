@@ -1,14 +1,23 @@
-import React from 'react';
+import React, { useRef} from 'react';
 import { TextInput, View , StyleSheet, Platform, Dimensions } from 'react-native';
 import { LIGHT_GREY } from '../constants/colors';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const { width: screenWidth } = Dimensions.get('window');
 
 function AppTextInput({ textAlign, ...props }) {
+    const inputRef = useRef(null);
+
+    const handleInputPress = () => {
+      inputRef.current.focus();
+    };
+
     return (
-        <View style={styles.container}>
-            <TextInput style={[styles.text, { textAlign }]} {...props}/>
-        </View>
+        <TouchableOpacity onPress={handleInputPress}>
+              <View style={styles.container}>
+                  <TextInput ref={inputRef} style={[styles.text, { textAlign }]} {...props}/>
+              </View>
+        </TouchableOpacity>
     );
 }
 
