@@ -489,10 +489,12 @@ function EditWebCredentialScreen({ route }) {
                         ) : null}
                     </View>
                     </View>
+                    <View style={styles.cardFormButton}>
+                        <AppRoundTouchable text={item ? "Edit" : "Save"} 
+                                onPress={handleFormSubmit} 
+                                touchableStyle={styles.touchableButtonStyle}  />
+                    </View>
             </View>
-          <AppRoundTouchable text={item ? "Edit" : "Save"} 
-                             onPress={handleFormSubmit} 
-                             touchableStyle={styles.touchableButtonStyle}  />
         </>
       );
     }
@@ -542,6 +544,10 @@ function EditWebCredentialScreen({ route }) {
 }
 
 const styles = StyleSheet.create({
+  cardFormButton: {
+      alignItems: 'center',
+      marginRight: screenWidth * 0.056
+  },
   cardInputContainer: {
       borderWidth: 1,
       flex: 1,
@@ -642,6 +648,7 @@ const styles = StyleSheet.create({
   },
   securityCodeLabel: {
     marginRight: screenWidth * 0.027,
+    width: screenWidth * 0.243
   },
   bankLabel: {
     marginRight: screenWidth * 0.027,
