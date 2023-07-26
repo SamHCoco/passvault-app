@@ -23,6 +23,7 @@ import { BIO_AUTH_ENABLED } from './service/constants';
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 const SCREEN_HEIGHT = Dimensions.get('window').height;
+const screenWidth = Dimensions.get('window').width;
 
 // SplashScreen component
 const SplashScreen = ({ navigation }) => {
@@ -125,14 +126,14 @@ function TabScreen() {
             iconName = focused ? 'cog' : 'cog-outline';
           }
 
-          return <AppIcon name={iconName} size={24} color={color} />;
+          return <AppIcon name={iconName} size={screenWidth * 0.05839} color={color} />;
         },
       })}
       tabBarOptions={{
         activeTintColor: LIGHT_GREEN,
         inactiveTintColor: BLACK,
         labelStyle: {
-          fontSize: 14,
+          fontSize: screenWidth * 0.03406,
         },
       }}
     >
@@ -176,8 +177,8 @@ const styles = StyleSheet.create({
     backgroundColor: WHITE,
   },
   logo: {
-    width: 100,
-    height: 150,
+    width: screenWidth * 0.24331,
+    height: screenWidth * 0.36496,
   },
   logoImage: {
     width: '100%',
@@ -192,9 +193,9 @@ const styles = StyleSheet.create({
     height: 0.25 * SCREEN_HEIGHT + 10
   },
   title: {
-    fontSize: 36,
+    fontSize: screenWidth * 0.08759,
     fontWeight: 'bold',
-    marginTop: 10,
+    marginTop: screenWidth * 0.024331,
     color: LIGHT_GREEN,
     fontFamily: 'Roboto'
   },

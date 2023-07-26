@@ -411,6 +411,7 @@ function EditWebCredentialScreen({ route }) {
                 autoCorrect={false}
                 value={bank}
                 onChangeText={(value) => handleInputChange(value, 'bank')}
+                inputWidth={screenWidth * 0.8516}
               />
               {bankError ? (
                 <Text style={styles.errorText}>{bankError}</Text>
@@ -433,6 +434,7 @@ function EditWebCredentialScreen({ route }) {
                         textAlign='center'
                         value={cardNumber}
                         onChangeText={(value) => handleInputChange(value, 'cardNumber')}
+                        inputWidth={screenWidth * 0.6083}
                       />
                       {cardNumberError ? (
                         <Text style={styles.errorText}>{cardNumberError}</Text>
@@ -483,6 +485,7 @@ function EditWebCredentialScreen({ route }) {
                         textAlign='center'
                         value={securityCode}
                         onChangeText={(value) => handleInputChange(value, 'securityCode')}
+                        inputWidth={screenWidth * 0.2092}
                       />
                       {securityCodeError ? (
                         <Text style={styles.errorText}>{securityCodeError}</Text>
@@ -546,7 +549,7 @@ function EditWebCredentialScreen({ route }) {
 const styles = StyleSheet.create({
   cardFormButton: {
       alignItems: 'center',
-      marginRight: screenWidth * 0.056
+      marginRight: screenWidth * 0.099
   },
   cardInputContainer: {
       borderWidth: 1,
@@ -615,6 +618,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: screenHeight * 0.013,
     width: screenWidth * 0.62,
+    marginVertical: 15 // todo - remove
   },
   expirationMonthContainer: {
     marginRight: screenWidth * 0.027,

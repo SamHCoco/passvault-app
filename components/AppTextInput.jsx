@@ -1,11 +1,11 @@
 import React, { useRef} from 'react';
 import { TextInput, View , StyleSheet, Platform, Dimensions } from 'react-native';
-import { LIGHT_GREY } from '../constants/colors';
+import { LIGHT_GREY, WHITE } from '../constants/colors';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const { width: screenWidth } = Dimensions.get('window');
 
-function AppTextInput({ textAlign, ...props }) {
+function AppTextInput({ textAlign, inputWidth, ...props }) {
     const inputRef = useRef(null);
 
     const handleInputPress = () => {
@@ -14,8 +14,8 @@ function AppTextInput({ textAlign, ...props }) {
 
     return (
         <TouchableOpacity onPress={handleInputPress}>
-              <View style={[styles.container]}>
-                  <TextInput ref={inputRef} style={[styles.text, { textAlign }]} {...props}/>
+              <View style={[styles.container, { width: inputWidth || '100%' }]}>
+                  <TextInput ref={inputRef} style={[styles.text]} {...props}/>
               </View>
         </TouchableOpacity>
     );
@@ -23,7 +23,7 @@ function AppTextInput({ textAlign, ...props }) {
 
 const styles = StyleSheet.create({
     container: {
-      backgroundColour: "grey",
+      backgroundColour: WHITE,
       borderRadius: screenWidth * 0.0365,
       flexDirection: "row",
       width: '100%',
@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     text: {
       fontSize: screenWidth * 0.0535,
       fontFamily: Platform.OS === "android" ? "Roboto" : "Avenir"
+      
     }
 });
 
