@@ -58,7 +58,6 @@ const styles = StyleSheet.create({
   },
   slider: {
     width: '65%', // Adjust the slider width as needed
-    height: screenWidth * 0.0975,
   },
   value: {
     fontSize: screenWidth * 0.0412,
