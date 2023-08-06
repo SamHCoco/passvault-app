@@ -19,8 +19,8 @@ const saveCardCredential = async ({
   const existingCard = await new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
-        'SELECT id FROM card WHERE name = ? LIMIT 1',
-        [bank],
+        'SELECT id FROM card WHERE LOWER(name) = ? LIMIT 1',
+        [bank.toLowerCase()],
         (_, { rows }) => {
           resolve(rows.item(0));
         },

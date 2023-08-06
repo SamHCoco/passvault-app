@@ -18,6 +18,7 @@ import { useNavigation } from '@react-navigation/native';
 import { BLACK, LIGHT_GREEN, LIGHT_GREY, WHITE } from '../constants/colors';
 import isValidUrl from '../service/urlUtil';
 import updateWebCredential from '../service/updateWebCredential';
+import updateCardCredential from '../service/updateCardCredential';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -80,6 +81,7 @@ function EditWebCredentialScreen({ route }) {
       } else if (type === 'card') {
         setSelectedOption('Card');
 
+        setId(effectItem.id);
         setBank(effectItem.bank);
         setCardNumber(effectItem.cardNumber);
         if (effectItem.expDate && effectItem.securityCode) {
@@ -129,13 +131,23 @@ function EditWebCredentialScreen({ route }) {
     } else if (selectedOption === 'Card') {
       // Remove all dashes from the cardNumber state
       const cardNumberWithoutDashes = cardNumber.replace(/-/g, '');
-      await saveCardCredential({
-        bank,
-        cardNumber: cardNumberWithoutDashes,
-        expirationMonth,
-        expirationYear,
-        securityCode,
-      });
+      if (!id) {
+        await saveCardCredential({
+          bank,
+          cardNumber: cardNumberWithoutDashes,
+          expirationMonth,
+          expirationYear,
+          securityCode,
+        });
+      } else {
+        await updateCardCredential({
+          bank,
+          cardNumber: cardNumberWithoutDashes,
+          expirationMonth,
+          expirationYear,
+          securityCode,
+        });
+      }
       setCardFormBlank();
       navigation.replace('Tabs', { selectedOption: 'card'});
     }
