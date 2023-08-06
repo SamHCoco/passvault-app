@@ -118,6 +118,7 @@ function EditWebCredentialScreen({ route }) {
         });
       } else {
         await updateWebCredential({
+          id: id,
           url,
           name,
           username,
@@ -140,7 +141,9 @@ function EditWebCredentialScreen({ route }) {
           securityCode,
         });
       } else {
+        
         await updateCardCredential({
+          id: id,
           bank,
           cardNumber: cardNumberWithoutDashes,
           expirationMonth,
