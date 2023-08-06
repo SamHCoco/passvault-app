@@ -7,6 +7,7 @@ import { encryptValue } from '../service/crypto';
 const db = SQLite.openDatabase('passvault.db');
 
 const updateCardCredential = async ({
+  id,
   bank,
   cardNumber,
   expirationMonth,
@@ -37,43 +38,39 @@ const updateCardCredential = async ({
   const encryptedSecurityCode = await encryptValue(securityCode, masterKey);
 
   // Update or insert into card_credential table
-  const updateCardCredential = async (cardId) => {
+  const updateCardCredentialEntry = async (cardId) => {
     return new Promise((resolve, reject) => {
       db.transaction((tx) => {
         tx.executeSql(
-          'SELECT id FROM card_credential WHERE card_id = ?',
-          [cardId],
+          'UPDATE card_credential SET card_number = ?, exp_date = ?, security_code = ?, card_id = ? WHERE id = ?',
+          [encryptedCardNumber, encryptedExpDate, encryptedSecurityCode, cardId, id],
+          (_, result) => {
+            resolve(result);
+            console.log('Card credentials updated successfully.');
+          },
+          (_, error) => {
+            reject(error);
+          }
+        );
+      }, (error) => {
+        // Transaction error handling
+        console.log('Transaction error:', error);
+      }, () => {
+        // Transaction success handling
+        console.log('Transaction successful.');
+      });
+    });
+  };
+
+  // Get the card_id from the card_credential table for the provided ID
+  const getCardId = async () => {
+    return new Promise((resolve, reject) => {
+      db.transaction((tx) => {
+        tx.executeSql(
+          'SELECT card_id FROM card_credential WHERE id = ?',
+          [id],
           (_, { rows }) => {
-            const existingCredentialId = rows.item(0)?.id;
-            if (existingCredentialId) {
-              // Update the existing credential
-              tx.executeSql(
-                'UPDATE card_credential SET card_number = ?, exp_date = ?, security_code = ? WHERE id = ?',
-                [encryptedCardNumber, encryptedExpDate, encryptedSecurityCode, existingCredentialId],
-                (_, { rowsAffected }) => {
-                  if (rowsAffected > 0) {
-                    resolve(existingCredentialId);
-                  } else {
-                    reject(new Error('Failed to update card credential.'));
-                  }
-                },
-                (_, error) => {
-                  reject(error);
-                }
-              );
-            } else {
-              // Insert a new credential
-              tx.executeSql(
-                'INSERT INTO card_credential (card_id, card_number, exp_date, security_code) VALUES (?, ?, ?, ?)',
-                [cardId, encryptedCardNumber, encryptedExpDate, encryptedSecurityCode],
-                (_, { insertId }) => {
-                  resolve(insertId);
-                },
-                (_, error) => {
-                  reject(error);
-                }
-              );
-            }
+            resolve(rows.item(0)?.card_id);
           },
           (_, error) => {
             reject(error);
@@ -84,15 +81,15 @@ const updateCardCredential = async ({
   };
 
   // Handle the found or new card record
+  let cardId = await getCardId();
+  let oldCardId = cardId;
+
   if (existingCard) {
-    // Use the existing card_id
-    const cardId = existingCard.id;
+    cardId = existingCard.id;
     try {
-      await updateCardCredential(cardId);
-      // Optionally, you can handle the successful update here
+      await updateCardCredentialEntry(cardId);
     } catch (error) {
-      // Handle the error during the update process
-      console.log('Error updating card credential:', error);
+      console.log('Error updating card credentials:', error);
     }
   } else {
     // Insert a new record into card table
@@ -103,6 +100,8 @@ const updateCardCredential = async ({
             'INSERT INTO card (name) VALUES (?)',
             [bank],
             (_, { insertId }) => {
+              // Assign the newly inserted card_id to the cardId variable
+              cardId = insertId;
               resolve(insertId);
             },
             (_, error) => {
@@ -113,17 +112,50 @@ const updateCardCredential = async ({
       });
 
       // Use the new card_id
-      const cardId = insertCard;
       try {
-        await updateCardCredential(cardId);
-        // Optionally, you can handle the successful insert and update here
+        await updateCardCredentialEntry(cardId);
       } catch (error) {
-        // Handle the error during the insert and update process
         console.log('Error inserting and updating card credential:', error);
       }
     } catch (error) {
-      // Handle the error during the card insert process
       console.log('Error inserting card:', error);
+    }
+  }
+
+  // Check if a new card record was inserted and if there are no records in card_credential with the old card_id
+  if (oldCardId && oldCardId !== cardId) {
+    const noRecordsWithOldCardId = await new Promise((resolve, reject) => {
+      db.transaction((tx) => {
+        tx.executeSql(
+          'SELECT COUNT(*) as count FROM card_credential WHERE card_id = ?',
+          [oldCardId],
+          (_, { rows }) => {
+            resolve(rows.item(0).count === 0);
+          },
+          (_, error) => {
+            reject(error);
+          }
+        );
+      });
+    });
+
+    // If no records exist with the old card_id, delete the card from the card table
+    if (noRecordsWithOldCardId) {
+      await new Promise((resolve, reject) => {
+        db.transaction((tx) => {
+          tx.executeSql(
+            'DELETE FROM card WHERE id = ?',
+            [oldCardId],
+            (_, result) => {
+              resolve(result);
+            },
+            (_, error) => {
+              reject(error);
+              console.log('Failed to delete card record:', error);
+            }
+          );
+        });
+      });
     }
   }
 };
