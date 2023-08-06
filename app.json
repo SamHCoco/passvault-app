@@ -4,7 +4,7 @@
   },
   "expo": {
     "name": "Passvault",
-    "slug": "passvault",
+    "slug": "passvault-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/passvault-icon-final-square.png",
