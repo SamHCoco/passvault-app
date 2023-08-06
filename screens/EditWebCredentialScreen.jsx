@@ -51,18 +51,6 @@ function EditWebCredentialScreen({ route }) {
       includeSpecialChars: true,
       includeUpperCase: true});
 
-  // error states
-  const [urlError, setUrlError] = useState('');
-  const [nameError, setNameError] = useState('');
-  const [usernameError, setUsernameError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  
-  const [bankError, setBankError] = useState('');
-  const [cardNumberError, setCardNumberError] = useState('');
-  const [expirationMonthError, setExpirationMonthError] = useState('');
-  const [expirationYearError, setExpirationYearError] = useState('');
-  const [securityCodeError, setSecurityCodeError] = useState('');
-
   useEffect(() => {
     var effectItem;
 
@@ -158,68 +146,36 @@ function EditWebCredentialScreen({ route }) {
 
     if (selectedOption === 'Web') {
       if (!name) {
-        setNameError('Required');
         hasErrors = true;
-      } else {
-        setNameError('');
       }
       if (!url) {
-        setUrlError('Required');
         hasErrors = true;
       } else {
         if (!isValidUrl(url)) {
           hasErrors = true;
-          setUrlError('Invalid URL');
-        } else {
-          setUrlError('');
         }
       }
       if (!username) {
-        setUsernameError('Required');
         hasErrors = true;
-      } else {
-        setUsernameError('');
       }
       if (!password) {
-        setPasswordError('Required');
         hasErrors = true;
-      } else {
-        setPasswordError('');
       }
     } else if (selectedOption === 'Card') {
       if (!bank) {
-        setBankError('Required');
         hasErrors = true;
-      } else {
-        setBankError('');
       }
-
       if (!cardNumber) {
-        setCardNumberError('Required');
         hasErrors = true;
-      } else {
-        setCardNumberError('');
       }
-
       if (!expirationMonth) {
-        setExpirationMonthError('Required');
         hasErrors = true;
-      } else {
-        setExpirationMonthError('');
       }
-
       if (!expirationYear) {
-        setExpirationYearError('Required');
         hasErrors = true;
-      } else {
-        setExpirationYearError('');
-      }
-
+      } 
       if (!securityCode) {
-        setSecurityCodeError('Required');
         hasErrors = true;
-      } else {
-        setSecurityCodeError('');
       }
     }
     return hasErrors;
@@ -228,19 +184,14 @@ function EditWebCredentialScreen({ route }) {
   const handleInputChange = (value, inputName) => {
     if (inputName === 'url') {
       setUrl(value);
-      setUrlError('');
     } else if (inputName === 'name') {
       setName(value);
-      setNameError('');
     } else if (inputName === 'username') {
       setUsername(value);
-      setUsernameError('');
     } else if (inputName === 'password') {
       setPassword(value);
-      setPasswordError('');
     } else if (inputName === 'bank') {
       setBank(value);
-      setBankError('');
     }  else if (inputName === 'cardNumber') {
       // Remove any existing spaces from the value
       const newValue = value.replace(/ /g, '');
@@ -253,24 +204,16 @@ function EditWebCredentialScreen({ route }) {
 
       // Update the state
       setCardNumber(formattedValue);
-      setCardNumberError('');
     } else if (inputName === 'expirationMonth') {
       // ensures inputs are always aligned
       setExpirationMonth(value);
-      setExpirationMonthError('');
-      setExpirationYearError('');
       setSecurityCode('');
     } else if (inputName === 'expirationYear') {
       // ensures inputs are always aligned
       setExpirationYear(value);
-      setExpirationYearError('');
-      setExpirationMonthError('');
       setSecurityCode('');
     } else if (inputName === 'securityCode') {
       setSecurityCode(value);
-      setExpirationYearError('');
-      setSecurityCodeError('');
-      setExpirationMonthError('');
     }
   };
 
@@ -303,10 +246,6 @@ function EditWebCredentialScreen({ route }) {
               onChangeText={(value) => handleInputChange(value, 'name')}
           />
 
-                  {nameError ? (
-                    <Text style={styles.errorText}>{nameError}</Text>
-                  ) : null}
-
             <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
                   <AppIcon name="web" color={LIGHT_GREEN} size={screenWidth * 0.1095} library="material" />
             </View>
@@ -320,10 +259,6 @@ function EditWebCredentialScreen({ route }) {
                   value={url}
                   onChangeText={(value) => handleInputChange(value, 'url')}
               />
-              
-              {urlError ? (
-                <Text style={styles.errorText}>{urlError}</Text>
-              ) : null}
 
               <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
                   <AppIcon name="md-person-circle" color={LIGHT_GREEN} size={screenWidth * 0.1095} library="ion" />
@@ -338,9 +273,6 @@ function EditWebCredentialScreen({ route }) {
                   value={username}
                   onChangeText={(value) => handleInputChange(value, 'username')}
               />
-              {usernameError ? (
-                <Text style={styles.errorText}>{usernameError}</Text>
-              ) : null}
 
               <View style={{ flexDirection: 'row', alignContent: 'center', justifyContent: 'center'}}>
                   <AppIcon name="md-lock-closed" color={LIGHT_GREEN} size={screenWidth * 0.1095} library="ion" />
@@ -355,9 +287,6 @@ function EditWebCredentialScreen({ route }) {
                 value={password}
                 onChangeText={(value) => handleInputChange(value, 'password')}
               />
-              {passwordError ? (
-                <Text style={styles.errorText}>{passwordError}</Text>
-              ) : null}
 
               <View style={{borderWidth: 0, marginVertical: screenWidth * 0.0633}}>
               <View style={styles.touchableButtonContainer}>
@@ -423,9 +352,6 @@ function EditWebCredentialScreen({ route }) {
                 onChangeText={(value) => handleInputChange(value, 'bank')}
                 inputWidth={screenWidth * 0.8516}
               />
-              {bankError ? (
-                <Text style={styles.errorText}>{bankError}</Text>
-              ) : null}
             </View>
 
             <View style={styles.cardInputContainer}>
@@ -446,9 +372,6 @@ function EditWebCredentialScreen({ route }) {
                         onChangeText={(value) => handleInputChange(value, 'cardNumber')}
                         inputWidth={screenWidth * 0.6083}
                       />
-                      {cardNumberError ? (
-                        <Text style={styles.errorText}>{cardNumberError}</Text>
-                      ) : null}
                     </View>
 
                     <View style={styles.expirationContainer}>
@@ -463,9 +386,6 @@ function EditWebCredentialScreen({ route }) {
                           value={expirationMonth}
                           onChangeText={(value) => handleInputChange(value, 'expirationMonth')}
                         />
-                        {expirationMonthError ? (
-                        <Text style={styles.errorText}>{expirationMonthError}</Text>
-                      ) : null}
                       </View>
 
                       <View style={styles.expirationYearContainer}>
@@ -479,9 +399,6 @@ function EditWebCredentialScreen({ route }) {
                           value={expirationYear}
                           onChangeText={(value) => handleInputChange(value, 'expirationYear')}
                         />
-                        {expirationYearError ? (
-                        <Text style={styles.errorText}>{expirationYearError}</Text>
-                        ) : null}
                       </View>
                       <View style={styles.securityCodeContainer}>
                       <Text style={styles.securityCodeLabel}>Security Code</Text>
@@ -497,9 +414,6 @@ function EditWebCredentialScreen({ route }) {
                         onChangeText={(value) => handleInputChange(value, 'securityCode')}
                         inputWidth={screenWidth * 0.2092}
                       />
-                      {securityCodeError ? (
-                        <Text style={styles.errorText}>{securityCodeError}</Text>
-                        ) : null}
                     </View>
                     </View>
                     <View style={styles.cardFormButton}>
