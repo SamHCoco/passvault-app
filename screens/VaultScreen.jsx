@@ -6,9 +6,9 @@ import AppSearchBar from '../components/AppSearchBar';
 import AppRoundTouchable from '../components/AppRoundTouchable';
 import AppCredentialProvider from '../components/AppCredentialProvider';
 import AppIcon from '../components/AppIcon';
-// import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 
-// const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-5113688719095404~2869573168';
+const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-5113688719095404~2869573168';
 
 import { WHITE, LIGHT_GREY, BLACK, LIGHT_GREEN } from '../constants/colors';
 
@@ -142,13 +142,13 @@ const handleDeleteComplete = () => {
 
   return (
     <View style={styles.container}>
-      {/* <BannerAd
+      <BannerAd
           unitId={adUnitId}
           size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
           requestOptions={{
             requestNonPersonalizedAdsOnly: false,
           }}
-      /> */}
+      />
       <AppIcon name="safe-square-outline" size={0.2312 * screenWidth} color={LIGHT_GREEN} />
       <View style={styles.topDashboard}>
         <View style={styles.metricButtonsContainer}>
