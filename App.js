@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import * as LocalAuthentication from 'expo-local-authentication';
 import 'expo-dev-client';
+import mobileAds from 'react-native-google-mobile-ads';
 
 import PinAuthScreen from './screens/PinAuthScreen';
 import CreatePinScreen from './screens/CreatePinScreen';
@@ -146,6 +147,11 @@ function TabScreen() {
 export default function App() {
   useEffect(() => {
     createTables();
+    mobileAds()
+      .initialize()
+      .then(adapterStatuses => {
+        // Initialization complete!
+  });
   }, []);
 
   return (
