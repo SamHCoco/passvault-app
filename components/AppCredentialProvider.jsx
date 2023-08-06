@@ -121,7 +121,7 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
                            iconColor={WHITE} 
                            iconLibrary="ion"
                            touchableStyle={styles.editButton}
-                           onPress={() => handleDeletePress(data)} />
+                           onPress={() => handleDeletePress(data, onDeleteAction)} />
       </View>
     );
   };
@@ -134,7 +134,7 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
      });
   };
 
-  const handleDeletePress = (data) => {
+  const handleDeletePress = (data, onDeleteComplete) => {
     const { id, type, cardId, webId } = data.item;
   
     db.transaction((tx) => {
@@ -192,6 +192,7 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
                     }
                   );
                   setDeletionCompleted(true); // Mark deletion as completed
+                  onDeleteComplete();
                 }
               },
               (error) => {
@@ -210,6 +211,7 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
           (_, { rowsAffected }) => {
             if (rowsAffected > 0) {
               setDeletionCompleted(true); // Mark deletion as completed
+              onDeleteComplete();
   
               // Check if there are any other card credentials with the same card_id
               tx.executeSql(

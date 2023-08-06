@@ -131,8 +131,13 @@ function VaultScreen({ route }) {
     setDeleteActionFlag(!deleteActionFlag);
   };
 
+  // Add a callback function to handle deletion completion
+const handleDeleteComplete = () => {
+  handleDeleteAction(); // Trigger a re-render when deletion is completed
+};
+
   const renderItemFlatList = ({ item }) => {
-    return <AppCredentialProvider provider={item} onDeleteAction={handleDeleteAction} />;
+    return <AppCredentialProvider provider={item} onDeleteAction={handleDeleteComplete} />;
   };
 
   return (
