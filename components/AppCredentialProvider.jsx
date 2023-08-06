@@ -139,44 +139,68 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
   
     db.transaction((tx) => {
       if (type === 'web') {
+        // Fetch the web_url_id from the web_credential table for the given id
         tx.executeSql(
-          'DELETE FROM web_credential WHERE id = ?',
+          'SELECT web_url_id FROM web_credential WHERE id = ?',
           [id],
-          (_, { rowsAffected }) => {
-            if (rowsAffected > 0) {
-              setDeletionCompleted(true); // Mark deletion as completed
+          (_, { rows }) => {
+            const { web_url_id } = rows.item(0); // Retrieve the web_url_id from the result
   
-              // Check if there are any other web credentials with the same web_id
-              tx.executeSql(
-                'SELECT COUNT(*) AS count FROM web_credential WHERE web_id = ?',
-                [webId],
-                (_, { rows }) => {
-                  const { count } = rows.item(0);
-                  if (count === 0) {
-                    // No other web credentials with the same web_id, delete the web credential
-                    tx.executeSql(
-                      'DELETE FROM web WHERE id = ?',
-                      [webId],
-                      (_, { rowsAffected }) => {
-                        if (rowsAffected > 0) {
-                          // Perform any additional actions on success
-                        }
-                      },
-                      (error) => {
-                        console.log('Error deleting web with ID ${webId}:', error);
+            tx.executeSql(
+              'DELETE FROM web_credential WHERE id = ?',
+              [id],
+              (_, { rowsAffected }) => {
+                if (rowsAffected > 0) {
+                  // Now, delete the web_url with the stored web_url_id
+                  tx.executeSql(
+                    'DELETE FROM web_url WHERE id = ?',
+                    [web_url_id], // Use the stored web_url_id
+                    (_, { rowsAffected }) => {
+                      if (rowsAffected > 0) {
+                        // Perform any additional actions on success
                       }
-                    );
-                  }
-                  onDeleteAction();
-                },
-                (error) => {
-                  console.log('Error checking web credentials:', error);
+                    },
+                    (error) => {
+                      console.log(`Error deleting web_url with ID ${web_url_id}:`, error);
+                    }
+                  );
+  
+                  // Check if there are any other web credentials with the same web_id
+                  tx.executeSql(
+                    'SELECT COUNT(*) AS count FROM web_credential WHERE web_id = ?',
+                    [webId],
+                    (_, { rows }) => {
+                      const { count } = rows.item(0);
+                      if (count === 0) {
+                        // No other web credentials with the same web_id, delete the web credential
+                        tx.executeSql(
+                          'DELETE FROM web WHERE id = ?',
+                          [webId],
+                          (_, { rowsAffected }) => {
+                            if (rowsAffected > 0) {
+                              // Perform any additional actions on success
+                            }
+                          },
+                          (error) => {
+                            console.log(`Error deleting web with ID ${webId}:`, error);
+                          }
+                        );
+                      }
+                    },
+                    (error) => {
+                      console.log('Error checking web credentials:', error);
+                    }
+                  );
+                  setDeletionCompleted(true); // Mark deletion as completed
                 }
-              );
-            }
+              },
+              (error) => {
+                console.log(`Error deleting web credential with ID ${id}:`, error);
+              }
+            );
           },
           (error) => {
-            console.log('Error deleting web credential with ID ${id}:', error);
+            console.log(`Error fetching web_url_id for web_credential with ID ${id}:`, error);
           }
         );
       } else if (type === 'card') {
@@ -186,6 +210,7 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
           (_, { rowsAffected }) => {
             if (rowsAffected > 0) {
               setDeletionCompleted(true); // Mark deletion as completed
+  
               // Check if there are any other card credentials with the same card_id
               tx.executeSql(
                 'SELECT COUNT(*) AS count FROM card_credential WHERE card_id = ?',
@@ -212,7 +237,6 @@ const AppCredentialProvider = ({ provider, onDeleteAction }) => {
                   console.log('Error checking card credentials:', error);
                 }
               );
-              onDeleteAction();
             }
           },
           (error) => {

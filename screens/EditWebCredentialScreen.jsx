@@ -17,6 +17,7 @@ import generateRandomPassword from '../service/generatePassword';
 import { useNavigation } from '@react-navigation/native';
 import { BLACK, LIGHT_GREEN, LIGHT_GREY, WHITE } from '../constants/colors';
 import isValidUrl from '../service/urlUtil';
+import updateWebCredential from '../service/updateWebCredential';
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -118,12 +119,21 @@ function EditWebCredentialScreen({ route }) {
     }
 
     if (selectedOption === 'Web') {
-      await saveWebCredential({
-        url,
-        name,
-        username,
-        password
-      });
+      if(!id) {
+        await saveWebCredential({
+          url,
+          name,
+          username,
+          password
+        });
+      } else {
+        await updateWebCredential({
+          url,
+          name,
+          username,
+          password
+        });
+      }
       setWebFormBlank();
     
       navigation.replace('Tabs', { selectedOption: 'web'});
