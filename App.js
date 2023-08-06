@@ -26,16 +26,16 @@ const Stack = createStackNavigator();
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
+const [masterKey256BitConfiguration, setMasterKey256BitConfiguration] = useState({
+  length: 32,
+  includeLowerCase: true,
+  includeNumbers: true,
+  includeSpecialChars: true,
+  includeUpperCase: true});
+
 // SplashScreen component
 const SplashScreen = ({ navigation }) => {
   const logoAnimation = useRef(new Animated.Value(0)).current;
-
-  const [passwordGeneratorConfig, setPasswordGeneratorConfig] = useState({
-    length: 10,
-    includeLowerCase: true,
-    includeNumbers: true,
-    includeSpecialChars: true,
-    includeUpperCase: true});
 
   useEffect(() => {
     startAnimation();
@@ -49,7 +49,7 @@ const SplashScreen = ({ navigation }) => {
   const generateMasterKey = async () => {
     const passvaultKey = await SecureStore.getItemAsync(PASSVAULT_KEY);
     if (!passvaultKey) {
-      await SecureStore.setItemAsync(PASSVAULT_KEY, generateRandomPassword(passwordGeneratorConfig));
+      await SecureStore.setItemAsync(PASSVAULT_KEY, generateRandomPassword(masterKey256BitConfiguration));
     }
   }
 

@@ -146,7 +146,7 @@ const handleDeleteComplete = () => {
           unitId={adUnitId}
           size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
           requestOptions={{
-            requestNonPersonalizedAdsOnly: false,
+            requestNonPersonalizedAdsOnly: true,
           }}
       />
       <AppIcon name="safe-square-outline" size={0.2312 * screenWidth} color={LIGHT_GREEN} />

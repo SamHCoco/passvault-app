@@ -3,17 +3,12 @@
     "android_app_id": "ca-app-pub-5113688719095404~2869573168"
   },
   "expo": {
-    "name": "passvault-app",
-    "slug": "passvault-app",
+    "name": "Passvault",
+    "slug": "passvault",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/passvault-icon-final-square.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/passvault-icon-final.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
     "assetBundlePatterns": [
       "**/*"
     ],

@@ -20,6 +20,9 @@ import isValidUrl from '../service/urlUtil';
 import updateWebCredential from '../service/updateWebCredential';
 import updateCardCredential from '../service/updateCardCredential';
 
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
+const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-5113688719095404~2869573168';
+
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 function EditWebCredentialScreen({ route }) {
@@ -474,6 +477,13 @@ function EditWebCredentialScreen({ route }) {
           >
             {({ handleChange, handleFormSubmit, errors, touched, values }) => (
               <>
+                <BannerAd
+                  unitId={adUnitId}
+                  size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+                  requestOptions={{
+                    requestNonPersonalizedAdsOnly: true,
+                  }}
+      />
                 {renderForm({ handleChange, handleFormSubmit, errors, touched, values })}
 
               </>
