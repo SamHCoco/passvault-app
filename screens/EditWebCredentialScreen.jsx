@@ -451,6 +451,13 @@ function EditWebCredentialScreen({ route }) {
     <ScrollView contentContainerStyle={styles.scrollContainer}>
       <Screen>
         <View style={styles.container}>
+                <BannerAd
+                  unitId={adUnitId}
+                  size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
+                  requestOptions={{
+                    requestNonPersonalizedAdsOnly: true,
+                  }}
+                />
           <View style={styles.optionsContainer}>
             <AppRoundTouchable
               iconName="web"
@@ -477,13 +484,6 @@ function EditWebCredentialScreen({ route }) {
           >
             {({ handleChange, handleFormSubmit, errors, touched, values }) => (
               <>
-                <BannerAd
-                  unitId={adUnitId}
-                  size={BannerAdSize.ANCHORED_ADAPTIVE_BANNER}
-                  requestOptions={{
-                    requestNonPersonalizedAdsOnly: true,
-                  }}
-      />
                 {renderForm({ handleChange, handleFormSubmit, errors, touched, values })}
 
               </>

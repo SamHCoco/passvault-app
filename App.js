@@ -26,13 +26,6 @@ const Stack = createStackNavigator();
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 
-const [masterKey256BitConfiguration, setMasterKey256BitConfiguration] = useState({
-  length: 32,
-  includeLowerCase: true,
-  includeNumbers: true,
-  includeSpecialChars: true,
-  includeUpperCase: true});
-
 // SplashScreen component
 const SplashScreen = ({ navigation }) => {
   const logoAnimation = useRef(new Animated.Value(0)).current;
@@ -45,6 +38,13 @@ const SplashScreen = ({ navigation }) => {
     }, 3000);
     return () => clearTimeout(timer);
   }, []);
+
+  const [masterKey256BitConfiguration, setMasterKey256BitConfiguration] = useState({
+    length: 32,
+    includeLowerCase: true,
+    includeNumbers: true,
+    includeSpecialChars: true,
+    includeUpperCase: true});
   
   const generateMasterKey = async () => {
     const passvaultKey = await SecureStore.getItemAsync(PASSVAULT_KEY);
@@ -105,7 +105,7 @@ const SplashScreen = ({ navigation }) => {
   return (
     <View style={styles.logoContainer}>
       <Animated.View style={[styles.logo, { transform: [{ translateY: logoTranslateY }] }]}>
-        <Image source={require('/Users/euler/repos/passvault-app/assets/passvault-icon-final.png')} style={styles.logoImage} />
+        <Image source={require('./assets/passvault-icon-final.png')} style={styles.logoImage} />
       </Animated.View>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>PassVault</Text>
