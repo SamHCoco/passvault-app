@@ -498,7 +498,7 @@ function EditWebCredentialScreen({ route }) {
 const styles = StyleSheet.create({
   cardFormButton: {
       alignItems: 'center',
-      marginRight: screenWidth * 0.099
+      marginRight: screenWidth * 0.037
   },
   cardInputContainer: {
       borderWidth: 1,

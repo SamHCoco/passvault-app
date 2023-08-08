@@ -6,8 +6,8 @@ import AppSearchBar from '../components/AppSearchBar';
 import AppRoundTouchable from '../components/AppRoundTouchable';
 import AppCredentialProvider from '../components/AppCredentialProvider';
 import AppIcon from '../components/AppIcon';
-import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 
+import { BannerAd, BannerAdSize, TestIds } from 'react-native-google-mobile-ads';
 const adUnitId = __DEV__ ? TestIds.BANNER : 'ca-app-pub-5113688719095404~2869573168';
 
 import { WHITE, LIGHT_GREY, BLACK, LIGHT_GREEN } from '../constants/colors';
@@ -96,6 +96,7 @@ function VaultScreen({ route }) {
       setSelected(selectedOption ? selectedOption : 'web');
       fetchRecordsFromTable(selectedOption ? selectedOption : 'web');
     } else {
+      setSelected('web');
       fetchRecordsFromTable('web');
     }
   }, [deleteActionFlag, searchText, route]);

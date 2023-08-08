@@ -35,7 +35,7 @@ const SplashScreen = ({ navigation }) => {
     generateMasterKey();
     const timer = setTimeout(() => {
       checkBiometricEnabled();
-    }, 3000);
+    }, 2000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -92,7 +92,7 @@ const SplashScreen = ({ navigation }) => {
   const startAnimation = () => {
     Animated.timing(logoAnimation, {
       toValue: 0.25,
-      duration: 1500,
+      duration: 1000,
       useNativeDriver: true,
     }).start();
   };
