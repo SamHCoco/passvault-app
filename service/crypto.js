@@ -9,7 +9,6 @@ const encryptValue = async (plainText, key) => {
         reject(error);
     }
   });
-  return plainText;
 };
 
 const decryptValue = async (encryptedText, key) => {
@@ -21,7 +20,6 @@ const decryptValue = async (encryptedText, key) => {
       reject(error);
     }
   });
-  return encryptedText;
 };
 
 export { encryptValue, decryptValue };

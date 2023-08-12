@@ -1,13 +1,13 @@
 import React from 'react';
-import Constants from 'expo-constants';
-import { SafeAreaView, StyleSheet, View, ScrollView, Platform, StatusBar, Dimensions } from 'react-native';
+import { StyleSheet, View, Platform, StatusBar, Dimensions } from 'react-native';
 
 const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
 function Screen(props) {
+  const { backgroundColor } = props;
   return (
-    <View style={styles.screen}>
+    <View style={[styles.screen, backgroundColor && { backgroundColor }]}>
       <View style={styles.view}>{props.children}</View>
     </View>
   );

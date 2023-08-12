@@ -449,7 +449,7 @@ function EditWebCredentialScreen({ route }) {
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <Screen>
+      <Screen backgroundColor='white'>
         <View style={styles.container}>
                 <BannerAd
                   unitId={adUnitId}
