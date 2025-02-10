@@ -11,8 +11,8 @@ def resize_image(input_image_path, output_image_path, width, height):
 
 if __name__ == "__main__":
     input_image_path = "./passvault-icon-final.png"
-    output_image_path = "./passvault-icon-final-square.png"
-    target_width = 485  # Specify your desired width here
-    target_height = 485  # Specify your desired height here
+    output_image_path = "./passvault-icon-final-square-playstore.png"
+    target_width = 512  # Specify your desired width here
+    target_height = 512  # Specify your desired height here
 
     resize_image(input_image_path, output_image_path, target_width, target_height)
